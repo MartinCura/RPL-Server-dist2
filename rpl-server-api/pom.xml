@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>rpl</groupId>
+		<artifactId>parent</artifactId>
+		<version>${rpl.version}</version>
+	</parent>
+	<groupId>rpl</groupId>
+	<artifactId>rpl-server-api</artifactId>
+	<version>${rpl.version}</version>
+	<name>rpl-server-api</name>
+	<packaging>war</packaging>
+	<build>
+		<finalName>rpl-server-api</finalName>
+	</build>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<resteasy.version>3.0.19.Final</resteasy.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+			<version>${resteasy.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-servlet-initializer</artifactId>
+			<version>${resteasy.version}</version>
+		</dependency>
+
+	</dependencies>
+</project>
