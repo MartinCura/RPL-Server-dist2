@@ -9,14 +9,24 @@
 		<version>${rpl.version}</version>
 	</parent>
 	<groupId>rpl</groupId>
-	<artifactId>rpl-datasource</artifactId>
+	<artifactId>rpl-service</artifactId>
 	<version>${rpl.version}</version>
-	<name>rpl-datasource</name>
-	<packaging>jar</packaging>
+	<name>rpl-service</name>
+	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<ejb.version>3.0</ejb.version>
 	</properties>
 	<dependencies>
-		
+		<dependency>
+			<groupId>javax.ejb</groupId>
+			<artifactId>ejb-api</artifactId>
+			<version>${ejb.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>rpl</groupId>
+			<artifactId>rpl-model</artifactId>
+			<version>${rpl.version}</version>
+		</dependency>
 	</dependencies>
 </project>
