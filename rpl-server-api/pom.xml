@@ -19,8 +19,14 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<resteasy.version>3.0.19.Final</resteasy.version>
+		<weld.version>2.3.0.Final</weld.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>rpl</groupId>
+			<artifactId>rpl-service</artifactId>
+			<version>${rpl.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jaxrs</artifactId>
@@ -36,6 +42,15 @@
 			<artifactId>resteasy-jackson-provider</artifactId>
 			<version>${resteasy.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-cdi</artifactId>
+			<version>${resteasy.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.weld.servlet</groupId>
+			<artifactId>weld-servlet</artifactId>
+			<version>${weld.version}</version>
+		</dependency>
 	</dependencies>
 </project>
