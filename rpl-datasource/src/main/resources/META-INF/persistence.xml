@@ -3,15 +3,23 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 	version="2.0">
 	<persistence-unit name="RplPU">
-<!-- 		<class>PAQUETE DE LA CLASE</class> -->
-
-<!-- 		<properties> -->
-<!-- 			<property name="hibernate.connection.driver_class" value="" /> -->
-<!-- 			<property name="hibernate.dialect" value="" /> -->
-<!-- 			<property name="hibernate.connection.url" value="" /> -->
-<!-- 			<property name="hibernate.connection.username" value="" /> -->
-<!-- 			<property name="hibernate.connection.password" value="" /> -->
-<!-- 		</properties> -->
+		<class>com.rpl.model.DBTest</class>
+		<properties>
+		
+<!-- 			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/rpldb" /> -->
+<!-- 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" /> -->
+<!-- 			<property name="hibernate.connection.username" value="rpl" /> -->
+<!-- 			<property name="hibernate.connection.password" value="rpl" /> -->
+			
+			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/rpldb" />
+			<property name="javax.persistence.jdbc.user" value="rpl" />
+			<property name="javax.persistence.jdbc.password" value="rpl" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+			<property name="show_sql" value="true" />
+			<property name="hibernate.temp.use_jdbc_metadata_defaults"
+				value="false" />
+		</properties>
 
 
 	</persistence-unit>
