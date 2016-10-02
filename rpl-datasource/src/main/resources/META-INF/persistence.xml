@@ -7,7 +7,7 @@
 		<properties>
 		
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://${host}:${port}/rpldb" /> <!-- port 5432 -->
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://${host}:${port}/${rplDb}" /> <!-- port 5432 -->
 			<property name="javax.persistence.jdbc.user" value="${dbUser}" />
 			<property name="javax.persistence.jdbc.password" value="${dbPassword}" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
