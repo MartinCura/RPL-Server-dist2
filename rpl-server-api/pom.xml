@@ -19,7 +19,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<resteasy.version>3.0.19.Final</resteasy.version>
-		<weld.version>2.3.0.Final</weld.version>
+		<cdi.version>1.2</cdi.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -48,9 +48,9 @@
 			<version>${resteasy.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.jboss.weld.servlet</groupId>
-			<artifactId>weld-servlet</artifactId>
-			<version>${weld.version}</version>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<version>${cdi.version}</version>
 		</dependency>
 	</dependencies>
 </project>

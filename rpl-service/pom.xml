@@ -28,5 +28,11 @@
 			<artifactId>rpl-model</artifactId>
 			<version>${rpl.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>rpl</groupId>
+			<artifactId>rpl-datasource</artifactId>
+			<version>${rpl.version}</version>
+		</dependency>
 	</dependencies>
+	
 </project>
