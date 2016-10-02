@@ -6,15 +6,10 @@
 		<class>com.rpl.model.DBTest</class>
 		<properties>
 		
-<!-- 			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/rpldb" /> -->
-<!-- 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" /> -->
-<!-- 			<property name="hibernate.connection.username" value="rpl" /> -->
-<!-- 			<property name="hibernate.connection.password" value="rpl" /> -->
-			
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/rpldb" />
-			<property name="javax.persistence.jdbc.user" value="rpl" />
-			<property name="javax.persistence.jdbc.password" value="rpl" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://${host}:${port}/rpldb" /> <!-- port 5432 -->
+			<property name="javax.persistence.jdbc.user" value="${dbUser}" />
+			<property name="javax.persistence.jdbc.password" value="${dbPassword}" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="show_sql" value="true" />
 			<property name="hibernate.temp.use_jdbc_metadata_defaults"
