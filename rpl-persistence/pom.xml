@@ -9,30 +9,29 @@
 		<version>${rpl.version}</version>
 	</parent>
 	<groupId>rpl</groupId>
-	<artifactId>rpl-service</artifactId>
+	<artifactId>rpl-persistence</artifactId>
 	<version>${rpl.version}</version>
-	<name>rpl-service</name>
+	<name>rpl-persistence</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ejb.version>3.0</ejb.version>
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>javax.ejb</groupId>
-			<artifactId>ejb-api</artifactId>
-			<version>${ejb.version}</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>rpl</groupId>
+			<artifactId>rpl-datasource</artifactId>
+			<version>${rpl.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>rpl</groupId>
 			<artifactId>rpl-model</artifactId>
 			<version>${rpl.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>rpl</groupId>
-			<artifactId>rpl-persistence</artifactId>
-			<version>${rpl.version}</version>
-		</dependency>
 	</dependencies>
-	
 </project>

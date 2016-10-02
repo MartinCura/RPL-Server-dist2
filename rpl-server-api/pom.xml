@@ -19,7 +19,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<resteasy.version>3.0.19.Final</resteasy.version>
-		<cdi.version>1.2</cdi.version>
+		
 	</properties>
 	<dependencies>
 		<dependency>
@@ -46,11 +46,6 @@
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-cdi</artifactId>
 			<version>${resteasy.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.enterprise</groupId>
-			<artifactId>cdi-api</artifactId>
-			<version>${cdi.version}</version>
 		</dependency>
 	</dependencies>
 </project>

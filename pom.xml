@@ -17,6 +17,7 @@
 		<rpl.version>0.0.1</rpl.version>
 		<hibernate.version>5.2.2.Final</hibernate.version>
 		<jpa.version>1.0</jpa.version>
+		<cdi.version>1.2</cdi.version>
 	</properties>
 
 	<dependencies>
@@ -31,11 +32,17 @@
 			<artifactId>persistence-api</artifactId>
 			<version>${jpa.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<version>${cdi.version}</version>
+		</dependency>
 	</dependencies>
 	<modules>
 		<module>rpl-server-api</module>
 		<module>rpl-datasource</module>
 		<module>rpl-service</module>
 		<module>rpl-model</module>
+		<module>rpl-persistence</module>
 	</modules>
 </project>

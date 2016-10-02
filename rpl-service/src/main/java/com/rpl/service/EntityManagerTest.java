@@ -1,17 +1,17 @@
 package com.rpl.service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.inject.Inject;
 
 import com.rpl.model.DBTest;
+import com.rpl.persistence.EntityManagerDAOTest;
 
 public class EntityManagerTest {
 
-    @PersistenceContext(unitName = "RplPU")
-    private EntityManager entityManager;
-    
+	@Inject
+	private EntityManagerDAOTest emTest;
+	
     public DBTest find(){
-    	return entityManager.find(DBTest.class, 0);
+    	return emTest.find(0);
     }
     
 }
