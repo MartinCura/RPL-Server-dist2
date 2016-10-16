@@ -1,4 +1,4 @@
-package com.rpl.daemon;
+/*package com.rpl.daemon;
 
 public class Consumer extends Thread {
 	private Queue queue;
@@ -17,3 +17,4 @@ public class Consumer extends Thread {
 		}
     }
 }
+*/

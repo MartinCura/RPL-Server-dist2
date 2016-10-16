@@ -16,16 +16,10 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<rabbit.version>3.6.5</rabbit.version>
+		
 	</properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.rabbitmq</groupId>
-			<artifactId>amqp-client</artifactId>
-			<version>${rabbit.version}</version>
-		</dependency>
-	</dependencies>
+	
 	<build>
 		<plugins>
 			<plugin>

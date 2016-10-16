@@ -1,4 +1,4 @@
-package com.rpl.daemon;
+/*package com.rpl.daemon;
 
 public class Daemon {
 	
@@ -12,3 +12,4 @@ public class Daemon {
     	consumer.start();
     }
 }
+*/

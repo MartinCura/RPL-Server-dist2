@@ -16,8 +16,20 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<ejb.version>3.0</ejb.version>
+		<rabbit.version>3.6.5</rabbit.version>
+		<jackson.version>2.8.3</jackson.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.rabbitmq</groupId>
+			<artifactId>amqp-client</artifactId>
+			<version>${rabbit.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>javax.ejb</groupId>
 			<artifactId>ejb-api</artifactId>
@@ -34,5 +46,5 @@
 			<version>${rpl.version}</version>
 		</dependency>
 	</dependencies>
-	
+
 </project>
