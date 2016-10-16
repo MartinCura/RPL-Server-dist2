@@ -15,6 +15,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<rpl.version>0.0.1</rpl.version>
+		<rpl.daemon.version>0.0.1</rpl.daemon.version>
 		<hibernate.version>5.2.2.Final</hibernate.version>
 		<jpa.version>1.0</jpa.version>
 		<cdi.version>1.2</cdi.version>
@@ -44,5 +45,6 @@
 		<module>rpl-service</module>
 		<module>rpl-model</module>
 		<module>rpl-persistence</module>
+		<module>rpl-daemon</module>
 	</modules>
 </project>
