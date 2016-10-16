@@ -46,5 +46,6 @@
 		<module>rpl-model</module>
 		<module>rpl-persistence</module>
 		<module>rpl-daemon</module>
+		<module>rpl-runner</module>
 	</modules>
 </project>
