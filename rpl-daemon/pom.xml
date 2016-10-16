@@ -16,10 +16,21 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		
 	</properties>
 
-	
+	<dependencies>
+		<dependency>
+			<groupId>rpl</groupId>
+			<artifactId>rpl-model</artifactId>
+			<version>${rpl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>rpl</groupId>
+			<artifactId>rpl-service</artifactId>
+			<version>${rpl.version}</version>
+		</dependency>
+	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>

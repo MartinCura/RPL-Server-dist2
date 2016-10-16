@@ -49,7 +49,7 @@ public class QueueServiceImpl implements QueueService {
 		Channel channel = createChannel(connection);
 		byte[] jsonMsg = new ObjectMapper().writeValueAsBytes(m);
 		channel.basicPublish(EXCHANGE_NAME, type, null, jsonMsg);
-		System.out.println("[Send] message: " + jsonMsg + " - type: " + type);
+		System.out.println("[Send] message: " + m.getMsg() + " - type: " + type);
 		close(channel, connection);
 	}
 
@@ -80,5 +80,4 @@ public class QueueServiceImpl implements QueueService {
 		channel.close();
 		connection.close();
 	}
-
 }
