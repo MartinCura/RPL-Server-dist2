@@ -1,0 +1,7 @@
+Generar imagen Docker:
+mvn clean package
+docker build -t rpl .
+
+Ejecutar runner:
+docker run --rm rpl java
+
