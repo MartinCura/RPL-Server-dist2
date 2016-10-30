@@ -11,16 +11,17 @@ import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 import com.rpl.model.QueueMessage;
-import com.rpl.service.QueueService;
+import com.rpl.service.ExchangeService;
 
-public class QueueServiceImpl implements QueueService {
+public class ExchangeServiceImpl implements ExchangeService {
 
 	private static final String QUEUE_HOST = "localhost";
 	private static final String QUEUE_USER = "rpl";
 	private static final String QUEUE_PASSWD = "rpl";
-	private static final String QUEUE_NAME = "rpl";
+	private static final String CHANNEL_TYPE = "topic";
+	private static final String EXCHANGE_NAME = "EXCHANGE";
 
-	public QueueServiceImpl() {
+	public ExchangeServiceImpl() {
 	}
 
 	private Connection createConnection() throws IOException, TimeoutException {
@@ -31,7 +32,7 @@ public class QueueServiceImpl implements QueueService {
 
 	private Channel createChannel(Connection connection) throws IOException {
 		Channel channel = connection.createChannel();
-		channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+		channel.exchangeDeclare(EXCHANGE_NAME, CHANNEL_TYPE);
 		return channel;
 	}
 
@@ -43,32 +44,35 @@ public class QueueServiceImpl implements QueueService {
 		return factory;
 	}
 
-	public void send(QueueMessage m) throws IOException, TimeoutException {
+	public void send(QueueMessage m, String type) throws IOException, TimeoutException {
 		Connection connection = createConnection();
 		Channel channel = createChannel(connection);
 		byte[] jsonMsg = new ObjectMapper().writeValueAsBytes(m);
-		channel.basicPublish("", QUEUE_NAME, null, jsonMsg);
-		System.out.println("[Send] message: " + m.getMsg());
+		channel.basicPublish(EXCHANGE_NAME, type, null, jsonMsg);
+		System.out.println("[Send] message: " + m.getMsg() + " - type: " + type);
 		close(channel, connection);
 	}
 
-	public QueueMessage receive()
+	public QueueMessage receive(String type)
 			throws IOException, ShutdownSignalException, ConsumerCancelledException, InterruptedException, TimeoutException {
 		Connection connection = createConnection();
 		Channel channel = createChannel(connection);
-		QueueingConsumer.Delivery delivery = getDeliveryFromChannel(channel);
+		QueueingConsumer.Delivery delivery = getDeliveryFromChannel(channel, type);
 
 		QueueMessage queueMessage = new ObjectMapper().readValue(delivery.getBody(), QueueMessage.class);
-		System.out.println("[Receive] message: " + queueMessage.getMsg());
+		System.out.println("[Receive] message: " + queueMessage.getMsg() + " - type: " + type);
 		close(channel, connection);
 		return queueMessage;
 	}
 
-	private QueueingConsumer.Delivery getDeliveryFromChannel(Channel channel)
+	private QueueingConsumer.Delivery getDeliveryFromChannel(Channel channel, String type)
 			throws IOException, InterruptedException {
+		String queueName = channel.queueDeclare().getQueue();
+		channel.queueBind(queueName, EXCHANGE_NAME, type);
 		QueueingConsumer consumer = new QueueingConsumer(channel);
-		channel.basicConsume(QUEUE_NAME, true, consumer);
+		channel.basicConsume(queueName, true, consumer);
 		QueueingConsumer.Delivery delivery = consumer.nextDelivery();
+		channel.queueUnbind(queueName, EXCHANGE_NAME, type);
 		return delivery;
 	}
 

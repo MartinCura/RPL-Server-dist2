@@ -9,8 +9,8 @@ import com.rpl.model.QueueMessage;
 
 public interface QueueService {
 	
-	public void send(QueueMessage m, String receiverId) throws IOException, TimeoutException;
+	public void send(QueueMessage m) throws IOException, TimeoutException;
 	
-	public QueueMessage receive(String type) throws IOException, ShutdownSignalException, ConsumerCancelledException, InterruptedException, TimeoutException;
+	public QueueMessage receive() throws IOException, ShutdownSignalException, ConsumerCancelledException, InterruptedException, TimeoutException;
 
 }
