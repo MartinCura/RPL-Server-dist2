@@ -9,8 +9,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.rpl.exception.RplQueueException;
-import com.rpl.model.Language;
-import com.rpl.model.SolutionSubmission;
+import com.rpl.model.Activity;
+import com.rpl.model.ActivitySubmission;
 import com.rpl.service.SolutionService;
 
 @Path("/solution")
@@ -20,14 +20,16 @@ public class SolutionEndpoint {
 	private SolutionService solutionService;
 
 	@POST
-	@Path("/submit/{id}/{lang}")
+	@Path("/submit/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response submit(@PathParam("id") Long id, @PathParam("lang") String sLang, String solutionContent) {
+	public Response submit(@PathParam("id") Long id, String code) {
 		//TODO El id no puede enviarse asi por un tema de seguridad, hay que sacarlo de algun lado a definir, hay que verlo.
 		
-		SolutionSubmission sub = new SolutionSubmission();
-		sub.setContent(solutionContent);
-		sub.setLanguage(Language.valueOf(sLang.toUpperCase()));
+		ActivitySubmission sub = new ActivitySubmission();
+		Activity act = new Activity();
+		act.setId(id);
+		sub.setCode(code);
+		sub.setActivity(act);
 		try {
 			solutionService.submit(id, sub);
 		} catch (RplQueueException e) {
