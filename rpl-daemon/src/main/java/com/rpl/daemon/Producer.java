@@ -16,7 +16,7 @@ public class Producer extends Thread {
 	
     public void run() {
     	try {
-    		queue.send(new QueueMessage("1", "test"));
+    		queue.send(new QueueMessage("test"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (TimeoutException e) {
