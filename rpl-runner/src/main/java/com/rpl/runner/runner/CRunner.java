@@ -8,6 +8,10 @@ public class CRunner extends Runner {
     private static final String SOLUTION_SOURCE_FILE = "solution.c";
     private static final String SOLUTION_OUT_FILE = "solution";
 
+    protected void generateFiles() {
+        // TODO
+    }
+
     protected void build() throws RunnerException {
         // -x c for compiling a file without the c suffix
         String[] args = {"gcc", SOLUTION_SOURCE_FILE, "-o", "solution"};

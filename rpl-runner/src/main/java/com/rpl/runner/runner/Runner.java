@@ -5,12 +5,17 @@ import com.rpl.runner.exception.TimeoutException;
 
 public abstract class Runner {
     protected String stdout;
+    protected String solution;
 
-    public void process() throws RunnerException {
+    public void process(String solution) throws RunnerException {
+        this.solution = solution;
+
+        generateFiles();
         build();
         run();
     }
 
+    protected abstract void generateFiles();
     protected abstract void build() throws RunnerException;
     protected abstract void run() throws RunnerException;
 

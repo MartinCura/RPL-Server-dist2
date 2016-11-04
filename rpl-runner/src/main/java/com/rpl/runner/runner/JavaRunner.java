@@ -8,6 +8,10 @@ public class JavaRunner extends Runner {
     private static final String SOLUTION_SOURCE_FILE = "Solution.java";
     private static final String SOLUTION_OUT_FILE = "Solution";
 
+    protected void generateFiles() {
+        // TODO
+    }
+
     protected void build() throws RunnerException {
         String[] args = {"javac", SOLUTION_SOURCE_FILE};
         ProcessRunner p1 = new ProcessRunner(args, false);

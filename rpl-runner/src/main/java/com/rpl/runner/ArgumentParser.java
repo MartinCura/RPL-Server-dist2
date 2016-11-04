@@ -6,6 +6,7 @@ public class ArgumentParser {
 
     private String[] args;
     private Options options;
+    private boolean parseOk;
 
     private String solution;
     private String language;
@@ -42,7 +43,7 @@ public class ArgumentParser {
 
     private void parse() {
         CommandLineParser parser = new DefaultParser();
-
+        parseOk = true;
         try {
             CommandLine line = parser.parse(options, args);
 
@@ -54,6 +55,7 @@ public class ArgumentParser {
         } catch(ParseException exp) {
             System.out.println("Error:" + exp.getMessage());
             printHelp();
+            parseOk = false;
         }
     }
 
@@ -76,5 +78,9 @@ public class ArgumentParser {
 
     public String getModeData() {
         return modeData;
+    }
+
+    public boolean parseOk() {
+        return parseOk;
     }
 }
