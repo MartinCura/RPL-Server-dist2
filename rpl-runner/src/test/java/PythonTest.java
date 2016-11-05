@@ -1,3 +1,4 @@
+import com.rpl.runner.Settings;
 import com.rpl.runner.exception.RunnerException;
 import com.rpl.runner.runner.PythonRunner;
 import com.rpl.runner.runner.Runner;
@@ -60,6 +61,8 @@ public class PythonTest extends TestCase {
 
     public void testPythonRunWithTimeout() {
         DirectoryCleaner.clean();
+        // Avoid waiting 10s
+        Settings.EXECUTION_TIMEOUT = 1000;
 
         String solution = "while(True):\n" +
                           "\tpass";
