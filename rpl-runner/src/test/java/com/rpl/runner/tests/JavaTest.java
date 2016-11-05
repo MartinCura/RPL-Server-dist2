@@ -20,9 +20,10 @@ public class JavaTest extends TestCase {
                 "}\n";
 
         Runner runner = new JavaRunner();
+        runner.setSolution(solution);
         boolean testOk = true;
         try {
-            runner.process(solution);
+            runner.process();
         } catch (RunnerException e) {
             testOk = false;
         }
@@ -42,9 +43,10 @@ public class JavaTest extends TestCase {
                 "}\n";
 
         Runner runner = new JavaRunner();
+        runner.setSolution(solution);
         boolean testOk = false;
         try {
-            runner.process(solution);
+            runner.process();
         } catch (RunnerException e) {
             if ((e.getType().equals(RunnerException.TYPE_STAGE)) && (e.getStage().equals(Runner.STAGE_BUILD))) {
                 testOk = true;
@@ -66,9 +68,10 @@ public class JavaTest extends TestCase {
                 "}\n";
 
         Runner runner = new JavaRunner();
+        runner.setSolution(solution);
         boolean testOk = false;
         try {
-            runner.process(solution);
+            runner.process();
         } catch (RunnerException e) {
             if ((e.getType().equals(RunnerException.TYPE_STAGE)) && (e.getStage().equals(Runner.STAGE_RUN))) {
                 testOk = true;
@@ -96,9 +99,10 @@ public class JavaTest extends TestCase {
                 "}\n";
 
         Runner runner = new JavaRunner();
+        runner.setSolution(solution);
         boolean testOk = false;
         try {
-            runner.process(solution);
+            runner.process();
         } catch (RunnerException e) {
             if ((e.getType().equals(RunnerException.TYPE_TIMEOUT)) && (e.getStage().equals(Runner.STAGE_RUN))) {
                 testOk = true;

@@ -4,7 +4,6 @@ import com.rpl.runner.Settings;
 import com.rpl.runner.exception.RunnerException;
 import com.rpl.runner.runner.PythonRunner;
 import com.rpl.runner.runner.Runner;
-import com.rpl.runner.tests.DirectoryCleaner;
 import junit.framework.TestCase;
 
 public class PythonTest extends TestCase {
@@ -15,9 +14,10 @@ public class PythonTest extends TestCase {
         String solution = "print 'Hello World'";
 
         Runner runner = new PythonRunner();
+        runner.setSolution(solution);
         boolean testOk = true;
         try {
-            runner.process(solution);
+            runner.process();
         } catch (RunnerException e) {
             testOk = false;
         }
@@ -31,9 +31,10 @@ public class PythonTest extends TestCase {
         String solution = "print Hello World'";
 
         Runner runner = new PythonRunner();
+        runner.setSolution(solution);
         boolean testOk = false;
         try {
-            runner.process(solution);
+            runner.process();
         } catch (RunnerException e) {
             if ((e.getType().equals(RunnerException.TYPE_STAGE)) && (e.getStage().equals(Runner.STAGE_BUILD))) {
                 testOk = true;
@@ -49,9 +50,10 @@ public class PythonTest extends TestCase {
         String solution = "raise Exception('error on runtime!')";
 
         Runner runner = new PythonRunner();
+        runner.setSolution(solution);
         boolean testOk = false;
         try {
-            runner.process(solution);
+            runner.process();
         } catch (RunnerException e) {
             if ((e.getType().equals(RunnerException.TYPE_STAGE)) && (e.getStage().equals(Runner.STAGE_RUN))) {
                 testOk = true;
@@ -70,9 +72,10 @@ public class PythonTest extends TestCase {
                           "\tpass";
 
         Runner runner = new PythonRunner();
+        runner.setSolution(solution);
         boolean testOk = false;
         try {
-            runner.process(solution);
+            runner.process();
         } catch (RunnerException e) {
             if ((e.getType().equals(RunnerException.TYPE_TIMEOUT)) && (e.getStage().equals(Runner.STAGE_RUN))) {
                 testOk = true;

@@ -44,12 +44,17 @@ public class Main {
                 e.printStackTrace();
             }
 
+            Runner.TestMode mode = argumentParser.getMode().equals("test") ? Runner.TestMode.TEST : Runner.TestMode.INPUT;
+            runner.setMode(mode);
+            runner.setModeData(argumentParser.getModeData());
+            runner.setSolution(argumentParser.getSolution());
+
             Result result = new Result();
             Status status = new Status();
 
             boolean ok = true;
             try {
-                runner.process(argumentParser.getSolution());
+                runner.process();
             } catch (RunnerException e) {
                 status.setResult(Status.STATUS_ERROR);
                 status.setType(e.getType());

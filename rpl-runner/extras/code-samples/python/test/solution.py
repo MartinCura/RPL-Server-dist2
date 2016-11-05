@@ -1,0 +1,2 @@
+def solutionMethod():
+	return False

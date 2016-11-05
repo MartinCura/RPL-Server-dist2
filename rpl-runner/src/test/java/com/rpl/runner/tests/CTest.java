@@ -19,9 +19,10 @@ public class CTest extends TestCase {
                 "}";
 
         Runner runner = new CRunner();
+        runner.setSolution(solution);
         boolean testOk = true;
         try {
-            runner.process(solution);
+            runner.process();
         } catch (RunnerException e) {
             testOk = false;
         }
@@ -40,9 +41,10 @@ public class CTest extends TestCase {
                 "}";
 
         Runner runner = new CRunner();
+        runner.setSolution(solution);
         boolean testOk = false;
         try {
-            runner.process(solution);
+            runner.process();
         } catch (RunnerException e) {
             if ((e.getType().equals(RunnerException.TYPE_STAGE)) && (e.getStage().equals(Runner.STAGE_BUILD))) {
                 testOk = true;
@@ -63,9 +65,10 @@ public class CTest extends TestCase {
                 "}";
 
         Runner runner = new CRunner();
+        runner.setSolution(solution);
         boolean testOk = false;
         try {
-            runner.process(solution);
+            runner.process();
         } catch (RunnerException e) {
             if ((e.getType().equals(RunnerException.TYPE_STAGE)) && (e.getStage().equals(Runner.STAGE_RUN))) {
                 testOk = true;
@@ -88,9 +91,10 @@ public class CTest extends TestCase {
                 "}";
 
         Runner runner = new CRunner();
+        runner.setSolution(solution);
         boolean testOk = false;
         try {
-            runner.process(solution);
+            runner.process();
         } catch (RunnerException e) {
             if ((e.getType().equals(RunnerException.TYPE_TIMEOUT)) && (e.getStage().equals(Runner.STAGE_RUN))) {
                 testOk = true;

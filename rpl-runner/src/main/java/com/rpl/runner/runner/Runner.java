@@ -11,11 +11,15 @@ public abstract class Runner {
     protected String stdout;
     protected String stderr;
 
+    public enum TestMode {
+        TEST, INPUT;
+    }
+
     protected String solution;
+    protected TestMode mode = TestMode.INPUT;
+    protected String modeData;
 
-    public void process(String solution) throws RunnerException {
-        this.solution = solution;
-
+    public void process() throws RunnerException {
         generateFiles();
         build();
         run();
@@ -27,5 +31,17 @@ public abstract class Runner {
 
     public String getStdout() {
         return stdout;
+    }
+
+    public void setSolution(String solution) {
+        this.solution = solution;
+    }
+
+    public void setMode(TestMode mode) {
+        this.mode = mode;
+    }
+
+    public void setModeData(String modeData) {
+        this.modeData = modeData;
     }
 }
