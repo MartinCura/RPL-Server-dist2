@@ -1,6 +1,6 @@
 package com.rpl.runner;
 
-import com.rpl.runner.exception.BuildException;
+import com.rpl.runner.exception.StageException;
 import com.rpl.runner.exception.RunnerException;
 import com.rpl.runner.exception.TimeoutException;
 
@@ -19,8 +19,12 @@ public class ProcessRunner {
     private File stderrFile;
     private File stdoutFile;
 
-    public ProcessRunner(String[] args, boolean enableTimeout) {
+    private String stage;
+
+    public ProcessRunner(String[] args, boolean enableTimeout, String stage) {
         this.enableTimeout = enableTimeout;
+        this.stage = stage;
+
         pb = new ProcessBuilder(args);
 
         // Path to execute the command
@@ -48,7 +52,7 @@ public class ProcessRunner {
                 boolean finishOk = p.waitFor(Settings.EXECUTION_TIMEOUT, TimeUnit.MILLISECONDS);
 
                 if (!finishOk) {
-                    throw new TimeoutException();
+                    throw new TimeoutException(stage);
                 }
             } else {
                 p.waitFor();
@@ -58,7 +62,7 @@ public class ProcessRunner {
         }
 
         if (!fileIsEmpty(stderrFile)) {
-            throw new BuildException(getStderr());
+            throw new StageException(stage, getStderr());
         }
 
     }

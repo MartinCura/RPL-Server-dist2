@@ -9,8 +9,6 @@ import java.io.PrintWriter;
 
 public class PythonRunner extends Runner {
 
-    private String stdout;
-
     private static final String SOLUTION_SOURCE_FILE = "solution.py";
 
     protected void generateFiles() {
@@ -29,16 +27,17 @@ public class PythonRunner extends Runner {
 
     protected void build() throws RunnerException {
         String[] args = {"python", "-m", "py_compile", SOLUTION_SOURCE_FILE};
-        ProcessRunner p1 = new ProcessRunner(args, false);
+        ProcessRunner p1 = new ProcessRunner(args, false, Runner.STAGE_BUILD);
         p1.start();
     }
 
     protected void run() throws RunnerException {
         String[] args = {"python", SOLUTION_SOURCE_FILE};
-        ProcessRunner p1 = new ProcessRunner(args, true);
+        ProcessRunner p1 = new ProcessRunner(args, true, Runner.STAGE_RUN);
         p1.start();
 
         super.stdout = p1.getStdout();
+        super.stderr = p1.getStderr();
     }
 
 }

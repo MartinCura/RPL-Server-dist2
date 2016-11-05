@@ -14,13 +14,13 @@ public class JavaRunner extends Runner {
 
     protected void build() throws RunnerException {
         String[] args = {"javac", SOLUTION_SOURCE_FILE};
-        ProcessRunner p1 = new ProcessRunner(args, false);
+        ProcessRunner p1 = new ProcessRunner(args, false, "build");
         p1.start();
     }
 
     protected void run() throws RunnerException {
         String[] args = {"java", SOLUTION_OUT_FILE};
-        ProcessRunner p1 = new ProcessRunner(args, true);
+        ProcessRunner p1 = new ProcessRunner(args, true, "run");
         p1.start();
 
         super.stdout = p1.getStdout();

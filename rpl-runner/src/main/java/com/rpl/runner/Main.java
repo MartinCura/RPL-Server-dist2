@@ -1,9 +1,14 @@
 package com.rpl.runner;
 
 import com.rpl.runner.exception.RunnerException;
+import com.rpl.runner.result.Result;
+import com.rpl.runner.result.Status;
 import com.rpl.runner.runner.Runner;
-import org.apache.commons.cli.*;
+import com.rpl.runner.utils.DirectoryCleaner;
+import com.rpl.runner.utils.JsonUtils;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -18,6 +23,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
+        DirectoryCleaner.clean();
         loadRunners();
 
         ArgumentParser argumentParser = new ArgumentParser(args);
@@ -40,19 +46,28 @@ public class Main {
                 e.printStackTrace();
             }
 
+            Result result = new Result();
+            Status status = new Status();
+
             boolean ok = true;
             try {
                 runner.process(argumentParser.getSolution());
             } catch (RunnerException e) {
-                System.out.println("Error type: \n" + e.getType());
-                System.out.println("Error content: \n " + e.getMessageContent());
+                status.setResult("error");
+                status.setType(e.getType());
+                status.setStage(e.getStage());
+                status.setStderr(e.getMessageContent());
                 ok = false;
             }
 
             if (ok) {
-                System.out.println("Build and Run ok");
-                System.out.println(runner.getStdout());
+                status.setResult("ok");
+                result.setStdout(runner.getStdout());
             }
+
+            result.setStatus(status);
+            System.out.println(JsonUtils.objectToJson(result));
+
         }
 
     }

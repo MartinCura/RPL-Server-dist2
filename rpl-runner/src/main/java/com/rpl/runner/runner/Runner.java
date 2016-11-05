@@ -4,7 +4,13 @@ import com.rpl.runner.exception.RunnerException;
 import com.rpl.runner.exception.TimeoutException;
 
 public abstract class Runner {
+
+    public static final String STAGE_BUILD = "build";
+    public static final String STAGE_RUN = "run";
+
     protected String stdout;
+    protected String stderr;
+
     protected String solution;
 
     public void process(String solution) throws RunnerException {
