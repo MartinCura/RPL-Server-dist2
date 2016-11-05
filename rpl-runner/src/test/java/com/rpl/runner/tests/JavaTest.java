@@ -112,4 +112,83 @@ public class JavaTest extends TestCase {
 
         assertTrue(testOk);
     }
+
+    public void testRunWithTestOk() {
+        DirectoryCleaner.clean();
+
+        String solution = "public class Solution {\n" +
+                "\n" +
+                "    public boolean toTest() {\n" +
+                "        return true;\n" +
+                "    }\n" +
+                "\n" +
+                "}";
+
+        String test = "import org.junit.Test;\n" +
+                "\n" +
+                "import static org.junit.Assert.assertTrue;\n" +
+                "\n" +
+                "public class TestSolution {\n" +
+                "\n" +
+                "    @Test\n" +
+                "    public void test() {\n" +
+                "        Solution solution = new Solution();\n" +
+                "        assertTrue(solution.toTest());\n" +
+                "    }\n" +
+                "\n" +
+                "}\n";
+
+        Runner runner = new JavaRunner();
+        runner.setSolution(solution);
+        runner.setModeData(test);
+        runner.setMode(Runner.TestMode.TEST);
+        boolean testOk = true;
+        try {
+            runner.process();
+        } catch (RunnerException e) {
+            testOk = false;
+        }
+
+        assertTrue(testOk);
+    }
+
+    /* JUNIT does not write to STDERR on failure :(
+    public void testRunWithTestFailing() {
+        DirectoryCleaner.clean();
+
+        String solution = "public class Solution {\n" +
+                "\n" +
+                "    public boolean toTest() {\n" +
+                "        return false;\n" +
+                "    }\n" +
+                "\n" +
+                "}";
+
+        String test = "import org.junit.Test;\n" +
+                "\n" +
+                "import static org.junit.Assert.assertTrue;\n" +
+                "\n" +
+                "public class TestSolution {\n" +
+                "\n" +
+                "    @Test\n" +
+                "    public void test() {\n" +
+                "        Solution solution = new Solution();\n" +
+                "        assertTrue(solution.toTest());\n" +
+                "    }\n" +
+                "\n" +
+                "}\n";
+
+        Runner runner = new JavaRunner();
+        runner.setSolution(solution);
+        runner.setModeData(test);
+        runner.setMode(Runner.TestMode.TEST);
+        boolean testOk = false;
+        try {
+            runner.process();
+        } catch (RunnerException e) {
+            testOk = true;
+        }
+
+        assertTrue(testOk);
+    }*/
 }
