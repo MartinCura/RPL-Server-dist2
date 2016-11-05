@@ -3,7 +3,7 @@ package com.rpl.runner.runner;
 import com.rpl.runner.ProcessRunner;
 import com.rpl.runner.Settings;
 import com.rpl.runner.exception.RunnerException;
-import com.rpl.runner.utils.FileWriter;
+import com.rpl.runner.tests.FileWriter;
 
 public class PythonRunner extends Runner {
 

@@ -4,11 +4,9 @@ import com.rpl.runner.exception.RunnerException;
 import com.rpl.runner.result.Result;
 import com.rpl.runner.result.Status;
 import com.rpl.runner.runner.Runner;
-import com.rpl.runner.utils.DirectoryCleaner;
-import com.rpl.runner.utils.JsonUtils;
-import org.apache.commons.io.FileUtils;
+import com.rpl.runner.tests.DirectoryCleaner;
+import com.rpl.runner.tests.JsonUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 

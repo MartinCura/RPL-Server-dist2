@@ -1,4 +1,4 @@
-package com.rpl.runner.utils;
+package com.rpl.runner.tests;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;

@@ -1,4 +1,4 @@
-package com.rpl.runner.utils;
+package com.rpl.runner.tests;
 
 import com.rpl.runner.Settings;
 import org.apache.commons.io.FileUtils;

@@ -1,13 +1,15 @@
+package com.rpl.runner.tests;
+
 import com.rpl.runner.Settings;
 import com.rpl.runner.exception.RunnerException;
 import com.rpl.runner.runner.PythonRunner;
 import com.rpl.runner.runner.Runner;
-import com.rpl.runner.utils.DirectoryCleaner;
+import com.rpl.runner.tests.DirectoryCleaner;
 import junit.framework.TestCase;
 
 public class PythonTest extends TestCase {
 
-    public void testPythonBuildAndRunOk() {
+    public void testBuildAndRunOk() {
         DirectoryCleaner.clean();
 
         String solution = "print 'Hello World'";
@@ -23,7 +25,7 @@ public class PythonTest extends TestCase {
         assertTrue(testOk);
     }
 
-    public void testPythonBuildNotOk() {
+    public void testBuildNotOk() {
         DirectoryCleaner.clean();
 
         String solution = "print Hello World'";
@@ -41,7 +43,7 @@ public class PythonTest extends TestCase {
         assertTrue(testOk);
     }
 
-    public void testPythonRunNotOk() {
+    public void testRunNotOk() {
         DirectoryCleaner.clean();
 
         String solution = "raise Exception('error on runtime!')";
@@ -59,7 +61,7 @@ public class PythonTest extends TestCase {
         assertTrue(testOk);
     }
 
-    public void testPythonRunWithTimeout() {
+    public void testRunWithTimeout() {
         DirectoryCleaner.clean();
         // Avoid waiting 10s
         Settings.EXECUTION_TIMEOUT = 1000;
