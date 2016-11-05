@@ -4,6 +4,7 @@ import com.rpl.runner.Settings;
 import com.rpl.runner.exception.RunnerException;
 import com.rpl.runner.runner.PythonRunner;
 import com.rpl.runner.runner.Runner;
+import com.rpl.runner.utils.DirectoryCleaner;
 import junit.framework.TestCase;
 
 public class PythonTest extends TestCase {
@@ -84,4 +85,67 @@ public class PythonTest extends TestCase {
 
         assertTrue(testOk);
     }
+
+    public void testBuildAndRunOkWithStdin() {
+        DirectoryCleaner.clean();
+
+        String solution = "import fileinput\n" +
+                "\n" +
+                "# Reads each line from STDIN\n" +
+                "for line in fileinput.input():\n" +
+                "    print line";
+
+        String stdin = "1\n2\n3";
+
+        Runner runner = new PythonRunner();
+        runner.setSolution(solution);
+        runner.setMode(Runner.TestMode.INPUT);
+        runner.setModeData(stdin);
+
+        boolean testOk = true;
+        try {
+            runner.process();
+        } catch (RunnerException e) {
+            testOk = false;
+        }
+
+        assertTrue(testOk);
+    }
+
+    /*
+    public void testBuildAndRunOkWithTest() {
+        DirectoryCleaner.clean();
+
+        String solution = "def solutionMethod():\n" +
+                "\treturn True\n";
+
+        String test = "import unittest\n" +
+                "import solution\n" +
+                "\n" +
+                "class TestMethods(unittest.TestCase):\n" +
+                "\n" +
+                "    def test_1(self):\n" +
+                "        self.assertTrue(solution.solutionMethod())\n" +
+                "\n" +
+                "    def test_2(self):\n" +
+                "        self.assertTrue(solution.solutionMethod())\n" +
+                "       \n" +
+                "\n" +
+                "if __name__ == '__main__':\n" +
+                "    unittest.main()\n";
+
+        Runner runner = new PythonRunner();
+        runner.setSolution(solution);
+        runner.setMode(Runner.TestMode.TEST);
+        runner.setModeData(test);
+
+        boolean testOk = true;
+        try {
+            runner.process();
+        } catch (RunnerException e) {
+            testOk = false;
+        }
+
+        assertTrue(testOk);
+    }*/
 }

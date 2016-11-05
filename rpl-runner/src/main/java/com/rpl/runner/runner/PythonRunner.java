@@ -3,7 +3,7 @@ package com.rpl.runner.runner;
 import com.rpl.runner.ProcessRunner;
 import com.rpl.runner.Settings;
 import com.rpl.runner.exception.RunnerException;
-import com.rpl.runner.tests.FileWriter;
+import com.rpl.runner.utils.FileUtils;
 
 public class PythonRunner extends Runner {
 
@@ -11,10 +11,10 @@ public class PythonRunner extends Runner {
     private static final String TEST_SOURCE_FILE = "test.py";
 
     protected void generateFiles() {
-        FileWriter.write(Settings.EXECUTION_PATH + SOLUTION_SOURCE_FILE, super.solution);
+        FileUtils.write(Settings.EXECUTION_PATH + SOLUTION_SOURCE_FILE, super.solution);
 
         if (super.mode.equals(TestMode.TEST)) {
-            FileWriter.write(Settings.EXECUTION_PATH + TEST_SOURCE_FILE, super.modeData);
+            FileUtils.write(Settings.EXECUTION_PATH + TEST_SOURCE_FILE, super.modeData);
         }
     }
 
@@ -35,6 +35,7 @@ public class PythonRunner extends Runner {
         if (super.mode.equals(TestMode.INPUT)) {
             String[] args = {"python", SOLUTION_SOURCE_FILE};
             p = new ProcessRunner(args, true, Runner.STAGE_RUN);
+            p.setStdin(super.modeData);
             p.start();
         } else { // TEST
             String[] args = {"python", TEST_SOURCE_FILE};

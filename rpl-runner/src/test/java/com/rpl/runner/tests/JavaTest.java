@@ -4,6 +4,7 @@ import com.rpl.runner.Settings;
 import com.rpl.runner.exception.RunnerException;
 import com.rpl.runner.runner.JavaRunner;
 import com.rpl.runner.runner.Runner;
+import com.rpl.runner.utils.DirectoryCleaner;
 import junit.framework.TestCase;
 
 public class JavaTest extends TestCase {

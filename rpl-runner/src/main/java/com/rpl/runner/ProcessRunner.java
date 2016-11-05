@@ -3,10 +3,9 @@ package com.rpl.runner;
 import com.rpl.runner.exception.StageException;
 import com.rpl.runner.exception.RunnerException;
 import com.rpl.runner.exception.TimeoutException;
+import com.rpl.runner.utils.FileUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -19,6 +18,7 @@ public class ProcessRunner {
     private File stderrFile;
     private File stdoutFile;
 
+    private String stdin = "";
     private String stage;
 
     public ProcessRunner(String[] args, boolean enableTimeout, String stage) {
@@ -43,6 +43,15 @@ public class ProcessRunner {
         Process p = null;
         try {
             p = pb.start();
+
+            // Write to STDIN from process
+            if (stdin.length() > 0) {
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+                writer.write(stdin);
+                writer.flush();
+                writer.close();
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,37 +71,21 @@ public class ProcessRunner {
             e.printStackTrace();
         }
 
-        if (!fileIsEmpty(stderrFile)) {
+        if (!FileUtils.fileIsEmpty(stderrFile)) {
             throw new StageException(stage, getStderr());
         }
 
     }
 
-    private boolean fileIsEmpty(File file) {
-        return (file.length() == 0);
-    }
-
     public String getStderr() {
-        return fileToString(stderrFile);
+        return FileUtils.fileToString(stderrFile);
     }
 
     public String getStdout() {
-        return fileToString(stdoutFile);
+        return FileUtils.fileToString(stdoutFile);
     }
 
-    public String fileToString(File file) {
-        if (fileIsEmpty(file))
-            return "as";
-
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        String text = scanner.useDelimiter("\\A").next();
-        scanner.close();
-
-        return text;
+    public void setStdin(String stdin) {
+        this.stdin = stdin;
     }
 }

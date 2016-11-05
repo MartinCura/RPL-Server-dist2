@@ -1,4 +1,4 @@
-package com.rpl.runner.tests;
+package com.rpl.runner.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
