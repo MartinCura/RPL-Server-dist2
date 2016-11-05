@@ -2,7 +2,7 @@ package com.rpl.runner;
 
 public class Settings {
     // Max allowed time in seconds to execute the program
-    public static final int EXECUTION_TIMEOUT = 10000;
+    public static int EXECUTION_TIMEOUT = 10000;
 
     // Execute path
     public static final String EXECUTION_PATH = "output/";

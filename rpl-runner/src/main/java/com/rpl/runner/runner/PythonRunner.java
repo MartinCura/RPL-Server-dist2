@@ -3,26 +3,14 @@ package com.rpl.runner.runner;
 import com.rpl.runner.ProcessRunner;
 import com.rpl.runner.Settings;
 import com.rpl.runner.exception.RunnerException;
-
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import com.rpl.runner.utils.FileWriter;
 
 public class PythonRunner extends Runner {
 
     private static final String SOLUTION_SOURCE_FILE = "solution.py";
 
     protected void generateFiles() {
-
-        // Save solution
-        PrintWriter out = null;
-        try {
-            out = new PrintWriter(Settings.EXECUTION_PATH + SOLUTION_SOURCE_FILE);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        out.print(super.solution);
-        out.close();
-
+        FileWriter.write(Settings.EXECUTION_PATH + SOLUTION_SOURCE_FILE, super.solution);
     }
 
     protected void build() throws RunnerException {
