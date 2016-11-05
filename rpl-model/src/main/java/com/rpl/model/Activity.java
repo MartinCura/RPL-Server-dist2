@@ -14,8 +14,10 @@ public class Activity {
 	private Language language;
 	private int points;
 	private Topic topic;
-	// private String files;
 	private TestType type;
+	private String input;
+	private String output;
+	private String tests;
 
 	public Long getId() {
 		return id;
@@ -64,5 +66,31 @@ public class Activity {
 	public void setType(TestType type) {
 		this.type = type;
 	}
+
+	public String getInput() {
+		return input;
+	}
+
+	public void setInput(String input) {
+		this.input = input;
+	}
+
+	public String getOutput() {
+		return output;
+	}
+
+	public void setOutput(String output) {
+		this.output = output;
+	}
+
+	public String getTests() {
+		return tests;
+	}
+
+	public void setTests(String tests) {
+		this.tests = tests;
+	}
+	
+	
 
 }
