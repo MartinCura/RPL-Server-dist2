@@ -1,5 +1,5 @@
 package com.rpl.model;
 
-enum TestType {
+public enum TestType {
 	UNITTEST, INPUT_OUTPUT;
 }
