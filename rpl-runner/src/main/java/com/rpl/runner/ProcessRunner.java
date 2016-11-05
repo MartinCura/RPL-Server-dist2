@@ -52,6 +52,7 @@ public class ProcessRunner {
                 boolean finishOk = p.waitFor(Settings.EXECUTION_TIMEOUT, TimeUnit.MILLISECONDS);
 
                 if (!finishOk) {
+                    p.destroy();
                     throw new TimeoutException(stage);
                 }
             } else {
