@@ -53,7 +53,7 @@ public class Main {
             try {
                 runner.process(argumentParser.getSolution());
             } catch (RunnerException e) {
-                status.setResult("error");
+                status.setResult(Status.STATUS_ERROR);
                 status.setType(e.getType());
                 status.setStage(e.getStage());
                 status.setStderr(e.getMessageContent());
@@ -61,7 +61,7 @@ public class Main {
             }
 
             if (ok) {
-                status.setResult("ok");
+                status.setResult(Status.STATUS_OK);
                 result.setStdout(runner.getStdout());
             }
 

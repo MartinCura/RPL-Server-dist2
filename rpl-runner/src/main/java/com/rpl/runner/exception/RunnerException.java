@@ -1,6 +1,10 @@
 package com.rpl.runner.exception;
 
 public class RunnerException extends Exception {
+
+    public static final String TYPE_STAGE = "stage";
+    public static final String TYPE_TIMEOUT = "timeout";
+
     protected String type;
     protected String messageContent;
     protected String stage;

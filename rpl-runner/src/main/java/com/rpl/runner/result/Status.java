@@ -1,6 +1,9 @@
 package com.rpl.runner.result;
 
 public class Status {
+    public static final String STATUS_ERROR = "error";
+    public static final String STATUS_OK = "ok";
+
     private String result;
     private String stage;
     private String type;
