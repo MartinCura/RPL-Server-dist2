@@ -1,7 +1,9 @@
 package com.rpl.runner.runner;
 
 import com.rpl.runner.ProcessRunner;
+import com.rpl.runner.Settings;
 import com.rpl.runner.exception.RunnerException;
+import com.rpl.runner.tests.FileWriter;
 
 public class JavaRunner extends Runner {
 
@@ -9,7 +11,7 @@ public class JavaRunner extends Runner {
     private static final String SOLUTION_OUT_FILE = "Solution";
 
     protected void generateFiles() {
-        // TODO
+        FileWriter.write(Settings.EXECUTION_PATH + SOLUTION_SOURCE_FILE, super.solution);
     }
 
     protected void build() throws RunnerException {
