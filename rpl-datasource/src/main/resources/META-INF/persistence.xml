@@ -4,6 +4,9 @@
 	version="2.0">
 	<persistence-unit name="RplPU">
 		<class>com.rpl.model.DBTest</class>
+		<class>com.rpl.model.Activity</class>
+		<class>com.rpl.model.ActivitySubmission</class>
+		<class>com.rpl.model.Topic</class>
 
 
 		<properties>

@@ -2,13 +2,32 @@ package com.rpl.model;
 
 import java.util.Date;
 
-public class ActivitySubmission {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="activity_submission")
+public class ActivitySubmission {
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	@Column(name="submission_date")
 	private Date submissionDate;
+	@ManyToOne
+	@JoinColumn(name = "activity_id")
 	private Activity activity;
 	private String code;
+	@Enumerated(EnumType.STRING)
 	private Status status;
+	@Column(name="execution_output")
 	private String executionOutput;
 	
 	public Date getSubmissionDate() {

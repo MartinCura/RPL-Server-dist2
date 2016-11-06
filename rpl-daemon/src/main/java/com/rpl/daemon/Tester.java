@@ -30,7 +30,7 @@ public class Tester {
 	public String[] prepareCommand(ActivitySubmission submission) {
 		Activity activity = submission.getActivity();
 		String data;
-		if (activity.getType().equals(TestType.INPUT)) {
+		if (activity.getTestType().equals(TestType.INPUT)) {
 			data = activity.getInput();
 		} else {
 			data = activity.getTests();
@@ -39,7 +39,7 @@ public class Tester {
 		// Command: docker run --rm rpl -l language -m mode -s solution -d data
 		String[] args = {"docker", "run", "--rm", "rpl",
 				"-l", activity.getLanguage().toString().toLowerCase(),
-				"-m", activity.getType().toString().toLowerCase(),
+				"-m", activity.getTestType().toString().toLowerCase(),
 				"-s", submission.getCode(),
 				"-d", data
 			};
