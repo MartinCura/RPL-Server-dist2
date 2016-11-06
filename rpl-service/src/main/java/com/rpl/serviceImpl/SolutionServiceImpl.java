@@ -1,6 +1,7 @@
 package com.rpl.serviceImpl;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.concurrent.TimeoutException;
 
 import javax.inject.Inject;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.rpl.exception.RplQueueException;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.QueueMessage;
+import com.rpl.model.Status;
 import com.rpl.service.QueueService;
 import com.rpl.service.SolutionService;
 import com.rpl.service.util.JsonUtils;
@@ -16,10 +18,18 @@ import com.rpl.service.util.JsonUtils;
 public class SolutionServiceImpl implements SolutionService {
 
 	@Inject
-	QueueService queueService;
+	private QueueService queueService;
 
+	@Inject
+	private ActivitySubmissionDAO activitySubmissionDAO;
+	
 	public void submit(Long id, ActivitySubmission submission) throws RplQueueException {
 
+		submission.setSubmissionDate(new Date());
+		submission.setStatus(Status.PENDING);
+		
+		
+		
 		QueueMessage qm;
 		try {
 			qm = new QueueMessage(JsonUtils.objectToJson(submission));

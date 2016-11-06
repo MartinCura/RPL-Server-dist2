@@ -1,7 +1,10 @@
 package com.rpl.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -13,8 +16,11 @@ public class Activity {
 	private String name;
 	private Language language;
 	private int points;
+	@ManyToOne
+	@JoinColumn(name = "topic_id")
 	private Topic topic;
-	private TestType type;
+	@Column(name="test_type")
+	private TestType testType;
 	private String input;
 	private String output;
 	private String tests;
@@ -59,12 +65,12 @@ public class Activity {
 		this.topic = topic;
 	}
 
-	public TestType getType() {
-		return type;
+	public TestType getTestType() {
+		return testType;
 	}
 
-	public void setType(TestType type) {
-		this.type = type;
+	public void setTestType(TestType type) {
+		this.testType = type;
 	}
 
 	public String getInput() {
