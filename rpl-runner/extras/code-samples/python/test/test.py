@@ -7,8 +7,4 @@ class TestMethods(unittest.TestCase):
         self.assertTrue(solution.solutionMethod())
 
     def test_2(self):
-        self.assertTrue(solution.solutionMethod())
-       
-
-if __name__ == '__main__':
-    unittest.main()
+        self.assertTrue(solution.solutionMethod2())
