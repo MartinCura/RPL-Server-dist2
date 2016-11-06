@@ -21,7 +21,7 @@ public class Daemon {
 				ActivitySubmission submission = new ActivitySubmission();
 
 				String output = tester.runSubmission(submission);
-				String result = tester.analyzeOutput(submission, output);
+				tester.analyzeResult(submission, output);
 				
 			} catch (Exception e) {
 				e.printStackTrace();
