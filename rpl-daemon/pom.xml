@@ -26,9 +26,20 @@
 		</dependency>
 		<dependency>
 			<groupId>rpl</groupId>
+			<artifactId>rpl-persistence</artifactId>
+			<version>${rpl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>rpl</groupId>
 			<artifactId>rpl-service</artifactId>
 			<version>${rpl.version}</version>
 		</dependency>
+		<dependency>
+		    <groupId>junit</groupId>
+		    <artifactId>junit</artifactId>
+		    <version>4.12</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>

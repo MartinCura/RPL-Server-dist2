@@ -53,21 +53,23 @@ public class Tester {
 			
 			if (result.getStatus().getResult().equals(com.rpl.daemon.result.Status.STATUS_OK)) {
 				submission.setExecutionOutput(result.getStdout().trim());
-				if (result.getStdout().trim().equals(submission.getActivity().getOutput().trim())) {
-					submission.setStatus(Status.SUCCESS);
-				} else {
-					submission.setStatus(Status.TEST_FAILURE);
-				}
-			} else if (result.getStatus().getStage().equals("build")) {
+				submission.setStatus( isExpectedOutput(submission) ? Status.SUCCESS : Status.TEST_FAILURE );
+			} else {
 				submission.setExecutionOutput(result.getStatus().getStderr().trim());
-				submission.setStatus(Status.BUILDING_ERROR);
-			} else if (result.getStatus().getStage().equals("run")) {
-				submission.setExecutionOutput(result.getStatus().getStderr().trim());
-				submission.setStatus(Status.RUNTIME_ERROR);
+				submission.setStatus( result.getStatus().getStage().equals("build") ? Status.BUILDING_ERROR : Status.RUNTIME_ERROR );
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	private boolean isExpectedOutput(ActivitySubmission submission) {
+		if (submission.getActivity().getTestType().equals(TestType.INPUT)) {
+			return submission.getExecutionOutput().equals(submission.getActivity().getOutput());
+		} else {
+			//TODO analizar output con tests
+			return true;
 		}
 	}
 

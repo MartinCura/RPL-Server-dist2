@@ -2,6 +2,7 @@ package com.rpl.daemon;
 
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.QueueMessage;
+import com.rpl.persistence.ActivitySubmissionDAO;
 import com.rpl.service.QueueService;
 import com.rpl.serviceImpl.QueueServiceImpl;
 
@@ -10,6 +11,7 @@ public class Daemon {
 	public static void main( String[] args ){
         
 		QueueService qs = new QueueServiceImpl();
+		ActivitySubmissionDAO activitySubmissionDAO = new ActivitySubmissionDAO();
 		Tester tester = new Tester();
 		boolean running = true;
     	
@@ -17,11 +19,12 @@ public class Daemon {
 			try {
 				QueueMessage message = qs.receive();
 				String submissionId = message.getMsg();
-				//TODO buscar la submission de la db
-				ActivitySubmission submission = new ActivitySubmission();
+				ActivitySubmission submission = activitySubmissionDAO.find(Long.valueOf(submissionId));
 
 				String output = tester.runSubmission(submission);
 				tester.analyzeResult(submission, output);
+				
+				activitySubmissionDAO.save(submission);
 				
 			} catch (Exception e) {
 				e.printStackTrace();
