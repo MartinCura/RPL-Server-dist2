@@ -1,9 +1,13 @@
 package com.rpl.runner.result;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+
 public class Result {
     private Status status;
 
     private String stdout;
+
+    @JsonUnwrapped
     private Tests tests;
 
     public Status getStatus() {
