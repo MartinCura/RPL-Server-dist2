@@ -10,6 +10,7 @@ public abstract class Runner {
 
     protected String stdout;
     protected String stderr;
+    protected String tests;
 
     public enum TestMode {
         TEST, INPUT;
@@ -31,6 +32,10 @@ public abstract class Runner {
 
     public String getStdout() {
         return stdout;
+    }
+
+    public String getTests() {
+        return tests;
     }
 
     public void setSolution(String solution) {

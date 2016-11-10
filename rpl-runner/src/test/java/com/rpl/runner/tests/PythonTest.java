@@ -112,7 +112,7 @@ public class PythonTest extends TestCase {
         assertTrue(testOk);
     }
 
-    /*
+
     public void testBuildAndRunOkWithTest() {
         DirectoryCleaner.clean();
 
@@ -128,11 +128,7 @@ public class PythonTest extends TestCase {
                 "        self.assertTrue(solution.solutionMethod())\n" +
                 "\n" +
                 "    def test_2(self):\n" +
-                "        self.assertTrue(solution.solutionMethod())\n" +
-                "       \n" +
-                "\n" +
-                "if __name__ == '__main__':\n" +
-                "    unittest.main()\n";
+                "        self.assertTrue(solution.solutionMethod2())\n";
 
         Runner runner = new PythonRunner();
         runner.setSolution(solution);
@@ -147,5 +143,5 @@ public class PythonTest extends TestCase {
         }
 
         assertTrue(testOk);
-    }*/
+    }
 }

@@ -3,6 +3,7 @@ package com.rpl.runner;
 import com.rpl.runner.exception.RunnerException;
 import com.rpl.runner.result.Result;
 import com.rpl.runner.result.Status;
+import com.rpl.runner.result.Tests;
 import com.rpl.runner.runner.Runner;
 import com.rpl.runner.utils.DirectoryCleaner;
 import com.rpl.runner.utils.JsonUtils;
@@ -65,7 +66,13 @@ public class Main {
 
             if (ok) {
                 status.setResult(Status.STATUS_OK);
-                result.setStdout(runner.getStdout());
+
+                if (mode.equals(Runner.TestMode.TEST)) {
+                    Tests tests = new Tests();
+                    result.setTests(tests);
+                } else if (mode.equals(Runner.TestMode.INPUT)) {
+                    result.setStdout(runner.getStdout());
+                }
             }
 
             result.setStatus(status);

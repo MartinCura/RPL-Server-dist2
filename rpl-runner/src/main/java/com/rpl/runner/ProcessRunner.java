@@ -3,10 +3,9 @@ package com.rpl.runner;
 import com.rpl.runner.exception.StageException;
 import com.rpl.runner.exception.RunnerException;
 import com.rpl.runner.exception.TimeoutException;
-import com.rpl.runner.utils.FileUtils;
+import com.rpl.runner.utils.LocalFileUtils;
 
 import java.io.*;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class ProcessRunner {
@@ -71,18 +70,18 @@ public class ProcessRunner {
             e.printStackTrace();
         }
 
-        if (!FileUtils.fileIsEmpty(stderrFile)) {
+        if (!LocalFileUtils.fileIsEmpty(stderrFile)) {
             throw new StageException(stage, getStderr());
         }
 
     }
 
     public String getStderr() {
-        return FileUtils.fileToString(stderrFile);
+        return LocalFileUtils.fileToString(stderrFile);
     }
 
     public String getStdout() {
-        return FileUtils.fileToString(stdoutFile);
+        return LocalFileUtils.fileToString(stdoutFile);
     }
 
     public void setStdin(String stdin) {

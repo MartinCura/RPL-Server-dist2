@@ -4,6 +4,7 @@ public class Result {
     private Status status;
 
     private String stdout;
+    private Tests tests;
 
     public Status getStatus() {
         return status;
@@ -19,5 +20,13 @@ public class Result {
 
     public void setStdout(String stdout) {
         this.stdout = stdout;
+    }
+
+    public Tests getTests() {
+        return tests;
+    }
+
+    public void setTests(Tests tests) {
+        this.tests = tests;
     }
 }

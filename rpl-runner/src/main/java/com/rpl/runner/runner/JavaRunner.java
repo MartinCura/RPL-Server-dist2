@@ -3,7 +3,11 @@ package com.rpl.runner.runner;
 import com.rpl.runner.ProcessRunner;
 import com.rpl.runner.Settings;
 import com.rpl.runner.exception.RunnerException;
-import com.rpl.runner.utils.FileUtils;
+import com.rpl.runner.utils.LocalFileUtils;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 public class JavaRunner extends Runner {
 
@@ -15,12 +19,17 @@ public class JavaRunner extends Runner {
     private static final String SOLUTION_OUT_FILE = "Solution";
     private static final String TEST_OUT_FILE = "TestSolution";
 
+    private static final String WRAPPER_SOURCE_PATH = "extras/test-wrappers/java/Wrapper.java";
+    private static final String WRAPPER_SOURCE_FILE = "Wrapper.java";
+    private static final String WRAPPER_OUT_FILE = "Wrapper";
+
 
     protected void generateFiles() {
-        FileUtils.write(Settings.EXECUTION_PATH + SOLUTION_SOURCE_FILE, super.solution);
+        LocalFileUtils.write(Settings.EXECUTION_PATH + SOLUTION_SOURCE_FILE, super.solution);
 
         if (super.mode.equals(TestMode.TEST)) {
-            FileUtils.write(Settings.EXECUTION_PATH + TEST_SOURCE_FILE, super.modeData);
+            LocalFileUtils.write(Settings.EXECUTION_PATH + TEST_SOURCE_FILE, super.modeData);
+            LocalFileUtils.copyFile(WRAPPER_SOURCE_PATH, Settings.EXECUTION_PATH + WRAPPER_SOURCE_FILE);
         }
     }
 
@@ -30,8 +39,8 @@ public class JavaRunner extends Runner {
             ProcessRunner p1 = new ProcessRunner(args, false, "build");
             p1.start();
         } else { // TEST
-            // javac -classpath ../../../runner-libs/java/junit-4.12.jar Solution.java TestSolution.java
-            String[] args = {"javac", "-classpath", JUNIT_PATH, SOLUTION_SOURCE_FILE, TEST_SOURCE_FILE};
+            // javac -classpath ../../../runner-libs/java/junit-4.12.jar Solution.java TestSolution.java Wrapper.java
+            String[] args = {"javac", "-classpath", JUNIT_PATH, SOLUTION_SOURCE_FILE, TEST_SOURCE_FILE, WRAPPER_SOURCE_FILE};
             ProcessRunner p1 = new ProcessRunner(args, false, Runner.STAGE_BUILD);
             p1.start();
         }
@@ -46,7 +55,7 @@ public class JavaRunner extends Runner {
             p.start();
         } else { // TEST
             //java -cp .:../../../runner-libs/java/ org.junit.runner.JUnitCore TestSolution
-            String[] args = {"java", "-cp", ".:" + JUNIT_PATH + ":" + HAMCREST_PATH, "org.junit.runner.JUnitCore", TEST_OUT_FILE};
+            String[] args = {"java", "-cp", ".:" + JUNIT_PATH + ":" + HAMCREST_PATH, WRAPPER_OUT_FILE};
             p = new ProcessRunner(args, true, Runner.STAGE_RUN);
             p.start();
         }

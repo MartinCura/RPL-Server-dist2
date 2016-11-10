@@ -3,7 +3,7 @@ package com.rpl.runner.runner;
 import com.rpl.runner.ProcessRunner;
 import com.rpl.runner.Settings;
 import com.rpl.runner.exception.RunnerException;
-import com.rpl.runner.utils.FileUtils;
+import com.rpl.runner.utils.LocalFileUtils;
 
 public class CRunner extends Runner {
 
@@ -11,7 +11,7 @@ public class CRunner extends Runner {
     private static final String SOLUTION_OUT_FILE = "solution";
 
     protected void generateFiles() {
-        FileUtils.write(Settings.EXECUTION_PATH + SOLUTION_SOURCE_FILE, super.solution);
+        LocalFileUtils.write(Settings.EXECUTION_PATH + SOLUTION_SOURCE_FILE, super.solution);
     }
 
     protected void build() throws RunnerException {

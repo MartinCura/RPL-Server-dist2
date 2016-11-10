@@ -152,14 +152,13 @@ public class JavaTest extends TestCase {
         assertTrue(testOk);
     }
 
-    /* JUNIT does not write to STDERR on failure :(
-    public void testRunWithTestFailing() {
+    public void testBuildAndRunOkWithTest() {
         DirectoryCleaner.clean();
 
         String solution = "public class Solution {\n" +
                 "\n" +
                 "    public boolean toTest() {\n" +
-                "        return false;\n" +
+                "        return true;\n" +
                 "    }\n" +
                 "\n" +
                 "}";
@@ -182,13 +181,13 @@ public class JavaTest extends TestCase {
         runner.setSolution(solution);
         runner.setModeData(test);
         runner.setMode(Runner.TestMode.TEST);
-        boolean testOk = false;
+        boolean testOk = true;
         try {
             runner.process();
         } catch (RunnerException e) {
-            testOk = true;
+            testOk = false;
         }
 
         assertTrue(testOk);
-    }*/
+    }
 }
