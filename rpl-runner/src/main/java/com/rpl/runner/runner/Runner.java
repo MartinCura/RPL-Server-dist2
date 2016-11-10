@@ -26,9 +26,38 @@ public abstract class Runner {
         run();
     }
 
-    protected abstract void generateFiles();
-    protected abstract void build() throws RunnerException;
-    protected abstract void run() throws RunnerException;
+    private void generateFiles() {
+        generateGenericFiles();
+
+        if (mode.equals(TestMode.TEST)) {
+            generateFilesForTest();
+        }
+    }
+
+    private void build() throws RunnerException {
+        if (mode.equals(TestMode.INPUT)) {
+            buildForInput();
+        } else if (mode.equals(TestMode.TEST)) {
+            buildForTest();
+        }
+    }
+
+    private void run() throws RunnerException {
+        if (mode.equals(TestMode.INPUT)) {
+            runForInput();
+        } else if (mode.equals(TestMode.TEST)) {
+            runForTest();
+        }
+    }
+
+    protected abstract void generateGenericFiles();
+    protected abstract void generateFilesForTest();
+
+    protected abstract void buildForInput() throws RunnerException;
+    protected abstract void buildForTest() throws RunnerException;
+
+    protected abstract void runForInput() throws RunnerException;
+    protected abstract void runForTest() throws RunnerException;
 
     public String getStdout() {
         return stdout;

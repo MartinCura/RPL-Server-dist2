@@ -4,10 +4,6 @@ import com.rpl.runner.ProcessRunner;
 import com.rpl.runner.Settings;
 import com.rpl.runner.exception.RunnerException;
 import com.rpl.runner.utils.LocalFileUtils;
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
 
 public class PythonRunner extends Runner {
 
@@ -16,42 +12,43 @@ public class PythonRunner extends Runner {
     private static final String WRAPPER_SOURCE_PATH = "extras/test-wrappers/python/wrapper.py";
     private static final String WRAPPER_SOURCE_FILE = "wrapper.py";
 
-    protected void generateFiles() {
+    protected void generateGenericFiles() {
         LocalFileUtils.write(Settings.EXECUTION_PATH + SOLUTION_SOURCE_FILE, super.solution);
-
-        if (super.mode.equals(TestMode.TEST)) {
-            LocalFileUtils.write(Settings.EXECUTION_PATH + TEST_SOURCE_FILE, super.modeData);
-            LocalFileUtils.copyFile(WRAPPER_SOURCE_PATH, Settings.EXECUTION_PATH + WRAPPER_SOURCE_FILE);
-        }
     }
 
-    protected void build() throws RunnerException {
-        if (super.mode.equals(TestMode.INPUT)) {
-            String[] args = {"python", "-m", "py_compile", SOLUTION_SOURCE_FILE};
-            ProcessRunner p1 = new ProcessRunner(args, false, Runner.STAGE_BUILD);
-            p1.start();
-        } else { // TEST
-            String[] args = {"python", "-m", "py_compile", WRAPPER_SOURCE_FILE};
-            ProcessRunner p1 = new ProcessRunner(args, false, Runner.STAGE_BUILD);
-            p1.start();
-        }
+    protected void generateFilesForTest() {
+        LocalFileUtils.write(Settings.EXECUTION_PATH + TEST_SOURCE_FILE, super.modeData);
+        LocalFileUtils.copyFile(WRAPPER_SOURCE_PATH, Settings.EXECUTION_PATH + WRAPPER_SOURCE_FILE);
     }
 
-    protected void run() throws RunnerException {
-        ProcessRunner p;
-        if (super.mode.equals(TestMode.INPUT)) {
-            String[] args = {"python", SOLUTION_SOURCE_FILE};
-            p = new ProcessRunner(args, true, Runner.STAGE_RUN);
-            p.setStdin(super.modeData);
-            p.start();
-        } else { // TEST
-            String[] args = {"python", WRAPPER_SOURCE_FILE};
-            p = new ProcessRunner(args, true, Runner.STAGE_RUN);
-            p.start();
-        }
+    protected void buildForInput() throws RunnerException {
+        String[] args = {"python", "-m", "py_compile", SOLUTION_SOURCE_FILE};
+        ProcessRunner p1 = new ProcessRunner(args, false, Runner.STAGE_BUILD);
+        p1.start();
+    }
+
+    protected void buildForTest() throws RunnerException {
+        String[] args = {"python", "-m", "py_compile", WRAPPER_SOURCE_FILE};
+        ProcessRunner p1 = new ProcessRunner(args, false, Runner.STAGE_BUILD);
+        p1.start();
+    }
+
+    protected void runForInput() throws RunnerException {
+        String[] args = {"python", SOLUTION_SOURCE_FILE};
+        ProcessRunner p = new ProcessRunner(args, true, Runner.STAGE_RUN);
+        p.setStdin(super.modeData);
+        p.start();
 
         super.stdout = p.getStdout();
         super.stderr = p.getStderr();
     }
 
+    protected void runForTest() throws RunnerException {
+        String[] args = {"python", WRAPPER_SOURCE_FILE};
+        ProcessRunner p = new ProcessRunner(args, true, Runner.STAGE_RUN);
+        p.start();
+
+        super.stdout = p.getStdout();
+        super.stderr = p.getStderr();
+    }
 }

@@ -22,6 +22,8 @@ public class JavaTest extends TestCase {
 
         Runner runner = new JavaRunner();
         runner.setSolution(solution);
+        runner.setMode(Runner.TestMode.INPUT);
+        runner.setModeData("");
         boolean testOk = true;
         try {
             runner.process();
@@ -45,6 +47,8 @@ public class JavaTest extends TestCase {
 
         Runner runner = new JavaRunner();
         runner.setSolution(solution);
+        runner.setMode(Runner.TestMode.INPUT);
+        runner.setModeData("");
         boolean testOk = false;
         try {
             runner.process();
@@ -70,6 +74,8 @@ public class JavaTest extends TestCase {
 
         Runner runner = new JavaRunner();
         runner.setSolution(solution);
+        runner.setMode(Runner.TestMode.INPUT);
+        runner.setModeData("");
         boolean testOk = false;
         try {
             runner.process();
@@ -101,6 +107,8 @@ public class JavaTest extends TestCase {
 
         Runner runner = new JavaRunner();
         runner.setSolution(solution);
+        runner.setMode(Runner.TestMode.INPUT);
+        runner.setModeData("");
         boolean testOk = false;
         try {
             runner.process();

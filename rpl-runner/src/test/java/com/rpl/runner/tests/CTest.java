@@ -21,6 +21,8 @@ public class CTest extends TestCase {
 
         Runner runner = new CRunner();
         runner.setSolution(solution);
+        runner.setMode(Runner.TestMode.INPUT);
+        runner.setModeData("");
         boolean testOk = true;
         try {
             runner.process();
@@ -43,6 +45,8 @@ public class CTest extends TestCase {
 
         Runner runner = new CRunner();
         runner.setSolution(solution);
+        runner.setMode(Runner.TestMode.INPUT);
+        runner.setModeData("");
         boolean testOk = false;
         try {
             runner.process();
@@ -67,6 +71,8 @@ public class CTest extends TestCase {
 
         Runner runner = new CRunner();
         runner.setSolution(solution);
+        runner.setMode(Runner.TestMode.INPUT);
+        runner.setModeData("");
         boolean testOk = false;
         try {
             runner.process();
@@ -93,6 +99,8 @@ public class CTest extends TestCase {
 
         Runner runner = new CRunner();
         runner.setSolution(solution);
+        runner.setMode(Runner.TestMode.INPUT);
+        runner.setModeData("");
         boolean testOk = false;
         try {
             runner.process();

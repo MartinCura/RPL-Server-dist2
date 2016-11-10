@@ -16,6 +16,8 @@ public class PythonTest extends TestCase {
 
         Runner runner = new PythonRunner();
         runner.setSolution(solution);
+        runner.setMode(Runner.TestMode.INPUT);
+        runner.setModeData("");
         boolean testOk = true;
         try {
             runner.process();
@@ -33,6 +35,8 @@ public class PythonTest extends TestCase {
 
         Runner runner = new PythonRunner();
         runner.setSolution(solution);
+        runner.setMode(Runner.TestMode.INPUT);
+        runner.setModeData("");
         boolean testOk = false;
         try {
             runner.process();
@@ -52,6 +56,8 @@ public class PythonTest extends TestCase {
 
         Runner runner = new PythonRunner();
         runner.setSolution(solution);
+        runner.setMode(Runner.TestMode.INPUT);
+        runner.setModeData("");
         boolean testOk = false;
         try {
             runner.process();
@@ -74,6 +80,8 @@ public class PythonTest extends TestCase {
 
         Runner runner = new PythonRunner();
         runner.setSolution(solution);
+        runner.setMode(Runner.TestMode.INPUT);
+        runner.setModeData("");
         boolean testOk = false;
         try {
             runner.process();
@@ -139,6 +147,7 @@ public class PythonTest extends TestCase {
         try {
             runner.process();
         } catch (RunnerException e) {
+            e.printStackTrace();
             testOk = false;
         }
 
