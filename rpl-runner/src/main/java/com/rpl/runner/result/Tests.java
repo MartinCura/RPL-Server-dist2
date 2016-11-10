@@ -1,9 +1,5 @@
 package com.rpl.runner.result;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class Tests {
