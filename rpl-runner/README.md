@@ -19,11 +19,11 @@ usage: runner
 
 ## Current Compatibility
 
-| Language/Mode        | Input           | Test  |
-| -------------------- |:---------------:| -----:|
-| Python               | OK              |    -  |
-| Java                 | OK              |    -  |
-| C                    | -               |    -  |
+| Language/Mode        | Input           | Test              |
+| -------------------- |:---------------:| -----------------:|
+| Python               | OK              |    OK (unittest)  |
+| Java                 | OK              |    OK (JUNIT 4)   |
+| C                    | -               |    -              |
 
 
 ## Docker
