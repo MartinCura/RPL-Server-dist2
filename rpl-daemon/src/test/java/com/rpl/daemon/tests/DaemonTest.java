@@ -44,7 +44,6 @@ public class DaemonTest {
 		String output = "{\"status\":{\"result\":\"ok\",\"stage\":null,\"type\":null,\"stderr\":null},\"stdout\":\"hello\\n\"}";
 		tester.analyzeResult(submission, output);
 		Assert.assertEquals(Status.SUCCESS, submission.getStatus());
-		Assert.assertEquals("hello", submission.getExecutionOutput());
 	}
 
 	@Test
@@ -53,7 +52,7 @@ public class DaemonTest {
 		Tester tester = new Tester();
 		String output = "{\"status\":{\"result\":\"ok\",\"stage\":null,\"type\":null,\"stderr\":null},\"stdout\":\"hello2\\n\"}";
 		tester.analyzeResult(submission, output);
-		Assert.assertEquals(Status.TEST_FAILURE, submission.getStatus());
+		Assert.assertEquals(Status.FAILURE, submission.getStatus());
 		
 	}
 	

@@ -21,8 +21,8 @@ public class Daemon {
 				String submissionId = message.getMsg();
 				ActivitySubmission submission = activitySubmissionDAO.find(Long.valueOf(submissionId));
 
-				String output = tester.runSubmission(submission);
-				tester.analyzeResult(submission, output);
+				String result = tester.runSubmission(submission);
+				tester.analyzeResult(submission, result);
 				
 				activitySubmissionDAO.save(submission);
 				

@@ -1,6 +1,6 @@
-package com.rpl.daemon.result;
+package com.rpl.model.runner;
 
-public class Status {
+public class ResultStatus {
     public static final String STATUS_ERROR = "error";
     public static final String STATUS_OK = "ok";
 

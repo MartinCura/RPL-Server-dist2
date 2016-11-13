@@ -27,8 +27,6 @@ public class ActivitySubmission {
 	private String code;
 	@Enumerated(EnumType.STRING)
 	private Status status;
-	@Column(name="execution_output")
-	private String executionOutput;
 	
 	public Date getSubmissionDate() {
 		return submissionDate;
@@ -44,14 +42,6 @@ public class ActivitySubmission {
 
 	public void setCode(String code) {
 		this.code = code;
-	}
-
-	public String getExecutionOutput() {
-		return executionOutput;
-	}
-
-	public void setExecutionOutput(String executionOutput) {
-		this.executionOutput = executionOutput;
 	}
 
 	public Long getId() {

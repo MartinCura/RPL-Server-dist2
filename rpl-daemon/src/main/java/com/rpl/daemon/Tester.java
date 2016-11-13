@@ -8,7 +8,8 @@ import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Status;
 import com.rpl.model.TestType;
-import com.rpl.daemon.result.Result;
+import com.rpl.model.runner.Result;
+import com.rpl.model.runner.ResultStatus;
 import com.rpl.service.util.FileUtils;
 
 public class Tester {
@@ -51,11 +52,9 @@ public class Tester {
 		try {
 			Result result = new ObjectMapper().readValue(output.getBytes(), Result.class);
 			
-			if (result.getStatus().getResult().equals(com.rpl.daemon.result.Status.STATUS_OK)) {
-				submission.setExecutionOutput(result.getStdout().trim());
-				submission.setStatus( isExpectedOutput(submission) ? Status.SUCCESS : Status.TEST_FAILURE );
+			if (result.getStatus().getResult().equals(ResultStatus.STATUS_OK)) {
+				submission.setStatus( isExpectedOutput(submission, result) ? Status.SUCCESS : Status.FAILURE );
 			} else {
-				submission.setExecutionOutput(result.getStatus().getStderr().trim());
 				submission.setStatus( result.getStatus().getStage().equals("build") ? Status.BUILDING_ERROR : Status.RUNTIME_ERROR );
 			}
 			
@@ -64,12 +63,11 @@ public class Tester {
 		}
 	}
 
-	private boolean isExpectedOutput(ActivitySubmission submission) {
+	private boolean isExpectedOutput(ActivitySubmission submission, Result result) {
 		if (submission.getActivity().getTestType().equals(TestType.INPUT)) {
-			return submission.getExecutionOutput().equals(submission.getActivity().getOutput());
+			return result.getStdout().trim().equals(submission.getActivity().getOutput());
 		} else {
-			//TODO analizar output con tests
-			return true;
+			return result.getTests().isSuccess();
 		}
 	}
 

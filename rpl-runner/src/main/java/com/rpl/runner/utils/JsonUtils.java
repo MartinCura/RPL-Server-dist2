@@ -2,7 +2,7 @@ package com.rpl.runner.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rpl.runner.result.Tests;
+import com.rpl.model.runner.Tests;
 
 import java.io.IOException;
 

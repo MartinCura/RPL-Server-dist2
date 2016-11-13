@@ -1,9 +1,9 @@
 package com.rpl.runner;
 
+import com.rpl.model.runner.Result;
+import com.rpl.model.runner.ResultStatus;
+import com.rpl.model.runner.Tests;
 import com.rpl.runner.exception.RunnerException;
-import com.rpl.runner.result.Result;
-import com.rpl.runner.result.Status;
-import com.rpl.runner.result.Tests;
 import com.rpl.runner.runner.Runner;
 import com.rpl.runner.utils.DirectoryCleaner;
 import com.rpl.runner.utils.JsonUtils;
@@ -51,13 +51,13 @@ public class Main {
             runner.setSolution(argumentParser.getSolution());
 
             Result result = new Result();
-            Status status = new Status();
+            ResultStatus status = new ResultStatus();
 
             boolean ok = true;
             try {
                 runner.process();
             } catch (RunnerException e) {
-                status.setResult(Status.STATUS_ERROR);
+                status.setResult(ResultStatus.STATUS_ERROR);
                 status.setType(e.getType());
                 status.setStage(e.getStage());
                 status.setStderr(e.getMessageContent());
@@ -65,7 +65,7 @@ public class Main {
             }
 
             if (ok) {
-                status.setResult(Status.STATUS_OK);
+                status.setResult(ResultStatus.STATUS_OK);
 
                 if (mode.equals(Runner.TestMode.TEST)) {
                     Tests tests = JsonUtils.stringToObject(runner.getStdout());

@@ -1,20 +1,17 @@
-package com.rpl.runner.result;
-
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
+package com.rpl.model.runner;
 
 public class Result {
-    private Status status;
+    private ResultStatus status;
 
     private String stdout;
 
-    @JsonUnwrapped
     private Tests tests;
 
-    public Status getStatus() {
+    public ResultStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(ResultStatus status) {
         this.status = status;
     }
 

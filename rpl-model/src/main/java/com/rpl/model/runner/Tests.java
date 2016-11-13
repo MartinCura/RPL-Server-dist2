@@ -1,4 +1,4 @@
-package com.rpl.runner.result;
+package com.rpl.model.runner;
 
 import java.util.List;
 

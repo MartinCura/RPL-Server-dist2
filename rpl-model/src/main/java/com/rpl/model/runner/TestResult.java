@@ -1,4 +1,4 @@
-package com.rpl.runner.result;
+package com.rpl.model.runner;
 
 public class TestResult {
     private String name;
