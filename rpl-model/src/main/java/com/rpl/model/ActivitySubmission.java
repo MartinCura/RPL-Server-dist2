@@ -28,6 +28,8 @@ public class ActivitySubmission {
 	@Enumerated(EnumType.STRING)
 	private Status status;
 	
+	//private Result result;
+	
 	public Date getSubmissionDate() {
 		return submissionDate;
 	}

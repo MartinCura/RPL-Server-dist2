@@ -16,7 +16,7 @@ public class Tester {
 	private String TMP_DIRECTORY = "/tmp/";
 	private String TMP_EXTENSION = ".tmp";
 	
-	public String runSubmission(ActivitySubmission submission) throws IOException, InterruptedException {
+	public Result runSubmission(ActivitySubmission submission) throws IOException, InterruptedException {
 
 		String[] command = prepareCommand(submission);		
 		ProcessBuilder pb = new ProcessBuilder(command);
@@ -25,7 +25,9 @@ public class Tester {
 		pb.redirectOutput(file);
 		Process process = pb.start();
 		process.waitFor();
-		return FileUtils.fileToString(file);
+		String result = FileUtils.fileToString(file);
+		return new ObjectMapper().readValue(result.getBytes(), Result.class);
+		
 	}
 	
 	public String[] prepareCommand(ActivitySubmission submission) {
@@ -47,10 +49,9 @@ public class Tester {
 		return args;
 	}
 	
-	public void analyzeResult(ActivitySubmission submission, String output) {
+	public void analyzeResult(ActivitySubmission submission, Result result) {
 		
 		try {
-			Result result = new ObjectMapper().readValue(output.getBytes(), Result.class);
 			
 			if (result.getStatus().getResult().equals(ResultStatus.STATUS_OK)) {
 				submission.setStatus( isExpectedOutput(submission, result) ? Status.SUCCESS : Status.FAILURE );
