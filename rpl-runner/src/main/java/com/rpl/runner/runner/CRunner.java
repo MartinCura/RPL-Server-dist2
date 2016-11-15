@@ -9,23 +9,28 @@ public class CRunner extends Runner {
 
     private static final String SOLUTION_SOURCE_FILE = "solution.c";
     private static final String SOLUTION_OUT_FILE = "solution";
+    private static final String TEST_SOURCE_FILE = "test.c";
+    private static final String TEST_OUT_FILE = "test";
+    private static final String LIB_PATH = "../extras/runner-libs/c/";
 
     protected void generateGenericFiles() {
         LocalFileUtils.write(Settings.EXECUTION_PATH + SOLUTION_SOURCE_FILE, super.solution);
     }
 
     protected void generateFilesForTest() {
-        // TODO
+        LocalFileUtils.write(Settings.EXECUTION_PATH + TEST_SOURCE_FILE, super.modeData);
     }
 
     protected void buildForInput() throws RunnerException {
-        String[] args = {"gcc", SOLUTION_SOURCE_FILE, "-o", "solution"};
+        String[] args = {"gcc", SOLUTION_SOURCE_FILE, "-o", SOLUTION_OUT_FILE};
         ProcessRunner p1 = new ProcessRunner(args, false, "build");
         p1.start();
     }
 
     protected void buildForTest() throws RunnerException {
-        // TODO
+        String[] args = {"gcc", TEST_SOURCE_FILE, "-o", TEST_OUT_FILE, "-lcriterion"};
+        ProcessRunner p1 = new ProcessRunner(args, false, "build");
+        p1.start();
     }
 
     protected void runForInput() throws RunnerException {
@@ -38,6 +43,13 @@ public class CRunner extends Runner {
     }
 
     protected void runForTest() throws RunnerException {
-        // TODO
+        String[] args = {"./" + TEST_OUT_FILE, "--custom-json"};
+        ProcessRunner p1 = new ProcessRunner(args, true, "run");
+        p1.setIgnoreStderr(true);
+        p1.start();
+
+        // yes, it is ok!
+        super.stdout = p1.getStderr();
+        super.stderr = p1.getStderr();
     }
 }

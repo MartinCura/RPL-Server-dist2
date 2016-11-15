@@ -22,6 +22,9 @@ RUN apt-get install -y python
 ADD extras/ /root/extras/
 ADD target/rpl-runner-0.0.1.jar /root/
 
+# Copy libcriterion files
+RUN tar -zxvf /root/extras/runner-libs/c/criterion-v2.3.0-rc2-custom.tar.gz -C /root/extras/runner-libs/c/
+RUN cp -r /root/extras/runner-libs/c/criterion-v2.3.0-rc2/. /usr
 
 # Execute
 WORKDIR /root/

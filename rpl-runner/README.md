@@ -23,7 +23,7 @@ usage: runner
 | -------------------- |:---------------:| -----------------:|
 | Python               | OK              |    OK (unittest)  |
 | Java                 | OK              |    OK (JUNIT 4)   |
-| C                    | -               |    -              |
+| C                    | OK              |    OK (Custom libcriterion)             |
 
 
 ## Docker

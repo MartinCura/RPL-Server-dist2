@@ -20,6 +20,8 @@ public class ProcessRunner {
     private String stdin = "";
     private String stage;
 
+    private boolean ignoreStderr = false;
+
     public ProcessRunner(String[] args, boolean enableTimeout, String stage) {
         this.enableTimeout = enableTimeout;
         this.stage = stage;
@@ -70,10 +72,18 @@ public class ProcessRunner {
             e.printStackTrace();
         }
 
-        if (!LocalFileUtils.fileIsEmpty(stderrFile)) {
+        if (!LocalFileUtils.fileIsEmpty(stderrFile) && (!ignoreStderr)) {
             throw new StageException(stage, getStderr());
         }
 
+    }
+
+    public boolean isIgnoreStderr() {
+        return ignoreStderr;
+    }
+
+    public void setIgnoreStderr(boolean ignoreStderr) {
+        this.ignoreStderr = ignoreStderr;
     }
 
     public String getStderr() {
