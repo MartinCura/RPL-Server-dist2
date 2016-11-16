@@ -8,6 +8,10 @@
 		<class>com.rpl.model.Activity</class>
 		<class>com.rpl.model.ActivitySubmission</class>
 		<class>com.rpl.model.Topic</class>
+		<class>com.rpl.model.runner.Result</class>
+		<class>com.rpl.model.runner.Tests</class>
+		<class>com.rpl.model.runner.ResultStatus</class>
+		<class>com.rpl.model.runner.TestResult</class>
 
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
