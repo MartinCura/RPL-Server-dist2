@@ -47,3 +47,30 @@ CREATE TABLE activity_submission (
 	status text NOT NULL,
 	execution_output text
 );
+
+CREATE TABLE result (
+	id serial PRIMARY KEY,
+	stdout text NOT NULL,
+	description text
+);
+
+CREATE TABLE result_status (
+	id serial PRIMARY KEY REFERENCES result,
+	result text NOT NULL,
+	stage text NOT NULL,
+	type text NOT NULL,
+	stderr text
+);
+
+CREATE TABLE tests (
+	id serial PRIMARY KEY REFERENCES result,
+	success boolean NOT NULL DEFAULT FALSE
+);
+
+CREATE TABLE test_result (
+	id serial PRIMARY KEY,
+	tests_id integer REFERENCES tests,
+	name text NOT NULL,
+	success boolean NOT NULL DEFAULT FALSE,
+	description text
+);
