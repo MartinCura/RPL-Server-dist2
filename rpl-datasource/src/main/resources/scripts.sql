@@ -54,6 +54,14 @@ CREATE TABLE result (
 	description text
 );
 
+insert into result (
+	stdout,
+	description
+	) values (
+	'test',
+	'test'
+	);
+
 CREATE TABLE result_status (
 	id serial PRIMARY KEY REFERENCES result,
 	result text NOT NULL,
@@ -62,10 +70,28 @@ CREATE TABLE result_status (
 	stderr text
 );
 
+insert into result_status (
+	result,
+	stage,
+	type,
+	stderr
+	) values (
+	'test',
+	'test',
+	'test',
+	'test'
+	);
+
 CREATE TABLE tests (
 	id serial PRIMARY KEY REFERENCES result,
 	success boolean NOT NULL DEFAULT FALSE
 );
+
+insert into tests (
+	id
+	) values (
+	1
+	);
 
 CREATE TABLE test_result (
 	id serial PRIMARY KEY,
@@ -74,3 +100,13 @@ CREATE TABLE test_result (
 	success boolean NOT NULL DEFAULT FALSE,
 	description text
 );
+
+insert into test_result (
+	tests_id,
+	name,
+	description
+	) values (
+	1,
+	'test',
+	'test'
+	);
