@@ -30,35 +30,24 @@ insert into activity (
 	tests
 	) values (
 	'this is an activity',
-	'JAVA',
+	'PYTHON',
 	10,
 	1,
-	'TEST',
+	'INPUT',
 	'',
-	'',
+	'hello',
 	'testcode'
 	);
 
-CREATE TABLE activity_submission (
-	id serial PRIMARY KEY,
-	submission_date date NOT NULL,
-	activity_id integer REFERENCES activity,
-	code text NOT NULL,
-	status text NOT NULL,
-	execution_output text
-);
 
 CREATE TABLE result (
 	id serial PRIMARY KEY,
-	stdout text NOT NULL,
-	description text
+	stdout text
 );
 
 insert into result (
-	stdout,
-	description
+	stdout
 	) values (
-	'test',
 	'test'
 	);
 
@@ -110,3 +99,13 @@ insert into test_result (
 	'test',
 	'test'
 	);
+
+CREATE TABLE activity_submission (
+	id serial PRIMARY KEY,
+	submission_date date NOT NULL,
+	activity_id integer REFERENCES activity,
+	code text NOT NULL,
+	status text NOT NULL,
+	execution_output text,
+	result_id integer REFERENCES result
+);

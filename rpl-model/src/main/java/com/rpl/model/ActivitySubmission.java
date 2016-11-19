@@ -11,7 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.rpl.model.runner.Result;
 
 @Entity
 @Table(name="activity_submission")
@@ -27,8 +30,9 @@ public class ActivitySubmission {
 	private String code;
 	@Enumerated(EnumType.STRING)
 	private Status status;
-	
-	//private Result result;
+	@OneToOne
+	@JoinColumn(name = "result_id")
+	private Result result;
 	
 	public Date getSubmissionDate() {
 		return submissionDate;
@@ -69,5 +73,14 @@ public class ActivitySubmission {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
+
+	public Result getResult() {
+		return result;
+	}
+
+	public void setResult(Result result) {
+		this.result = result;
+	}
+	
 
 }

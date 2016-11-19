@@ -18,8 +18,8 @@ public class Topic {
 	private int id;
 	private String name;
 	
-	@OneToMany(mappedBy="topic")
-	private List<Activity> activities;
+	//@OneToMany(mappedBy="topic")
+	//private List<Activity> activities;
 
 	public int getId() {
 		return id;
@@ -37,12 +37,12 @@ public class Topic {
 		this.name = name;
 	}
 
-	public List<Activity> getActivities() {
-		return activities;
-	}
+	//public List<Activity> getActivities() {
+	//	return activities;
+	//}
 
-	public void setActivities(List<Activity> activities) {
-		this.activities = activities;
-	}
+	//public void setActivities(List<Activity> activities) {
+	//	this.activities = activities;
+	//}
 	
 }
