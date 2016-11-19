@@ -13,6 +13,7 @@ public class ResultStatus {
 	public static final String STATUS_OK = "ok";
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String result;
 	private String stage;

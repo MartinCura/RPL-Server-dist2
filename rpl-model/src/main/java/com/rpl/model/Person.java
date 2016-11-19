@@ -23,8 +23,8 @@ public class Person {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	
-	private List<Course> courses;
-	private List<ActivitySubmission> submissions;
+	//private List<Course> courses;
+	//private List<ActivitySubmission> submissions;
 	public int getId() {
 		return id;
 	}
@@ -61,18 +61,18 @@ public class Person {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-	public List<Course> getCourses() {
-		return courses;
-	}
-	public void setCourses(List<Course> courses) {
-		this.courses = courses;
-	}
-	public List<ActivitySubmission> getSubmissions() {
-		return submissions;
-	}
-	public void setSubmissions(List<ActivitySubmission> submissions) {
-		this.submissions = submissions;
-	}
+	//public List<Course> getCourses() {
+	//	return courses;
+	//}
+	//public void setCourses(List<Course> courses) {
+	//	this.courses = courses;
+	//}
+	//public List<ActivitySubmission> getSubmissions() {
+	//	return submissions;
+	//}
+	//public void setSubmissions(List<ActivitySubmission> submissions) {
+	//	this.submissions = submissions;
+	//}
 	
 	
 }

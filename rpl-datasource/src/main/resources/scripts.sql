@@ -53,9 +53,9 @@ insert into result (
 
 CREATE TABLE result_status (
 	id serial PRIMARY KEY REFERENCES result,
-	result text NOT NULL,
-	stage text NOT NULL,
-	type text NOT NULL,
+	result text,
+	stage text,
+	type text,
 	stderr text
 );
 

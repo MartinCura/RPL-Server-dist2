@@ -23,12 +23,10 @@ public class Daemon {
 				QueueMessage message = qs.receive();
 				String submissionId = message.getMsg();
 				ActivitySubmission submission = activitySubmissionDAO.find(Long.valueOf(submissionId));
-
 				Result result = tester.runSubmission(submission);
 				tester.analyzeResult(submission, result);
-				
-				//resultDAO.save(result);
-				//submission.setResult(result);
+				result = resultDAO.save(result);
+				submission.setResult(result);
 				activitySubmissionDAO.save(submission);
 				
 			} catch (Exception e) {
