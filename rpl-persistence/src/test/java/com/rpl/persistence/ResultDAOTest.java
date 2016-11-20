@@ -10,5 +10,5 @@ public class ResultDAOTest {
 		ResultDAO r = new ResultDAO();
 		Assert.assertNotNull(r.find(1l));
 	}
-
+	
 }
