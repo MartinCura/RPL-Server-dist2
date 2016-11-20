@@ -20,6 +20,7 @@ public class AuthenticationEndpoint {
 	private static final String PRIVATE_KEY = "RPL";
 
 	@POST
+	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response authenticateUser(String username, String password) {
