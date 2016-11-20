@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.TimeoutException;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,6 +19,7 @@ import com.rpl.service.ActivitySubmissionService;
 import com.rpl.service.QueueService;
 import com.rpl.service.util.JsonUtils;
 
+@Stateless
 public class ActivitySubmissionServiceImpl implements ActivitySubmissionService {
 	
 	@Inject
