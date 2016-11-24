@@ -16,7 +16,7 @@
 
 		<rpl.version>0.0.1</rpl.version>
 		<rpl.daemon.version>0.0.1</rpl.daemon.version>
-		<hibernate.version>5.2.2.Final</hibernate.version>
+		<hibernate.version>5.0.10.Final</hibernate.version>
 		<jpa.version>1.0</jpa.version>
 		<cdi.version>1.2</cdi.version>
 	</properties>
