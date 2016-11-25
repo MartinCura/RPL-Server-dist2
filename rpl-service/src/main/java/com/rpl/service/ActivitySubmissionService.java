@@ -5,7 +5,7 @@ import com.rpl.model.ActivitySubmission;
 
 public interface ActivitySubmissionService {
 	
-	public void submit(Long activityId, String code) throws RplQueueException;
+	public void submit(Long activityId, ActivitySubmission submission) throws RplQueueException;
 
 	public ActivitySubmission getSubmissionById(Long id);
 

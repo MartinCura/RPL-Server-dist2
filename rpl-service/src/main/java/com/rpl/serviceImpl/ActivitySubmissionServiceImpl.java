@@ -35,10 +35,8 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		return activitySubmissionDAO.find(id);
 	}
 
-	public void submit(Long activityId, String code) throws RplQueueException {
+	public void submit(Long activityId, ActivitySubmission submission) throws RplQueueException {
 		Activity activity = activityDAO.find(activityId);
-		ActivitySubmission submission = new ActivitySubmission();
-		submission.setCode(code);
 		submission.setActivity(activity);
 		submission.setSubmissionDate(new Date());
 		submission.setStatus(Status.PENDING);

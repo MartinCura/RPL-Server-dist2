@@ -6,4 +6,6 @@ public interface ActivityService {
 	
 	public Activity getActivityById(Long id);
 
+	public void submit(Long courseId, Activity activity);
+
 }

@@ -3,8 +3,8 @@
 ## Installation
 
 #### Compile application
-Web application (for a container deployment): mvn clean install -P webApp
-Standalone Application (default profile): mvn clean install
+Web application (for a container deployment): `mvn clean install -P webApp`
+Standalone Application (default profile): `mvn clean install`
 
 
 #### RabbitMQ
@@ -29,11 +29,14 @@ sudo rabbitmqctl set_permissions -p / rpl ".*" ".*" ".*"
 `docker build -t rpl .`
 
 
-## Test:
-```
-sudo java -jar rpl-daemon/target/rpl-daemon-0.0.1.jar
-curl -X post -d "print 'hello'" http://localhost:8080/rpl-server-api/activities/1/submission
-curl http://localhost:8080/rpl-server-api/submissions/1
-```
-
-
+## Test
+Run Daemon
+`sudo java -jar rpl-daemon/target/rpl-daemon-0.0.1.jar`
+Create Activity
+`curl -X post -H "Content-Type: application/json" -d '{"name": "Print hello", "language": "PYTHON", "points": 10, "testType": "INPUT", "input": "", "output": "hello"}' http://localhost:8080/rpl-server-api/courses/1/activities`
+Create Submission
+`curl -X post -H "Content-Type: application/json" -d '{"code": "print \"hello\""}' http://localhost:8080/rpl-server-api/activities/1/submission`
+Get Activity
+`curl http://localhost:8080/rpl-server-api/activities/1`
+Get Submission
+`curl http://localhost:8080/rpl-server-api/submissions/1`
