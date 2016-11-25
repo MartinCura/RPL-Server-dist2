@@ -2,6 +2,11 @@
 
 ## Installation
 
+#### Compile application
+Web application (for a container deployment): mvn clean install -P webApp
+Standalone Application (default profile): mvn clean install
+
+
 #### RabbitMQ
 ##### Install
 ```
