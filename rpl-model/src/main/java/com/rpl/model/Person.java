@@ -8,7 +8,7 @@ import java.util.List;
 public class Person {
 
 	@Id
-	private int id;
+	private Long id;
 
 	private String name;
 	private String mail;
@@ -16,7 +16,7 @@ public class Person {
 	@Embedded
 	private Credentials credentials;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "course_person",
 			joinColumns = @JoinColumn(name = "person_id"),
@@ -24,11 +24,11 @@ public class Person {
 	)
 	private List<Course> courses;
 	// private List<ActivitySubmission> submissions;
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

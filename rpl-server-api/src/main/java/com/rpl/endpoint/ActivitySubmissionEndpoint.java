@@ -8,6 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.rpl.POJO.ActivitySubmissionPOJO;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.service.ActivitySubmissionService;
 
@@ -23,7 +24,7 @@ public class ActivitySubmissionEndpoint {
 	public Response getSubmissionById(@PathParam("id") Long id) {
 
 		ActivitySubmission submission = activitySubmissionService.getSubmissionById(id);
-		return Response.status(200).entity(submission).build();
+		return Response.status(200).entity(new ActivitySubmissionPOJO(submission)).build();
 
 	}
 

@@ -9,7 +9,9 @@ import com.rpl.model.Activity;
 import com.rpl.model.Course;
 import com.rpl.service.ActivityService;
 import com.rpl.service.CourseService;
+import com.rpl.POJO.CoursePOJO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("/courses")
@@ -25,7 +27,11 @@ public class CourseEndpoint {
 	public Response getCourses() {
 
 		List<Course> courses = courseService.getCourses();
-		return Response.status(200).entity(courses).build();
+		List<CoursePOJO> coursePOJOS = new ArrayList<CoursePOJO>();
+		for (Course course : courses) {
+			coursePOJOS.add(new CoursePOJO(course));
+		}
+		return Response.status(200).entity(coursePOJOS).build();
 
 	}
 
@@ -35,7 +41,7 @@ public class CourseEndpoint {
 	public Response getCourseById(@PathParam("id") Long id) {
 
 		Course course = courseService.getCourseById(id);
-		return Response.status(200).entity(course).build();
+		return Response.status(200).entity(new CoursePOJO(course)).build();
 	}
 
 	@POST

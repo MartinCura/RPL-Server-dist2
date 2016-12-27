@@ -10,6 +10,7 @@ import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.service.ActivityService;
 import com.rpl.service.ActivitySubmissionService;
+import com.rpl.POJO.ActivityPOJO;
 
 @Path("/activities")
 public class ActivityEndpoint {
@@ -26,7 +27,7 @@ public class ActivityEndpoint {
 	public Response getActivityById(@PathParam("id") Long id) {
 
 		Activity activity = activityService.getActivityById(id);
-		return Response.status(200).entity(activity).build();
+		return Response.status(200).entity(new ActivityPOJO(activity)).build();
 
 	}
 	
