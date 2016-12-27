@@ -1,12 +1,23 @@
 create table test (id serial PRIMARY KEY, msg varchar(50) NOT NULL);
 
-CREATE TABLE topic (
+DROP TABLE IF EXISTS course cascade;
+CREATE TABLE course (
 	id serial PRIMARY KEY,
 	name text NOT NULL
 );
 
-insert into topic (name) values ('this is a topic');
+insert into course (name) values ('First course');
 
+DROP TABLE IF EXISTS topic cascade;
+CREATE TABLE topic (
+	id serial PRIMARY KEY,
+	name text NOT NULL,
+	course_id integer REFERENCES course
+);
+
+insert into topic (name, course_id) values ('this is a topic', 1);
+
+DROP TABLE IF EXISTS activity cascade;
 CREATE TABLE activity (
 	id serial PRIMARY KEY, 
 	name text NOT NULL, 
@@ -39,7 +50,7 @@ insert into activity (
 	'testcode'
 	);
 
-
+DROP TABLE IF EXISTS result cascade;
 CREATE TABLE result (
 	id serial PRIMARY KEY,
 	stdout text
@@ -51,6 +62,7 @@ insert into result (
 	'test'
 	);
 
+DROP TABLE IF EXISTS result_status cascade;
 CREATE TABLE result_status (
 	id serial PRIMARY KEY REFERENCES result,
 	result text,
@@ -71,6 +83,7 @@ insert into result_status (
 	'test'
 	);
 
+DROP TABLE IF EXISTS tests cascade;
 CREATE TABLE tests (
 	id serial PRIMARY KEY REFERENCES result,
 	success boolean NOT NULL DEFAULT FALSE
@@ -82,6 +95,7 @@ insert into tests (
 	1
 	);
 
+DROP TABLE IF EXISTS test_result cascade;
 CREATE TABLE test_result (
 	id serial PRIMARY KEY,
 	tests_id integer REFERENCES tests,
@@ -100,6 +114,7 @@ insert into test_result (
 	'test'
 	);
 
+DROP TABLE IF EXISTS activity_submission cascade;
 CREATE TABLE activity_submission (
 	id serial PRIMARY KEY,
 	submission_date date NOT NULL,
@@ -110,6 +125,7 @@ CREATE TABLE activity_submission (
 	result_id integer REFERENCES result
 );
 
+DROP TABLE IF EXISTS person cascade;
 CREATE TABLE person (
 	id serial PRIMARY KEY,
 	name text NOT NULL,
@@ -132,3 +148,12 @@ insert into person (
 	'rpl',
 	'USER'
 	);
+
+DROP TABLE IF EXISTS course_person cascade;
+CREATE TABLE course_person (
+	id serial PRIMARY KEY,
+	course_id integer REFERENCES course,
+	person_id integer REFERENCES person
+);
+
+insert into course_person (course_id, person_id) values (1, 1);

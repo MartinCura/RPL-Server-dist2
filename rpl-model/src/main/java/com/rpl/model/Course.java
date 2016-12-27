@@ -2,23 +2,19 @@ package com.rpl.model;
 
 import java.util.List;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "course")
 public class Course {
 
 	@Id
-	private int id;
+	private Long id;
 	private String name;
-	@ManyToMany
+	//TODO diferenciar estudiantes y profesores
+	@ManyToMany(cascade= CascadeType.ALL, mappedBy = "courses")
 	private List<Person> professors;
-	@ManyToMany
+	@ManyToMany(cascade= CascadeType.ALL, mappedBy = "courses")
 	private List<Person> students;
 	
 	//private Customization customization;
@@ -26,11 +22,11 @@ public class Course {
 	@OneToMany
 	private List<Topic> topics;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -65,6 +61,6 @@ public class Course {
 	public void setTopics(List<Topic> topics) {
 		this.topics = topics;
 	}
-		
+
 	
 }

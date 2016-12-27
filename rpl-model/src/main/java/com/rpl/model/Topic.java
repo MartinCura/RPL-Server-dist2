@@ -1,13 +1,6 @@
 package com.rpl.model;
 
-import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "topic")
@@ -15,17 +8,19 @@ public class Topic {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	private String name;
-	
+	@ManyToOne
+	@JoinColumn(name = "course_id")
+	private Course course;
 	//@OneToMany(mappedBy="topic")
 	//private List<Activity> activities;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -35,6 +30,14 @@ public class Topic {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 
 	//public List<Activity> getActivities() {

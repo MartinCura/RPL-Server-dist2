@@ -1,9 +1,7 @@
 package com.rpl.model;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "person")
@@ -18,7 +16,13 @@ public class Person {
 	@Embedded
 	private Credentials credentials;
 
-	// private List<Course> courses;
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "course_person",
+			joinColumns = @JoinColumn(name = "person_id"),
+			inverseJoinColumns = @JoinColumn(name = "course_id")
+	)
+	private List<Course> courses;
 	// private List<ActivitySubmission> submissions;
 	public int getId() {
 		return id;
@@ -52,12 +56,12 @@ public class Person {
 		this.credentials = credentials;
 	}
 
-	// public List<Course> getCourses() {
-	// return courses;
-	// }
-	// public void setCourses(List<Course> courses) {
-	// this.courses = courses;
-	// }
+	public List<Course> getCourses() {
+		return courses;
+	}
+	public void setCourses(List<Course> courses) {
+		this.courses = courses;
+	}
 	// public List<ActivitySubmission> getSubmissions() {
 	// return submissions;
 	// }
