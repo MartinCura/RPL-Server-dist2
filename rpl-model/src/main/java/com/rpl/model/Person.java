@@ -1,5 +1,6 @@
 package com.rpl.model;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -14,6 +15,7 @@ public class Person {
 	private String name;
 	private String mail;
 
+	@Embedded
 	private Credentials credentials;
 
 	// private List<Course> courses;

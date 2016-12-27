@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 
 public class ApplicationDAO {
 	
@@ -20,6 +21,10 @@ public class ApplicationDAO {
 			EntityManagerFactory factory = Persistence.createEntityManagerFactory("RplPU");
 			this.entityManager = factory.createEntityManager();
 		}
+	}
+	
+	public CriteriaBuilder getCriteriaBuilder() {
+		return entityManager.getCriteriaBuilder();
 	}
 
 }

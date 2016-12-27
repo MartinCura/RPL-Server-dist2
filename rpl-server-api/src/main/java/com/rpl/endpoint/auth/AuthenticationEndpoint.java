@@ -8,6 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.rpl.model.Credentials;
 import com.rpl.model.Person;
 import com.rpl.service.SecurityService;
 
@@ -21,17 +22,18 @@ public class AuthenticationEndpoint {
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response authenticateUser(String username, String password) {
+	public Response authenticateUser(Credentials c) {
 
 		try {
 
-			Person p = securityService.authenticate(username, password);
+			Person p = securityService.authenticate(c.getUsername(), c.getPassword());
 
 			String token = securityService.issueToken(p);
 			
 			return Response.ok(token).build();
 
 		} catch (Exception e) {
+			//TODO DO NOT LOSE THE EXCEPTION
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}
 	}

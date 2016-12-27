@@ -3,9 +3,11 @@ package com.rpl.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+@Embeddable
 public class Credentials {
 	
 	private String username;

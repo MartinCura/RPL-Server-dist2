@@ -8,9 +8,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.rpl.annotation.Secured;
 import com.rpl.exception.RplQueueException;
 import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
+import com.rpl.model.Role;
 import com.rpl.service.SolutionService;
 
 @Path("/solution")

@@ -109,3 +109,26 @@ CREATE TABLE activity_submission (
 	execution_output text,
 	result_id integer REFERENCES result
 );
+
+CREATE TABLE person (
+	id serial PRIMARY KEY,
+	name text NOT NULL,
+	mail text NOT NULL,
+	username text NOT NULL,
+	password text NOT NULL,
+	role text NOT NULL
+);
+
+insert into person (
+	name,
+	mail,
+	username,
+	password,
+	role
+	) values (
+	'rpl',
+	'rpl@rpl.com',
+	'rpl',
+	'rpl',
+	'USER'
+	);
