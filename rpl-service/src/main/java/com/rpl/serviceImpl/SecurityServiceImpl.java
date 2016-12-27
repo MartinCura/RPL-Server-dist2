@@ -28,6 +28,7 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	public Person authenticate(String username, String password) throws RplNotAuthorizedException {
+		//TODO we should save the token on the DB and then check the token when validating, not the password.
 		Person retrievedPerson = personDAO.find(username);
 		return validatePassword(password, retrievedPerson);
 	}
