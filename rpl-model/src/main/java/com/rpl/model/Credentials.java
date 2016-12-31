@@ -19,6 +19,12 @@ public class Credentials {
 	public Credentials() {
 	}
 	
+	public Credentials(String user, String passwd, Role role) {
+		this.username = user;
+		this.password = passwd;
+		this.role = role;
+	}
+	
 	public Credentials(Map<String, Object> map) {
 		this.setUsername((String)map.get("username"));
 		this.setPassword((String)map.get("password"));
