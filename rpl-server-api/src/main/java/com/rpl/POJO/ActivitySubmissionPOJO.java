@@ -1,19 +1,19 @@
 package com.rpl.POJO;
 
 import com.rpl.model.ActivitySubmission;
+import com.rpl.model.runner.Result;
 
 public class ActivitySubmissionPOJO {
     private Long activity;
     private String code;
     private String status;
-    private String result;
+    private Result result;
 
     public ActivitySubmissionPOJO(ActivitySubmission submission) {
         this.activity = submission.getActivity().getId();
         this.code = submission.getCode();
         this.status = submission.getStatus().toString();
-        if (submission.getResult() != null)
-            this.result = submission.getResult().getStatus().getResult();
+        this.result = submission.getResult();
     }
 
     public Long getActivity() {
@@ -28,7 +28,7 @@ public class ActivitySubmissionPOJO {
         return status;
     }
 
-    public String getResult() {
+    public Result getResult() {
         return result;
     }
 }

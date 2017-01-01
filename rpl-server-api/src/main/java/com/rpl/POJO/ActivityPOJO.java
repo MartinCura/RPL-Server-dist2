@@ -7,13 +7,13 @@ public class ActivityPOJO {
     private String name;
     private String language;
     private int points;
-    private String topic;
+    private Long topic;
 
     public ActivityPOJO(Activity activity) {
         this.name = activity.getName();
         this.language = activity.getLanguage().toString();
         this.points = activity.getPoints();
-        this.topic  = activity.getTopic().getName();
+        this.topic  = activity.getTopic().getId();
     }
 
     public String getName() {
@@ -28,7 +28,7 @@ public class ActivityPOJO {
         return points;
     }
 
-    public String getTopic() {
+    public Long getTopic() {
         return topic;
     }
 }

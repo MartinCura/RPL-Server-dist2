@@ -9,6 +9,8 @@ import com.rpl.model.TestType;
 import com.rpl.persistence.ActivityDAO;
 import com.rpl.service.ActivityService;
 
+import java.util.List;
+
 @Stateless
 public class ActivityServiceImpl implements ActivityService {
 	
@@ -18,6 +20,14 @@ public class ActivityServiceImpl implements ActivityService {
 	
 	public Activity getActivityById(Long id) {
 		return activityDAO.find(id);
+	}
+
+	public List<Activity> getActivitiesByCourse(Long courseId) {
+		return activityDAO.findByCourse(courseId);
+	}
+
+	public List<Activity> getActivitiesByTopic(Long topicId) {
+		return activityDAO.findByTopic(topicId);
 	}
 
 

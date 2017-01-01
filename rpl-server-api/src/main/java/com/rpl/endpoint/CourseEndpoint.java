@@ -5,6 +5,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.rpl.POJO.ActivityPOJO;
 import com.rpl.model.Activity;
 import com.rpl.model.Course;
 import com.rpl.service.ActivityService;
@@ -42,6 +43,19 @@ public class CourseEndpoint {
 
 		Course course = courseService.getCourseById(id);
 		return Response.status(200).entity(new CoursePOJO(course)).build();
+	}
+
+	@GET
+	@Path("/{id}/activities")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getActivities(@PathParam("id") Long courseId) {
+
+		List<Activity> activities = activityService.getActivitiesByCourse(courseId);
+		List<ActivityPOJO> activityPOJOS = new ArrayList<ActivityPOJO>();
+		for (Activity activity : activities) {
+			activityPOJOS.add(new ActivityPOJO(activity));
+		}
+		return Response.status(200).entity(activityPOJOS).build();
 	}
 
 	@POST
