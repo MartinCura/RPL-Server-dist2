@@ -23,8 +23,4 @@ public class PersonDAO extends ApplicationDAO {
 		return entityManager.createQuery( criteria ).getSingleResult();
 	}
 	
-	public Person save(Person p){
-		return this.merge(p);
-	}
-	
 }

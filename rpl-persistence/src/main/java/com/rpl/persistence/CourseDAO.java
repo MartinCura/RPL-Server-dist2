@@ -15,7 +15,4 @@ public class CourseDAO extends ApplicationDAO {
         return entityManager.createQuery("SELECT c FROM Course c").getResultList();
     }
 
-    public Course save(Course course){
-        return this.merge(course);
-    }
 }

@@ -10,10 +10,6 @@ public class ActivityDAO extends ApplicationDAO {
 		return entityManager.find(Activity.class, id);
 	}
 	
-	public Activity save(Activity act){
-		return this.merge(act);
-	}
-
     public List<Activity> findByCourse(Long courseId) {
 		return entityManager.createQuery("SELECT a FROM Activity a, Topic t WHERE a.topic.id = t.id AND t.course.id = :id").setParameter("id", courseId).getResultList();
     }

@@ -8,8 +8,4 @@ public class ResultDAO extends ApplicationDAO {
 		return entityManager.find(Result.class, id);
 	}
 	
-	public Result save(Result act){
-		return this.merge(act);
-	}
-
 }

@@ -8,9 +8,4 @@ public class ActivitySubmissionDAO extends ApplicationDAO{
 		return entityManager.find(ActivitySubmission.class, id);
 	}
 	
-	public ActivitySubmission save(ActivitySubmission act){
-		return entityManager.merge(act);
-	}
-	
-	
 }

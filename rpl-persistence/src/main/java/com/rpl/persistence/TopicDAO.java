@@ -9,7 +9,4 @@ public class TopicDAO extends ApplicationDAO {
         return entityManager.find(Topic.class, id);
     }
 
-    public Topic save(Topic topic){
-        return this.merge(topic);
-    }
 }
