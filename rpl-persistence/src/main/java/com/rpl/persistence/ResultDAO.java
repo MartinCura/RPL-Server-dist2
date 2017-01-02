@@ -9,7 +9,7 @@ public class ResultDAO extends ApplicationDAO {
 	}
 	
 	public Result save(Result act){
-		return entityManager.merge(act);
+		return this.merge(act);
 	}
 
 }

@@ -10,6 +10,6 @@ public class TopicDAO extends ApplicationDAO {
     }
 
     public Topic save(Topic topic){
-        return entityManager.merge(topic);
+        return this.merge(topic);
     }
 }

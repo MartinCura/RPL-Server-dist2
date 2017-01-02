@@ -16,6 +16,6 @@ public class CourseDAO extends ApplicationDAO {
     }
 
     public Course save(Course course){
-        return entityManager.merge(course);
+        return this.merge(course);
     }
 }

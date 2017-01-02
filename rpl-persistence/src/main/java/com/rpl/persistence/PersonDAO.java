@@ -24,7 +24,7 @@ public class PersonDAO extends ApplicationDAO {
 	}
 	
 	public Person save(Person p){
-		return entityManager.merge(p);
+		return this.merge(p);
 	}
 	
 }

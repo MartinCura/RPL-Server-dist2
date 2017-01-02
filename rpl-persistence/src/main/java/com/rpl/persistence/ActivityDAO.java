@@ -11,7 +11,7 @@ public class ActivityDAO extends ApplicationDAO {
 	}
 	
 	public Activity save(Activity act){
-		return entityManager.merge(act);
+		return this.merge(act);
 	}
 
     public List<Activity> findByCourse(Long courseId) {

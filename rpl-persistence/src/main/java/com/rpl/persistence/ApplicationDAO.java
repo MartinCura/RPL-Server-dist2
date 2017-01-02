@@ -10,6 +10,8 @@ public class ApplicationDAO {
 	
 	@PersistenceContext(unitName = "RplPU")
     protected EntityManager entityManager;
+	
+	private Boolean MANAGED_CONTAINER = true;
 
 	public ApplicationDAO() {
 		/*
@@ -20,7 +22,16 @@ public class ApplicationDAO {
 		if (this.entityManager == null) {
 			EntityManagerFactory factory = Persistence.createEntityManagerFactory("RplPU");
 			this.entityManager = factory.createEntityManager();
+			MANAGED_CONTAINER = false;
 		}
+	}
+	
+	public <T> T save(T obj){
+		if (MANAGED_CONTAINER) return entityManager.merge(obj);
+		entityManager.getTransaction().begin();
+		T result = entityManager.merge(obj);
+		entityManager.getTransaction().commit();
+		return result;
 	}
 	
 	public CriteriaBuilder getCriteriaBuilder() {
