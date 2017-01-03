@@ -20,11 +20,13 @@ insert into topic (name, course_id) values ('this is a topic', 1);
 DROP TABLE IF EXISTS activity cascade;
 CREATE TABLE activity (
 	id serial PRIMARY KEY, 
-	name text NOT NULL, 
+	name text NOT NULL,
+	description text,
 	language text NOT NULL, 
 	points integer NOT NULL, 
 	topic_id integer REFERENCES topic,
 	test_type text NOT NULL,
+	template text,
 	input text,
 	output text,
 	tests text

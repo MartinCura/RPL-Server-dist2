@@ -19,6 +19,7 @@ public class Activity {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	private String description;
 	@Enumerated(EnumType.STRING)
 	private Language language;
 	private int points;
@@ -28,6 +29,7 @@ public class Activity {
 	@Enumerated(EnumType.STRING)
 	@Column(name="test_type")
 	private TestType testType;
+	private String template;
 	private String input;
 	private String output;
 	private String tests;
@@ -46,6 +48,14 @@ public class Activity {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Language getLanguage() {
@@ -103,7 +113,12 @@ public class Activity {
 	public void setTests(String tests) {
 		this.tests = tests;
 	}
-	
-	
 
+	public String getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
+	}
 }

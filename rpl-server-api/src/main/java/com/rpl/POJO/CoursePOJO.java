@@ -1,38 +1,35 @@
 package com.rpl.POJO;
 
+
 import com.rpl.model.Course;
-import com.rpl.model.Person;
+import com.rpl.model.Topic;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CoursePOJO {
-
+    private Long id;
     private String name;
-    private List<Long> professors;
-    private List<Long> students;
+    private List<TopicPOJO> topics;
 
     public CoursePOJO(Course course) {
+        this.id = course.getId();
         this.name = course.getName();
-        this.professors = new ArrayList<Long>();
-        this.students = new ArrayList<Long>();
-        for (Person person : course.getProfessors()) {
-            this.professors.add(person.getId());
+        topics = new ArrayList<TopicPOJO>();
+        for (Topic topic : course.getTopics()) {
+            topics.add(new TopicPOJO(topic));
         }
-        for (Person person : course.getStudents()) {
-            this.students.add(person.getId());
-        }
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public List<Long> getProfessors() {
-        return professors;
-    }
-
-    public List<Long> getStudents() {
-        return students;
+    public List<TopicPOJO> getTopics() {
+        return topics;
     }
 }
