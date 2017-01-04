@@ -25,6 +25,9 @@ public class ActivitySubmission {
 	@Column(name="submission_date")
 	private Date submissionDate;
 	@ManyToOne
+	@JoinColumn(name = "person_id")
+	private Person person;
+	@ManyToOne
 	@JoinColumn(name = "activity_id")
 	private Activity activity;
 	private String code;
@@ -81,6 +84,12 @@ public class ActivitySubmission {
 	public void setResult(Result result) {
 		this.result = result;
 	}
-	
 
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
+	}
 }

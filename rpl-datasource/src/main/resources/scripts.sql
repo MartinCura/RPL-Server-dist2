@@ -121,6 +121,7 @@ CREATE TABLE activity_submission (
 	id serial PRIMARY KEY,
 	submission_date date NOT NULL,
 	activity_id integer REFERENCES activity,
+	person_id integer REFERENCES person,
 	code text NOT NULL,
 	status text NOT NULL,
 	execution_output text,
@@ -155,7 +156,9 @@ DROP TABLE IF EXISTS course_person cascade;
 CREATE TABLE course_person (
 	id serial PRIMARY KEY,
 	course_id integer REFERENCES course,
-	person_id integer REFERENCES person
+	person_id integer REFERENCES person,
+	role text NOT NULL,
+	accepted boolean NOT NULL DEFAULT FALSE
 );
 
-insert into course_person (course_id, person_id) values (1, 1);
+insert into course_person (course_id, person_id, role, accepted) values (1, 1, 'USER', true);
