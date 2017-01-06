@@ -20,11 +20,13 @@ insert into topic (name, course_id) values ('this is a topic', 1);
 DROP TABLE IF EXISTS activity cascade;
 CREATE TABLE activity (
 	id serial PRIMARY KEY, 
-	name text NOT NULL, 
+	name text NOT NULL,
+	description text,
 	language text NOT NULL, 
 	points integer NOT NULL, 
 	topic_id integer REFERENCES topic,
 	test_type text NOT NULL,
+	template text,
 	input text,
 	output text,
 	tests text
@@ -119,6 +121,7 @@ CREATE TABLE activity_submission (
 	id serial PRIMARY KEY,
 	submission_date date NOT NULL,
 	activity_id integer REFERENCES activity,
+	person_id integer REFERENCES person,
 	code text NOT NULL,
 	status text NOT NULL,
 	execution_output text,
@@ -154,7 +157,9 @@ DROP TABLE IF EXISTS course_person cascade;
 CREATE TABLE course_person (
 	id serial PRIMARY KEY,
 	course_id integer REFERENCES course,
-	person_id integer REFERENCES person
+	person_id integer REFERENCES person,
+	role text NOT NULL,
+	accepted boolean NOT NULL DEFAULT FALSE
 );
 
-insert into course_person (course_id, person_id) values (1, 1);
+insert into course_person (course_id, person_id, role, accepted) values (1, 1, 'USER', true);

@@ -1,6 +1,8 @@
 package com.rpl.model;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "topic")
@@ -13,8 +15,9 @@ public class Topic {
 	@ManyToOne
 	@JoinColumn(name = "course_id")
 	private Course course;
-	//@OneToMany(mappedBy="topic")
-	//private List<Activity> activities;
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="topic")
+	private Set<Activity> activities;
 
 	public Long getId() {
 		return id;
@@ -40,12 +43,12 @@ public class Topic {
 		this.course = course;
 	}
 
-	//public List<Activity> getActivities() {
-	//	return activities;
-	//}
+	public Set<Activity> getActivities() {
+		return activities;
+	}
 
-	//public void setActivities(List<Activity> activities) {
-	//	this.activities = activities;
-	//}
+	public void setActivities(Set<Activity> activities) {
+		this.activities = activities;
+	}
 	
 }

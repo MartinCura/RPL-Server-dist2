@@ -3,17 +3,24 @@ package com.rpl.POJO;
 import com.rpl.model.Activity;
 
 public class ActivityPOJO {
-
+    private Long id;
     private String name;
     private String language;
+    private String description;
+    private String template;
     private int points;
-    private Long topic;
 
     public ActivityPOJO(Activity activity) {
+        this.id = activity.getId();
         this.name = activity.getName();
         this.language = activity.getLanguage().toString();
+        this.description = activity.getDescription();
+        this.template = activity.getTemplate();
         this.points = activity.getPoints();
-        this.topic  = activity.getTopic().getId();
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -28,7 +35,12 @@ public class ActivityPOJO {
         return points;
     }
 
-    public Long getTopic() {
-        return topic;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getTemplate() {
+        return template;
     }
 }

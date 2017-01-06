@@ -1,6 +1,7 @@
 package com.rpl.model;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -19,8 +20,8 @@ public class Course {
 	
 	//private Customization customization;
 	
-	@OneToMany
-	private List<Topic> topics;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "course")
+	private Set<Topic> topics;
 
 	public Long getId() {
 		return id;
@@ -54,11 +55,11 @@ public class Course {
 		this.students = students;
 	}
 
-	public List<Topic> getTopics() {
+	public Set<Topic> getTopics() {
 		return topics;
 	}
 
-	public void setTopics(List<Topic> topics) {
+	public void setTopics(Set<Topic> topics) {
 		this.topics = topics;
 	}
 

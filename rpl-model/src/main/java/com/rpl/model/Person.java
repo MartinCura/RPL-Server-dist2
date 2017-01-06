@@ -2,6 +2,7 @@ package com.rpl.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "person")
@@ -23,7 +24,10 @@ public class Person {
 			inverseJoinColumns = @JoinColumn(name = "course_id")
 	)
 	private List<Course> courses;
-	// private List<ActivitySubmission> submissions;
+
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="person")
+	private Set<ActivitySubmission> submissions;
+
 	public Long getId() {
 		return id;
 	}
@@ -59,14 +63,17 @@ public class Person {
 	public List<Course> getCourses() {
 		return courses;
 	}
+
 	public void setCourses(List<Course> courses) {
 		this.courses = courses;
 	}
-	// public List<ActivitySubmission> getSubmissions() {
-	// return submissions;
-	// }
-	// public void setSubmissions(List<ActivitySubmission> submissions) {
-	// this.submissions = submissions;
-	// }
+
+	public Set<ActivitySubmission> getSubmissions() {
+		return submissions;
+	}
+
+	public void setSubmissions(Set<ActivitySubmission> submissions) {
+		this.submissions = submissions;
+	}
 
 }
