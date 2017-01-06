@@ -22,5 +22,15 @@ public class PersonDAO extends ApplicationDAO {
 		criteria.where(builder.equal(usernameAttr, username));
 		return entityManager.createQuery( criteria ).getSingleResult();
 	}
-	
+
+	public void updatePersonToken(String username, String token) {
+		entityManager.createQuery(
+			    "update Person p " +
+			    "set p.token = :token " +
+			    "where p.username = :username" )
+			.setParameter( "token", token)
+			.setParameter( "username", username )
+			.executeUpdate();
+	}
+
 }

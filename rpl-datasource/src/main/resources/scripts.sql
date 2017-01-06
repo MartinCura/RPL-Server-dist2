@@ -132,6 +132,7 @@ CREATE TABLE person (
 	mail text NOT NULL,
 	username text NOT NULL,
 	password text NOT NULL,
+	token text NOT NULL,
 	role text NOT NULL
 );
 

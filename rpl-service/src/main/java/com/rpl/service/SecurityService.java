@@ -16,5 +16,9 @@ public interface SecurityService {
 	public Person validateToken(String token) throws RplNotAuthorizedException;
 
 	public void checkPermissions(List<Role> allowedRoles, Person p) throws RplRoleException;
+	
+	public void logout(String username);
+
+	public String register(Person p);
 
 }

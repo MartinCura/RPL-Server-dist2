@@ -37,5 +37,41 @@ public class AuthenticationEndpoint {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}
 	}
+	
+	@POST
+	@Path("/logout")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response logout(Credentials c) {
+
+		try {
+
+			securityService.logout(c.getUsername());
+
+			return Response.ok().build();
+
+		} catch (Exception e) {
+			//TODO DO NOT LOSE THE EXCEPTION
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+	
+	@POST
+	@Path("/register")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response register(Person p) {
+
+		try {
+
+			String token = securityService.register(p);
+
+			return Response.ok(token).build();
+
+		} catch (Exception e) {
+			//TODO DO NOT LOSE THE EXCEPTION
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
 
 }

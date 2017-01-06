@@ -1,15 +1,13 @@
 package com.rpl.serviceImpl;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.rpl.model.Activity;
-import com.rpl.model.Language;
-import com.rpl.model.TestType;
 import com.rpl.persistence.ActivityDAO;
 import com.rpl.service.ActivityService;
-
-import java.util.List;
 
 @Stateless
 public class ActivityServiceImpl implements ActivityService {

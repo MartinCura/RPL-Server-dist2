@@ -15,6 +15,8 @@ public class Credentials {
 	
 	@Enumerated(EnumType.STRING)
 	private Role role;
+	
+	private String token;
 
 	public Credentials() {
 	}
@@ -61,6 +63,14 @@ public class Credentials {
 		map.put("password", this.password);
 		map.put("role", this.role);
 		return map;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 }
