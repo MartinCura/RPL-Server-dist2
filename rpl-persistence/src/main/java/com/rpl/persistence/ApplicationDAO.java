@@ -11,7 +11,7 @@ public class ApplicationDAO {
 	@PersistenceContext(unitName = "RplPU")
     protected EntityManager entityManager;
 	
-	private Boolean MANAGED_CONTAINER = true;
+	private static Boolean MANAGED_CONTAINER = true;
 
 	public ApplicationDAO() {
 		/*
@@ -22,8 +22,11 @@ public class ApplicationDAO {
 		if (this.entityManager == null) {
 			EntityManagerFactory factory = Persistence.createEntityManagerFactory("RplPU");
 			this.entityManager = factory.createEntityManager();
-			MANAGED_CONTAINER = false;
 		}
+	}
+	
+	public static void setBeanTransactionManagement(){
+		MANAGED_CONTAINER = false;
 	}
 	
 	public <T> T save(T obj){

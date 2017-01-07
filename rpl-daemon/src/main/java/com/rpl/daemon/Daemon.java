@@ -4,6 +4,7 @@ import com.rpl.model.ActivitySubmission;
 import com.rpl.model.QueueMessage;
 import com.rpl.model.runner.Result;
 import com.rpl.persistence.ActivitySubmissionDAO;
+import com.rpl.persistence.ApplicationDAO;
 import com.rpl.persistence.ResultDAO;
 import com.rpl.service.QueueService;
 import com.rpl.serviceImpl.QueueServiceImpl;
@@ -11,6 +12,8 @@ import com.rpl.serviceImpl.QueueServiceImpl;
 public class Daemon {
 	
 	public static void main( String[] args ){
+		
+		ApplicationDAO.setBeanTransactionManagement();
         
 		QueueService qs = new QueueServiceImpl();
 		ActivitySubmissionDAO activitySubmissionDAO = new ActivitySubmissionDAO();
