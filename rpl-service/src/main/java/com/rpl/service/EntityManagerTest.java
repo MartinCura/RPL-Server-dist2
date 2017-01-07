@@ -1,10 +1,12 @@
 package com.rpl.service;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.rpl.model.DBTest;
 import com.rpl.persistence.EntityManagerDAOTest;
 
+@Stateless
 public class EntityManagerTest {
 
 	@Inject

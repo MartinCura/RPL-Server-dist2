@@ -13,7 +13,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ejb.version>3.0</ejb.version>
 		<rpl.version>0.0.1</rpl.version>
 		<rpl.daemon.version>0.0.1</rpl.daemon.version>
 		<hibernate.version>5.2.2.Final</hibernate.version>
@@ -47,11 +46,6 @@
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.1-api</artifactId>
 			<version>${jpa.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.ejb</groupId>
-			<artifactId>ejb-api</artifactId>
-			<version>${ejb.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.enterprise</groupId>
