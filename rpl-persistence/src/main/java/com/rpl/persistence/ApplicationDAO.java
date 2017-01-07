@@ -1,11 +1,13 @@
 package com.rpl.persistence;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 
+@Stateless
 public class ApplicationDAO {
 	
 	@PersistenceContext(unitName = "RplPU")
@@ -19,7 +21,7 @@ public class ApplicationDAO {
 		 * application, so if the entityManager wasnt injected we need to create it 
 		 * programmatically
 		 * */
-		if (this.entityManager == null) {
+		if (!MANAGED_CONTAINER) {
 			EntityManagerFactory factory = Persistence.createEntityManagerFactory("RplPU");
 			this.entityManager = factory.createEntityManager();
 		}

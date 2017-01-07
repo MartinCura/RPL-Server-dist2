@@ -14,4 +14,10 @@ public class EntityManagerTest {
     	return emTest.find(0);
     }
     
+    public DBTest save(){
+    	DBTest test = new DBTest();
+    	test.setMsg("test");
+    	return emTest.save(test);
+    }
+    
 }

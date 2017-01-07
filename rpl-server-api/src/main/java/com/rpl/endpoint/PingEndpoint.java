@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -56,6 +57,15 @@ public class PingEndpoint {
 	public Response testDB() {
 		
 		return Response.status(200).entity(entityManagerTest.find()).build();
+
+	}
+	
+	@POST
+	@Path("/testDBSave")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response testDB2() {
+		
+		return Response.status(200).entity(entityManagerTest.save()).build();
 
 	}
 }
