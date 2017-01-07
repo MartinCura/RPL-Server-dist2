@@ -36,6 +36,7 @@ public class ActivitySubmission {
 	@OneToOne
 	@JoinColumn(name = "result_id")
 	private Result result;
+	private boolean selected;
 	
 	public Date getSubmissionDate() {
 		return submissionDate;
@@ -91,5 +92,13 @@ public class ActivitySubmission {
 
 	public void setPerson(Person person) {
 		this.person = person;
+	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 }

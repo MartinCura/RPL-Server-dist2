@@ -11,6 +11,7 @@
 		<class>com.rpl.model.ActivitySubmission</class>
 		<class>com.rpl.model.Topic</class>
 		<class>com.rpl.model.Course</class>
+		<class>com.rpl.model.CoursePerson</class>
 		<class>com.rpl.model.runner.Result</class>
 		<class>com.rpl.model.runner.Tests</class>
 		<class>com.rpl.model.runner.ResultStatus</class>
