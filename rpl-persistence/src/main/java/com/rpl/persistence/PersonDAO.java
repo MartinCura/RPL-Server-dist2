@@ -7,6 +7,8 @@ import javax.persistence.criteria.Root;
 
 import com.rpl.model.Person;
 
+import java.util.List;
+
 public class PersonDAO extends ApplicationDAO {
 
 	public Person find(long id) {
@@ -33,4 +35,7 @@ public class PersonDAO extends ApplicationDAO {
 			.executeUpdate();
 	}
 
+    public List<Person> findByCourse(Long id) {
+		return entityManager.createQuery("SELECT p FROM Person p, CoursePerson cp WHERE p.id = cp.person.id AND cp.course.id = :courseId").setParameter("courseId", id).getResultList();
+    }
 }

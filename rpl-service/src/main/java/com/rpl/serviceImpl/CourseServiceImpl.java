@@ -1,9 +1,6 @@
 package com.rpl.serviceImpl;
 
-import com.rpl.model.Course;
-import com.rpl.model.CoursePerson;
-import com.rpl.model.Person;
-import com.rpl.model.RoleCourse;
+import com.rpl.model.*;
 import com.rpl.persistence.CourseDAO;
 import com.rpl.persistence.CoursePersonDAO;
 import com.rpl.persistence.PersonDAO;
@@ -11,7 +8,10 @@ import com.rpl.service.CourseService;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Stateless
 public class CourseServiceImpl implements CourseService{
@@ -44,6 +44,17 @@ public class CourseServiceImpl implements CourseService{
         coursePerson.setCourse(course);
         coursePerson.setRole(RoleCourse.STUDENT);
         coursePersonDAO.save(coursePerson);
+
+    }
+
+    public Map<Person, Set<ActivitySubmission>> getSubmissionsByStudent(Long id) {
+        Map<Person, Set<ActivitySubmission>> submissionsByStudent = new HashMap<Person, Set<ActivitySubmission>>();
+        List<Person> students = personDAO.findByCourse(id);
+        //FIXME devolver solo las submissions de este curso y que fueron SUCCESS
+        for (Person person : students) {
+            submissionsByStudent.put(person, person.getSubmissions());
+        }
+        return submissionsByStudent;
 
     }
 }

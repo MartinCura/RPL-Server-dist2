@@ -6,14 +6,19 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.ActivityPOJO;
+import com.rpl.POJO.CourseStudentPOJO;
 import com.rpl.model.Activity;
+import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Course;
+import com.rpl.model.Person;
 import com.rpl.service.ActivityService;
 import com.rpl.service.CourseService;
 import com.rpl.POJO.CoursePOJO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Path("/courses")
 public class CourseEndpoint {
@@ -85,5 +90,13 @@ public class CourseEndpoint {
 		//FIXME buscar persona por token
 		courseService.join(Long.valueOf(1), courseId);
 		return Response.status(200).build();
+	}
+
+	@GET
+	@Path("/{id}/students")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getStudentsActivities(@PathParam("id") Long id) {
+		Map<Person, Set<ActivitySubmission>> submissionsByPerson = courseService.getSubmissionsByStudent(id);
+		return Response.status(200).entity(new CourseStudentPOJO(id, submissionsByPerson)).build();
 	}
 }

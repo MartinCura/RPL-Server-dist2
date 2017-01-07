@@ -13,9 +13,9 @@ public class Course {
 	private Long id;
 	private String name;
 	//TODO diferenciar estudiantes y profesores
-	@ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL, mappedBy = "courses")
+	@ManyToMany(cascade= CascadeType.ALL, mappedBy = "courses")
 	private List<Person> professors;
-	@ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL, mappedBy = "courses")
+	@ManyToMany(cascade= CascadeType.ALL, mappedBy = "courses")
 	private List<Person> students;
 	
 	//private Customization customization;

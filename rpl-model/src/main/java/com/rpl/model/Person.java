@@ -17,7 +17,7 @@ public class Person {
 	@Embedded
 	private Credentials credentials;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "course_person",
 			joinColumns = @JoinColumn(name = "person_id"),
