@@ -28,8 +28,8 @@ public class PersonDAO extends ApplicationDAO {
 	public void updatePersonToken(String username, String token) {
 		entityManager.createQuery(
 			    "update Person p " +
-			    "set p.token = :token " +
-			    "where p.username = :username" )
+			    "set p.credentials.token = :token " +
+			    "where p.credentials.username = :username" )
 			.setParameter( "token", token)
 			.setParameter( "username", username )
 			.executeUpdate();

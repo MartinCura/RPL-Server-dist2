@@ -10,6 +10,7 @@ import javax.persistence.*;
 public class Course {
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	//TODO diferenciar estudiantes y profesores

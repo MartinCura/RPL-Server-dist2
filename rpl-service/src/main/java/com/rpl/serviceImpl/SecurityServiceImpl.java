@@ -2,6 +2,7 @@ package com.rpl.serviceImpl;
 
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.rpl.exception.RplNotAuthorizedException;
@@ -15,6 +16,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+@Stateless
 public class SecurityServiceImpl implements SecurityService {
 
 	private static final String PRIVATE_KEY = "RPL";
