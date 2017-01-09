@@ -5,12 +5,16 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.rpl.POJO.ActivitySubmissionPOJO;
 import com.rpl.exception.RplQueueException;
 import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.service.ActivityService;
 import com.rpl.service.ActivitySubmissionService;
 import com.rpl.POJO.ActivityPOJO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Path("/activities")
 public class ActivityEndpoint {
@@ -28,6 +32,20 @@ public class ActivityEndpoint {
 
 		Activity activity = activityService.getActivityById(id);
 		return Response.status(200).entity(new ActivityPOJO(activity)).build();
+
+	}
+
+	@GET
+	@Path("/{id}/submissions")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getSubmissionsByActivity(@PathParam("id") Long activityId) {
+
+		List<ActivitySubmission> submissions = activitySubmissionService.getSubmissionsByActivity(Long.valueOf(1), activityId);
+		List<ActivitySubmissionPOJO> submissionPOJOS = new ArrayList<ActivitySubmissionPOJO>();
+		for (ActivitySubmission submission : submissions) {
+			submissionPOJOS.add(new ActivitySubmissionPOJO(submission));
+		}
+		return Response.status(200).entity(submissionPOJOS).build();
 
 	}
 	
