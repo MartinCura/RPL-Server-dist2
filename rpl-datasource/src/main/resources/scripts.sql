@@ -134,7 +134,7 @@ CREATE TABLE person (
 	id serial PRIMARY KEY,
 	name text NOT NULL,
 	mail text NOT NULL,
-	username text NOT NULL,
+	username text UNIQUE NOT NULL,
 	password text NOT NULL,
 	token text,
 	role text NOT NULL

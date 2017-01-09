@@ -2,6 +2,7 @@ package com.rpl.service;
 
 import java.util.List;
 
+import com.rpl.exception.RplException;
 import com.rpl.exception.RplNotAuthorizedException;
 import com.rpl.exception.RplRoleException;
 import com.rpl.model.Person;
@@ -19,6 +20,6 @@ public interface SecurityService {
 	
 	public void logout(String username);
 
-	public String register(Person p);
+	public String register(Person p) throws RplException;
 
 }

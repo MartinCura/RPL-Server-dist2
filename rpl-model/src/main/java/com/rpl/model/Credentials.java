@@ -3,13 +3,14 @@ package com.rpl.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 @Embeddable
 public class Credentials {
-	
+	@Column(unique = true)
 	private String username;
 	private String password;
 	

@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.PersistenceException;
 
+import com.rpl.exception.RplException;
 import com.rpl.exception.RplNotAuthorizedException;
 import com.rpl.exception.RplRoleException;
 import com.rpl.model.Person;
@@ -69,10 +71,14 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	@Override
-	public String register(Person p) {
+	public String register(Person p) throws RplException {
 		String token = generateToken(p);
 		p.getCredentials().setToken(token);
-		personDAO.save(p);
+		try {
+			personDAO.save(p);
+		} catch (PersistenceException e) {
+			throw RplException.of("UserName debe ser unico", e);
+		}
 		return token;
 	}
 
