@@ -57,4 +57,10 @@ public class CourseServiceImpl implements CourseService{
         return submissionsByStudent;
 
     }
+
+    public void accept(Long courseId, Long personId) {
+        CoursePerson person = coursePersonDAO.findByCourseAndPerson(courseId, personId);
+        person.setAccepted(true);
+        coursePersonDAO.save(person);
+    }
 }

@@ -85,7 +85,6 @@ public class CourseEndpoint {
 	@POST
 	@Path("/{id}/join")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response joinCourse(@PathParam("id") Long courseId) {
 		//FIXME buscar persona por token
 		courseService.join(Long.valueOf(1), courseId);
@@ -98,5 +97,13 @@ public class CourseEndpoint {
 	public Response getStudentsActivities(@PathParam("id") Long id) {
 		Map<Person, Set<ActivitySubmission>> submissionsByPerson = courseService.getSubmissionsByStudent(id);
 		return Response.status(200).entity(new CourseStudentPOJO(id, submissionsByPerson)).build();
+	}
+
+	@POST
+	@Path("/{courseId}/person/{personId}/accept")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response acceptStudent(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
+		courseService.accept(courseId, personId);
+		return Response.status(200).build();
 	}
 }

@@ -17,4 +17,6 @@ public interface CourseService {
     public void join(Long personId, Long courseId);
 
     Map<Person,Set<ActivitySubmission>> getSubmissionsByStudent(Long id);
+
+    public void accept(Long courseId, Long personId);
 }

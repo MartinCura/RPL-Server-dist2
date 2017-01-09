@@ -2,6 +2,7 @@ package com.rpl.serviceImpl;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 import javax.ejb.Stateless;
@@ -57,5 +58,15 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 
 	}
 
+	public void markAsSelected(Long submissionId) {
+		ActivitySubmission submission = activitySubmissionDAO.find(submissionId);
+		submission.setSelected(true);
+		activitySubmissionDAO.save(submission);
+		//TODO si hay otra marcada ponerla en false
+	}
+
+	public List<ActivitySubmission> getSubmissionsByActivity(Long personId, Long activityId) {
+		return activitySubmissionDAO.findByPersonAndActivity(personId, activityId);
+	}
 
 }
