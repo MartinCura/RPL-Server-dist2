@@ -47,12 +47,11 @@ public class SecurityInterceptor implements ContainerRequestFilter {
 			Person p = checkAuth(requestContext);
 			checkRoles(requestContext, p);
 			userService.setCurrentUser(p);
-		} catch (NotAuthorizedException e) {
-			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
 		} catch (ForbiddenException e) {
 			requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
+		} catch (Exception e) {
+			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
 		}
-
 	}
 
 	private Person checkAuth(ContainerRequestContext requestContext) throws NotAuthorizedException {
