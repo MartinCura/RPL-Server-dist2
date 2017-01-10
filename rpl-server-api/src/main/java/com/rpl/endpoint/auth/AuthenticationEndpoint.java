@@ -12,18 +12,22 @@ import com.rpl.POJO.CredentialsPOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.RegisterPOJO;
 import com.rpl.POJO.TokenPOJO;
+import com.rpl.annotation.Secured;
 import com.rpl.exception.RplException;
 import com.rpl.model.Credentials;
 import com.rpl.model.Person;
 import com.rpl.model.Role;
 import com.rpl.service.SecurityService;
+import com.rpl.service.UserService;
 
 @Path("/authentication")
 public class AuthenticationEndpoint {
 
 	@Inject
 	private SecurityService securityService;
-
+	@Inject
+	private UserService userService;
+	
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -42,6 +46,7 @@ public class AuthenticationEndpoint {
 		}
 	}
 
+	@Secured
 	@POST
 	@Path("/logout")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -49,11 +54,8 @@ public class AuthenticationEndpoint {
 	public Response logout() {
 
 		try {
-			// TODO
-			securityService.logout("MOCK");
-
+			securityService.logout(userService.getCurrentUser().getCredentials().getUsername());
 			return Response.ok().build();
-
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}

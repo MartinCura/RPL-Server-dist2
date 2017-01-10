@@ -1,14 +1,20 @@
 package com.rpl.endpoint;
 
 import javax.inject.Inject;
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.ActivitySubmissionPOJO;
+import com.rpl.annotation.Secured;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.service.ActivitySubmissionService;
 
+@Secured
 @Path("/submissions")
 public class ActivitySubmissionEndpoint {
 	
