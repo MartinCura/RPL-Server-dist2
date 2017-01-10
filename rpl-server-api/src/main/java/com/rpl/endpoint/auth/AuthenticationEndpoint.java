@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import com.rpl.POJO.CredentialsPOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.RegisterPOJO;
+import com.rpl.POJO.TokenPOJO;
 import com.rpl.exception.RplException;
 import com.rpl.model.Credentials;
 import com.rpl.model.Person;
@@ -26,7 +27,7 @@ public class AuthenticationEndpoint {
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response authenticateUser(CredentialsPOJO c) {
 
 		try {
@@ -34,7 +35,7 @@ public class AuthenticationEndpoint {
 
 			String token = securityService.issueToken(p);
 
-			return Response.ok(token).build();
+			return Response.ok(TokenPOJO.of(token)).build();
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
