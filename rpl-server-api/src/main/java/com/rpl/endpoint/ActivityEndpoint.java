@@ -1,21 +1,28 @@
 package com.rpl.endpoint;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.rpl.POJO.ActivityPOJO;
 import com.rpl.POJO.ActivitySubmissionPOJO;
+import com.rpl.annotation.Secured;
 import com.rpl.exception.RplQueueException;
 import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.service.ActivityService;
 import com.rpl.service.ActivitySubmissionService;
-import com.rpl.POJO.ActivityPOJO;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@Secured
 @Path("/activities")
 public class ActivityEndpoint {
 

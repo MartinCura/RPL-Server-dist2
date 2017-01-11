@@ -1,25 +1,32 @@
 package com.rpl.endpoint;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.inject.Inject;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.ActivityPOJO;
+import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.CourseStudentPOJO;
+import com.rpl.annotation.Secured;
 import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Course;
 import com.rpl.model.Person;
 import com.rpl.service.ActivityService;
 import com.rpl.service.CourseService;
-import com.rpl.POJO.CoursePOJO;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+@Secured
 @Path("/courses")
 public class CourseEndpoint {
 	

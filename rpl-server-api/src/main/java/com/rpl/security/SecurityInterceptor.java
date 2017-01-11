@@ -25,6 +25,7 @@ import com.rpl.exception.RplRoleException;
 import com.rpl.model.Person;
 import com.rpl.model.Role;
 import com.rpl.service.SecurityService;
+import com.rpl.service.UserService;
 
 @Secured
 @Provider
@@ -36,18 +37,21 @@ public class SecurityInterceptor implements ContainerRequestFilter {
 
 	@Inject
 	private SecurityService securityService;
+	
+	@Inject
+	private UserService userService;
 
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
 		try {
 			Person p = checkAuth(requestContext);
 			checkRoles(requestContext, p);
-		} catch (NotAuthorizedException e) {
-			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+			userService.setCurrentUser(p);
 		} catch (ForbiddenException e) {
 			requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
+		} catch (Exception e) {
+			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
 		}
-
 	}
 
 	private Person checkAuth(ContainerRequestContext requestContext) throws NotAuthorizedException {

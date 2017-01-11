@@ -1,11 +1,7 @@
 package com.rpl.endpoint;
 
-import com.rpl.POJO.ActivityPOJO;
-import com.rpl.POJO.TopicPOJO;
-import com.rpl.model.Activity;
-import com.rpl.model.Topic;
-import com.rpl.service.ActivityService;
-import com.rpl.service.TopicService;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -14,9 +10,16 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.List;
 
+import com.rpl.POJO.ActivityPOJO;
+import com.rpl.POJO.TopicPOJO;
+import com.rpl.annotation.Secured;
+import com.rpl.model.Activity;
+import com.rpl.model.Topic;
+import com.rpl.service.ActivityService;
+import com.rpl.service.TopicService;
+
+@Secured
 @Path("/topics")
 public class TopicEndpoint {
     @Inject
