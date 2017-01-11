@@ -50,19 +50,6 @@ public class CourseEndpoint {
 		return Response.status(200).entity(new CoursePOJO(course)).build();
 	}
 
-	@GET
-	@Path("/{id}/activities")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getActivities(@PathParam("id") Long courseId) {
-
-		List<Activity> activities = activityService.getActivitiesByCourse(courseId);
-		List<ActivityPOJO> activityPOJOS = new ArrayList<ActivityPOJO>();
-		for (Activity activity : activities) {
-			activityPOJOS.add(new ActivityPOJO(activity));
-		}
-		return Response.status(200).entity(activityPOJOS).build();
-	}
-
 	@POST
 	@Path("/{id}/activities")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -94,6 +81,7 @@ public class CourseEndpoint {
 	@GET
 	@Path("/{id}/students")
 	@Produces(MediaType.APPLICATION_JSON)
+	//TODO mover a /reports
 	public Response getStudentsActivities(@PathParam("id") Long id) {
 		Map<Person, Set<ActivitySubmission>> submissionsByPerson = courseService.getSubmissionsByStudent(id);
 		return Response.status(200).entity(new CourseStudentPOJO(id, submissionsByPerson)).build();

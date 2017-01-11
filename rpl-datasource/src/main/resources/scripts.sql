@@ -147,9 +147,23 @@ insert into person (
 	password,
 	role
 	) values (
-	'rpl',
+	'rpl-student',
 	'rpl@rpl.com',
+	'rpl-student',
 	'rpl',
+	'USER'
+	);
+
+insert into person (
+	name,
+	mail,
+	username,
+	password,
+	role
+	) values (
+	'rpl-assistant',
+	'rpl@rpl.com',
+	'rpl-assistant',
 	'rpl',
 	'USER'
 	);
@@ -160,7 +174,9 @@ CREATE TABLE course_person (
 	course_id integer REFERENCES course,
 	person_id integer REFERENCES person,
 	role text NOT NULL,
-	accepted boolean NOT NULL DEFAULT FALSE
+	accepted boolean NOT NULL DEFAULT FALSE,
+	assistant_id integer REFERENCES person
 );
 
-insert into course_person (course_id, person_id, role, accepted) values (1, 1, 'USER', true);
+insert into course_person (course_id, person_id, role, accepted) values (1, 2, 'ASSISTANT_PROFESSOR', true);
+insert into course_person (course_id, person_id, role, accepted, assistant_id) values (1, 1, 'STUDENT', true, 1);

@@ -2,6 +2,7 @@ package com.rpl.service;
 
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Course;
+import com.rpl.model.CoursePerson;
 import com.rpl.model.Person;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface CourseService {
     Map<Person,Set<ActivitySubmission>> getSubmissionsByStudent(Long id);
 
     public void accept(Long courseId, Long personId);
+
+    List<CoursePerson> getStudents(Long id);
 }

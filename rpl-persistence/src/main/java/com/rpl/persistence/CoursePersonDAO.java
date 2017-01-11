@@ -4,6 +4,7 @@ package com.rpl.persistence;
 import com.rpl.model.CoursePerson;
 
 import javax.persistence.Query;
+import java.util.List;
 
 public class CoursePersonDAO extends ApplicationDAO {
 
@@ -18,5 +19,13 @@ public class CoursePersonDAO extends ApplicationDAO {
                 .setParameter("courseId", courseId)
                 .setParameter("personId", personId);
         return (CoursePerson) query.getSingleResult();
+    }
+
+    public List<CoursePerson> findByCourseId(Long courseId) {
+        return entityManager.createQuery(
+                "SELECT cp FROM CoursePerson cp WHERE " +
+                        "cp.course.id = :courseId AND cp.role = 'STUDENT'")
+                .setParameter("courseId", courseId)
+                .getResultList();
     }
 }

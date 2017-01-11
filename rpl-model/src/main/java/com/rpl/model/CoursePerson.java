@@ -12,14 +12,16 @@ public class CoursePerson {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id")
     private Person person;
     @Enumerated(EnumType.STRING)
     @Column(name="role")
     private RoleCourse role;
     private boolean accepted;
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "assistant_id")
+    private Person assistant;
 
     public Long getId() {
         return id;
@@ -59,5 +61,13 @@ public class CoursePerson {
 
     public void setAccepted(boolean accepted) {
         this.accepted = accepted;
+    }
+
+    public Person getAssistant() {
+        return assistant;
+    }
+
+    public void setAssistant(Person assistant) {
+        this.assistant = assistant;
     }
 }
