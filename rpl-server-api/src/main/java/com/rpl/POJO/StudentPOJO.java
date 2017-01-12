@@ -10,7 +10,7 @@ public class StudentPOJO {
     private Long assistant;
 
     public StudentPOJO(CoursePerson student) {
-        this.id = student.getId();
+        this.id = student.getPerson().getId();
         this.name = student.getPerson().getName();
         this.accepted = student.isAccepted();
         if (student.getAssistant() != null) {

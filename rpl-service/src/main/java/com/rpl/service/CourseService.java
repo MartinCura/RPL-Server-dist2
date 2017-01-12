@@ -22,4 +22,5 @@ public interface CourseService {
     public void accept(Long courseId, Long personId);
 
     List<CoursePerson> getStudents(Long id);
+    List<CoursePerson> getAssistants(Long id);
 }

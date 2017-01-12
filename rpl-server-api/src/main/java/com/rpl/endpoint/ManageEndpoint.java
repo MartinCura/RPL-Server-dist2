@@ -1,8 +1,10 @@
 package com.rpl.endpoint;
 
 import com.rpl.POJO.ActivityPOJO;
+import com.rpl.POJO.AssistantPOJO;
 import com.rpl.POJO.StudentPOJO;
 import com.rpl.POJO.TopicPOJO;
+import com.rpl.annotation.Secured;
 import com.rpl.model.Activity;
 import com.rpl.model.CoursePerson;
 import com.rpl.model.Topic;
@@ -20,6 +22,7 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
+@Secured
 @Path("/manage/courses")
 public class ManageEndpoint {
 
@@ -67,5 +70,18 @@ public class ManageEndpoint {
             studentPOJOS.add(new StudentPOJO(student));
         }
         return Response.status(200).entity(studentPOJOS).build();
+    }
+
+    @GET
+    @Path("/{id}/assistants")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAssistants(@PathParam("id") Long id) {
+
+        List<CoursePerson> assistants = courseService.getAssistants(id);
+        List<AssistantPOJO> assistantPOJOS = new ArrayList<AssistantPOJO>();
+        for (CoursePerson assistant : assistants) {
+            assistantPOJOS.add(new AssistantPOJO(assistant));
+        }
+        return Response.status(200).entity(assistantPOJOS).build();
     }
 }

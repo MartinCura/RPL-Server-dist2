@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.ActivityPOJO;
 import com.rpl.POJO.ActivitySubmissionPOJO;
+import com.rpl.POJO.ActivitySubmissionSimplePOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplQueueException;
 import com.rpl.model.Activity;
@@ -48,9 +49,9 @@ public class ActivityEndpoint {
 	public Response getSubmissionsByActivity(@PathParam("id") Long activityId) {
 
 		List<ActivitySubmission> submissions = activitySubmissionService.getSubmissionsByActivity(Long.valueOf(1), activityId);
-		List<ActivitySubmissionPOJO> submissionPOJOS = new ArrayList<ActivitySubmissionPOJO>();
+		List<ActivitySubmissionSimplePOJO> submissionPOJOS = new ArrayList<ActivitySubmissionSimplePOJO>();
 		for (ActivitySubmission submission : submissions) {
-			submissionPOJOS.add(new ActivitySubmissionPOJO(submission));
+			submissionPOJOS.add(new ActivitySubmissionSimplePOJO(submission));
 		}
 		return Response.status(200).entity(submissionPOJOS).build();
 
