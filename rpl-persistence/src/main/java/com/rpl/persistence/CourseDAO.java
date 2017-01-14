@@ -15,4 +15,8 @@ public class CourseDAO extends ApplicationDAO {
         return entityManager.createQuery("SELECT c FROM Course c").getResultList();
     }
 
+	public void delete(Long id) {
+		entityManager.createQuery("DELETE Course where id = :id").setParameter("id", id).executeUpdate();
+	}
+
 }

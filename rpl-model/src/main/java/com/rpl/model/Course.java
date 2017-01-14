@@ -3,7 +3,15 @@ package com.rpl.model;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "course")
@@ -21,7 +29,7 @@ public class Course {
 	
 	//private Customization customization;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "course")
+	@OneToMany(cascade= CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "course", orphanRemoval = true)
 	private Set<Topic> topics;
 
 	public Long getId() {

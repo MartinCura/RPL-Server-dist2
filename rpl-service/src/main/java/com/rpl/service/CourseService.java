@@ -14,7 +14,7 @@ public interface CourseService {
 
     public Course getCourseById(Long id);
     public List<Course> getCourses();
-    public void submit(Course course);
+    public Course submit(Course course);
     public void join(Long personId, Long courseId);
 
     Map<Person,Set<ActivitySubmission>> getSubmissionsByStudent(Long id);
@@ -23,4 +23,5 @@ public interface CourseService {
 
     List<CoursePerson> getStudents(Long id);
     List<CoursePerson> getAssistants(Long id);
+	public void deleteCourseById(Long id);
 }

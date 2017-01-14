@@ -7,18 +7,18 @@ import java.util.Set;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.rpl.POJO.ActivityPOJO;
 import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.CourseStudentPOJO;
-import com.rpl.annotation.Secured;
 import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Course;
@@ -56,6 +56,35 @@ public class CourseEndpoint {
 		Course course = courseService.getCourseById(id);
 		return Response.status(200).entity(new CoursePOJO(course)).build();
 	}
+	
+	@DELETE
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteCourseById(@PathParam("id") Long id) {
+
+		courseService.deleteCourseById(id);
+		return Response.ok().build();
+	}
+	
+	@PUT
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateCourseById(Course course) {
+
+		Course updatedCourse = courseService.submit(course);
+		return Response.status(200).entity(new CoursePOJO(updatedCourse)).build();
+	}
+	
+	@GET
+	@Path("/{id}/topics")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCourseTopicsById(@PathParam("id") Long id) {
+
+		Course course = courseService.getCourseById(id);
+		return Response.status(200).entity(new CoursePOJO(course.getTopics())).build();
+	}
+	
+	
 
 	@POST
 	@Path("/{id}/activities")
