@@ -18,6 +18,7 @@ import com.rpl.persistence.ActivityDAO;
 import com.rpl.persistence.ActivitySubmissionDAO;
 import com.rpl.service.ActivitySubmissionService;
 import com.rpl.service.QueueService;
+import com.rpl.service.UserService;
 import com.rpl.service.util.JsonUtils;
 
 @Stateless
@@ -25,7 +26,8 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 	
 	@Inject
 	private QueueService queueService;
-
+	@Inject
+	private UserService userService;
 	@Inject
 	private ActivitySubmissionDAO activitySubmissionDAO;
 	@Inject
@@ -38,6 +40,7 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 
 	public void submit(Long activityId, ActivitySubmission submission) throws RplQueueException {
 		Activity activity = activityDAO.find(activityId);
+		submission.setPerson(userService.getCurrentUser());
 		submission.setActivity(activity);
 		submission.setSubmissionDate(new Date());
 		submission.setStatus(Status.PENDING);
