@@ -1,6 +1,7 @@
 package com.rpl.serviceImpl;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -22,6 +23,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class SecurityServiceImpl implements SecurityService {
 
 	private static final String PRIVATE_KEY = "RPL";
+	
+	private static final String USERNAME_PATTERN = "^[a-z0-9_-]{8,20}$";
+	
+	private static final Integer PASSWORD_MIN_LENGTH = 4;
 
 	@Inject
 	private PersonDAO personDAO;
@@ -73,13 +78,26 @@ public class SecurityServiceImpl implements SecurityService {
 	@Override
 	public String register(Person p) throws RplException {
 		String token = generateToken(p);
-		p.getCredentials().setToken(token);
 		try {
+			validateUsername(p.getCredentials().getUsername());
+			validatePassword(p.getCredentials().getPassword());
+			p.getCredentials().setToken(token);
 			personDAO.save(p);
 		} catch (PersistenceException e) {
-			throw RplException.of("UserName debe ser unico", e);
+			throw RplException.of("Username debe ser unico", e);
 		}
 		return token;
+	}
+
+	private void validatePassword(String password) throws RplException{
+		if (password.length() < PASSWORD_MIN_LENGTH) throw RplException.of(1, "Password tiene que tener mas de " + PASSWORD_MIN_LENGTH + " caracteres");
+	}
+
+	private void validateUsername(String username) throws RplException {
+		Pattern pattern = Pattern.compile(USERNAME_PATTERN);
+		if (!pattern.matcher(username).matches()){
+			throw RplException.of(1, "Username tiene que tener entre 8 y 20 caracteres alfanumericos, _ o -");
+		}
 	}
 
 }
