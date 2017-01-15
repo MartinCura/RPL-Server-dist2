@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.CourseStudentPOJO;
+import com.rpl.annotation.Secured;
 import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Course;

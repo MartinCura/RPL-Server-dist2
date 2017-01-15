@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,9 +29,12 @@ public class Course {
 	@ManyToMany(cascade= CascadeType.ALL, mappedBy = "courses")
 	private List<Person> students;
 	
+	@Enumerated(EnumType.STRING)
+	private DatabaseState state;
+	
 	//private Customization customization;
 	
-	@OneToMany(cascade= CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "course", orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "course", orphanRemoval = true)
 	private Set<Topic> topics;
 
 	public Long getId() {
@@ -71,6 +76,12 @@ public class Course {
 	public void setTopics(Set<Topic> topics) {
 		this.topics = topics;
 	}
-
 	
+	public DatabaseState getState() {
+		return state;
+	}
+
+	public void setState(DatabaseState state) {
+		this.state = state;
+	}
 }

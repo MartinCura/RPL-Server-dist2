@@ -3,7 +3,8 @@ create table test (id serial PRIMARY KEY, msg varchar(50) NOT NULL);
 DROP TABLE IF EXISTS course cascade;
 CREATE TABLE course (
 	id serial PRIMARY KEY,
-	name text NOT NULL
+	name text NOT NULL,
+	state text NOT NULL DEFAULT 'ENABLED'
 );
 
 insert into course (name) values ('First course');
