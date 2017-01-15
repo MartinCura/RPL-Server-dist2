@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.ActivityPOJO;
+import com.rpl.POJO.ActivitySubmissionInputPOJO;
 import com.rpl.POJO.ActivitySubmissionSimplePOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplQueueException;
@@ -60,9 +61,11 @@ public class ActivityEndpoint {
 	@Path("/{id}/submission")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response submitActivitySubmission(@PathParam("id") Long activityId, ActivitySubmission submission) {
+	public Response submitActivitySubmission(@PathParam("id") Long activityId, ActivitySubmissionInputPOJO submissionPOJO) {
 		
 		try {
+			ActivitySubmission submission = new ActivitySubmission();
+			submission.setCode(submissionPOJO.getCode());
 			activitySubmissionService.submit(activityId, submission);
 		} catch (RplQueueException e) {
 			return Response.status(505).entity(e).build();
