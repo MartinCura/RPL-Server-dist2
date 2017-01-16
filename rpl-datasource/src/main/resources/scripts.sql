@@ -41,16 +41,20 @@ insert into activity (
 	test_type,
 	input,
 	output,
-	tests
+	template
 	) values (
 	'this is an activity',
-	'PYTHON',
+	'C',
 	10,
 	1,
 	'INPUT',
 	'',
 	'hello',
-	'testcode'
+	'#include<stdio.h>
+
+int main() {
+
+}'
 	);
 
 DROP TABLE IF EXISTS result cascade;

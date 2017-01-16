@@ -10,15 +10,14 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.rpl.POJO.ActivityInputPOJO;
 import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.CourseStudentPOJO;
 import com.rpl.annotation.Secured;
-import com.rpl.model.Activity;
-import com.rpl.model.ActivitySubmission;
-import com.rpl.model.Course;
-import com.rpl.model.Person;
+import com.rpl.model.*;
 import com.rpl.service.ActivityService;
 import com.rpl.service.CourseService;
+import com.rpl.service.TopicService;
 
 @Secured
 @Path("/courses")
@@ -28,6 +27,8 @@ public class CourseEndpoint {
 	private ActivityService activityService;
 	@Inject
 	private CourseService courseService;
+	@Inject
+	private TopicService topicService;
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -88,8 +89,19 @@ public class CourseEndpoint {
 	@Path("/{id}/activities")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response submitActivity(@PathParam("id") Long courseId, Activity activity) {
-		
+	public Response submitActivity(@PathParam("id") Long courseId, ActivityInputPOJO activityInputPOJO) {
+		Topic topic = topicService.getTopicById(activityInputPOJO.getTopic());
+		Activity activity = new Activity();
+		activity.setTopic(topic);
+		activity.setName(activityInputPOJO.getName());
+		activity.setDescription(activityInputPOJO.getDescription());
+		activity.setLanguage(Language.valueOf(activityInputPOJO.getLanguage()));
+		activity.setPoints(activityInputPOJO.getPoints());
+		activity.setTestType(TestType.valueOf(activityInputPOJO.getTestType()));
+		activity.setTemplate(activityInputPOJO.getTemplate());
+		activity.setInput(activityInputPOJO.getInput());
+		activity.setOutput(activityInputPOJO.getOutput());
+		activity.setTests(activityInputPOJO.getTests());
 		activityService.submit(courseId, activity);
 		return Response.status(200).build();
 	}
