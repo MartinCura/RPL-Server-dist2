@@ -17,10 +17,12 @@ import com.rpl.persistence.CourseDAO;
 import com.rpl.persistence.CoursePersonDAO;
 import com.rpl.persistence.PersonDAO;
 import com.rpl.service.CourseService;
+import com.rpl.service.UserService;
 
 @Stateless
 public class CourseServiceImpl implements CourseService{
-
+    @Inject
+    private UserService userService;
     @Inject
     private CourseDAO courseDAO;
     @Inject
@@ -30,6 +32,11 @@ public class CourseServiceImpl implements CourseService{
 
     public List<Course> getCourses() {
         return courseDAO.findAll();
+    }
+
+    public List<Course> getCoursesByRole(String role) {
+        Person person = userService.getCurrentUser();
+        return courseDAO.findByPersonRole(person.getId(), RoleCourse.valueOf(role));
     }
 
     public Course getCourseById(Long id) {
@@ -44,8 +51,8 @@ public class CourseServiceImpl implements CourseService{
     	courseDAO.delete(id);
     }
 
-    public void join(Long personId, Long courseId) {
-        Person person = personDAO.find(personId);
+    public void join(Long courseId) {
+        Person person = userService.getCurrentUser();
         Course course = courseDAO.find(courseId);
         CoursePerson coursePerson = new CoursePerson();
         coursePerson.setPerson(person);

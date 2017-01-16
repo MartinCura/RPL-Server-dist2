@@ -1,19 +1,8 @@
 package com.rpl.model;
 
-import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "course")
@@ -23,19 +12,14 @@ public class Course {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	//TODO diferenciar estudiantes y profesores
-	@ManyToMany(cascade= CascadeType.ALL, mappedBy = "courses")
-	private List<Person> professors;
-	@ManyToMany(cascade= CascadeType.ALL, mappedBy = "courses")
-	private List<Person> students;
-	
+
 	@Enumerated(EnumType.STRING)
 	private DatabaseState state;
 	
-	//private Customization customization;
-	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "course", orphanRemoval = true)
 	private Set<Topic> topics;
+
+	//private Customization customization;
 
 	public Long getId() {
 		return id;
@@ -51,22 +35,6 @@ public class Course {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public List<Person> getProfessors() {
-		return professors;
-	}
-
-	public void setProfessors(List<Person> professors) {
-		this.professors = professors;
-	}
-
-	public List<Person> getStudents() {
-		return students;
-	}
-
-	public void setStudents(List<Person> students) {
-		this.students = students;
 	}
 
 	public Set<Topic> getTopics() {

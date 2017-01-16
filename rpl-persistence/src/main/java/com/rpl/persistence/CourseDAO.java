@@ -2,6 +2,7 @@ package com.rpl.persistence;
 
 import com.rpl.model.Course;
 import com.rpl.model.DatabaseState;
+import com.rpl.model.RoleCourse;
 
 import java.util.List;
 
@@ -20,4 +21,13 @@ public class CourseDAO extends ApplicationDAO {
 		entityManager.createQuery("UPDATE Course set state = :state where id = :id").setParameter("id", id).setParameter("state", DatabaseState.DELETED).executeUpdate();
 	}
 
+    public List<Course> findByPersonRole(Long personId, RoleCourse role) {
+        return entityManager.createQuery(
+                "SELECT c FROM Course c, CoursePerson cp WHERE" +
+                        " c.id = cp.course.id AND cp.person.id = :personId AND cp.role = :role AND c.state = :state")
+                .setParameter("personId",  personId)
+                .setParameter("role",  role)
+                .setParameter("state",  DatabaseState.ENABLED)
+                .getResultList();
+    }
 }

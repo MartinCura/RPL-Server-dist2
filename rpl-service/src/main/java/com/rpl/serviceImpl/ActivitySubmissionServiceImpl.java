@@ -68,8 +68,8 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		//TODO si hay otra marcada ponerla en false
 	}
 
-	public List<ActivitySubmission> getSubmissionsByActivity(Long personId, Long activityId) {
-		return activitySubmissionDAO.findByPersonAndActivity(personId, activityId);
+	public List<ActivitySubmission> getSubmissionsByActivity(Long activityId) {
+		return activitySubmissionDAO.findByPersonAndActivity(userService.getCurrentUser().getId(), activityId);
 	}
 
 }

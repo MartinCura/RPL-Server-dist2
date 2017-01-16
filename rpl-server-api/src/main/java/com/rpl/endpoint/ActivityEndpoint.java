@@ -48,7 +48,7 @@ public class ActivityEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubmissionsByActivity(@PathParam("id") Long activityId) {
 
-		List<ActivitySubmission> submissions = activitySubmissionService.getSubmissionsByActivity(Long.valueOf(1), activityId);
+		List<ActivitySubmission> submissions = activitySubmissionService.getSubmissionsByActivity(activityId);
 		List<ActivitySubmissionSimplePOJO> submissionPOJOS = new ArrayList<ActivitySubmissionSimplePOJO>();
 		for (ActivitySubmission submission : submissions) {
 			submissionPOJOS.add(new ActivitySubmissionSimplePOJO(submission));

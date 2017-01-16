@@ -6,14 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -38,9 +31,13 @@ public class CourseEndpoint {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCourses() {
-
-		List<Course> courses = courseService.getCourses();
+	public Response getCourses(@QueryParam("role") String role) {
+		List<Course> courses;
+		if (role == null) {
+			courses = courseService.getCourses();
+		} else {
+			courses = courseService.getCoursesByRole(role);
+		}
 		List<CoursePOJO> coursePOJOS = new ArrayList<CoursePOJO>();
 		for (Course course : courses) {
 			coursePOJOS.add(new CoursePOJO(course));
@@ -110,8 +107,7 @@ public class CourseEndpoint {
 	@Path("/{id}/join")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response joinCourse(@PathParam("id") Long courseId) {
-		//FIXME buscar persona por token
-		courseService.join(Long.valueOf(1), courseId);
+		courseService.join(courseId);
 		return Response.status(200).build();
 	}
 

@@ -14,14 +14,16 @@ public interface CourseService {
 
     public Course getCourseById(Long id);
     public List<Course> getCourses();
+    public List<Course> getCoursesByRole(String role);
     public Course submit(Course course);
-    public void join(Long personId, Long courseId);
+    public void join(Long courseId);
 
-    Map<Person,Set<ActivitySubmission>> getSubmissionsByStudent(Long id);
+    public Map<Person,Set<ActivitySubmission>> getSubmissionsByStudent(Long id);
 
     public void accept(Long courseId, Long personId);
 
-    List<CoursePerson> getStudents(Long id);
-    List<CoursePerson> getAssistants(Long id);
+    public List<CoursePerson> getStudents(Long id);
+    public List<CoursePerson> getAssistants(Long id);
 	public void deleteCourseById(Long id);
+
 }

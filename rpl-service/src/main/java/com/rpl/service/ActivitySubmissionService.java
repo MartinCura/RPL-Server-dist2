@@ -13,5 +13,5 @@ public interface ActivitySubmissionService {
 
 	public void markAsSelected(Long submissionId);
 
-    public List<ActivitySubmission> getSubmissionsByActivity(Long personId, Long activityId);
+    public List<ActivitySubmission> getSubmissionsByActivity(Long activityId);
 }
