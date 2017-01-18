@@ -37,7 +37,7 @@ public class AdminEndpoint {
     }
 
     @POST
-    @Path("/{courseId}/person")
+    @Path("/courses/{courseId}/person")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addProfessor(@PathParam("id") Long id, CoursePersonInputPOJO coursePersonInputPOJO) {
