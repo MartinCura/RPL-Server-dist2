@@ -65,7 +65,7 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		ActivitySubmission submission = activitySubmissionDAO.find(submissionId);
 		submission.setSelected(true);
 		activitySubmissionDAO.save(submission);
-		//TODO si hay otra marcada ponerla en false
+		activitySubmissionDAO.setUnselectedSubmissions(submissionId, submission.getPerson().getId(), submission.getActivity().getId());
 	}
 
 	public List<ActivitySubmission> getSubmissionsByActivity(Long activityId) {

@@ -18,4 +18,13 @@ public class ActivitySubmissionDAO extends ApplicationDAO{
 				.setParameter("activityId", activityId)
 				.getResultList();
     }
+
+    public void setUnselectedSubmissions(Long submissionId, Long personId, Long activityId) {
+		entityManager.createQuery("UPDATE ActivitySubmission set selected = 'f'" +
+				"WHERE id != :submissionId AND person.id = :personId AND activity.id = :activityId")
+				.setParameter("submissionId", submissionId)
+				.setParameter("personId", personId)
+				.setParameter("activityId", activityId)
+				.executeUpdate();
+    }
 }

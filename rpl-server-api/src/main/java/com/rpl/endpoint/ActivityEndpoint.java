@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.rpl.POJO.ActivityCompletePOJO;
 import com.rpl.POJO.ActivityPOJO;
 import com.rpl.POJO.ActivitySubmissionInputPOJO;
 import com.rpl.POJO.ActivitySubmissionSimplePOJO;
@@ -40,6 +41,16 @@ public class ActivityEndpoint {
 
 		Activity activity = activityService.getActivityById(id);
 		return Response.status(200).entity(new ActivityPOJO(activity)).build();
+
+	}
+
+	@GET
+	@Path("/{id}/edit")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getActivityCompleteById(@PathParam("id") Long id) {
+
+		Activity activity = activityService.getActivityById(id);
+		return Response.status(200).entity(new ActivityCompletePOJO(activity)).build();
 
 	}
 

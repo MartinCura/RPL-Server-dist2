@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import com.rpl.POJO.ActivityInputPOJO;
 import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.CourseStudentPOJO;
+import com.rpl.POJO.TopicInputPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.model.*;
 import com.rpl.service.ActivityService;
@@ -103,6 +104,17 @@ public class CourseEndpoint {
 		activity.setOutput(activityInputPOJO.getOutput());
 		activity.setTests(activityInputPOJO.getTests());
 		activityService.submit(courseId, activity);
+		return Response.status(200).build();
+	}
+
+	@POST
+	@Path("/{id}/topics")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response submitTopic(@PathParam("id") Long courseId, TopicInputPOJO topicInputPOJO) {
+		Topic topic = new Topic();
+		topic.setName(topicInputPOJO.getName());
+		topicService.submit(courseId, topic);
 		return Response.status(200).build();
 	}
 
