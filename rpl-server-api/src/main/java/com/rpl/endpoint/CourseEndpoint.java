@@ -119,15 +119,6 @@ public class CourseEndpoint {
 	}
 
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response submitCourse(Course course) {
-
-		courseService.submit(course);
-		return Response.status(200).build();
-	}
-
-	@POST
 	@Path("/{id}/join")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response joinCourse(@PathParam("id") Long courseId) {
