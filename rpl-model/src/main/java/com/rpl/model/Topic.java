@@ -17,6 +17,9 @@ public class Topic {
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy="topic")
 	private List<Activity> activities;
+	
+	@Enumerated(EnumType.STRING)
+	private DatabaseState state;
 
 	public Long getId() {
 		return id;

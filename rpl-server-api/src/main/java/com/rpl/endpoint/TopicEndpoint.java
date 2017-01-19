@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -34,6 +35,15 @@ public class TopicEndpoint {
 
         Topic topic = topicService.getTopicById(id);
         return Response.status(200).entity(new TopicPOJO(topic)).build();
+    }
+    
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteCourseById(@PathParam("id") Long id) {
+
+        topicService.deleteTopicById(id);
+        return Response.ok().build();
     }
 
     @GET

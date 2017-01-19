@@ -13,7 +13,8 @@ DROP TABLE IF EXISTS topic cascade;
 CREATE TABLE topic (
 	id serial PRIMARY KEY,
 	name text NOT NULL,
-	course_id integer REFERENCES course
+	course_id integer REFERENCES course,
+	state text NOT NULL DEFAULT 'ENABLED'
 );
 
 insert into topic (name, course_id) values ('this is a topic', 1);

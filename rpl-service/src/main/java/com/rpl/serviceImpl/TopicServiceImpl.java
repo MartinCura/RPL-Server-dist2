@@ -30,4 +30,8 @@ public class TopicServiceImpl implements TopicService{
         topic.setCourse(course);
         topicDAO.save(topic);
     }
+
+	public void deleteTopicById(Long id) {
+		topicDAO.delete(id);
+	}
 }

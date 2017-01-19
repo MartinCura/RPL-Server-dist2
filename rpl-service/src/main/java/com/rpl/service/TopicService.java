@@ -9,4 +9,5 @@ public interface TopicService {
     public Topic getTopicById(Long id);
     public List<Topic> getTopicsByCourse(Long courseId);
     public void submit(Long courseId, Topic topic);
+	public void deleteTopicById(Long id);
 }
