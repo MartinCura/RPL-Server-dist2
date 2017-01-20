@@ -4,10 +4,11 @@ DROP TABLE IF EXISTS course cascade;
 CREATE TABLE course (
 	id serial PRIMARY KEY,
 	name text NOT NULL,
+	customization text NOT NULL,
 	state text NOT NULL DEFAULT 'ENABLED'
 );
 
-insert into course (name) values ('First course');
+insert into course (name, customization) values ('First course', '{cust: a customization}');
 
 DROP TABLE IF EXISTS topic cascade;
 CREATE TABLE topic (

@@ -30,4 +30,8 @@ public class CourseDAO extends ApplicationDAO {
                 .setParameter("state",  DatabaseState.ENABLED)
                 .getResultList();
     }
+
+	public void updateCustomization(Long id, String customization) {
+		entityManager.createQuery("UPDATE Course set customization = :customization where id = :id").setParameter("id", id).setParameter("customization", customization).executeUpdate();
+	}
 }

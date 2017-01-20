@@ -100,4 +100,8 @@ public class SecurityServiceImpl implements SecurityService {
 		}
 	}
 
+	public void updatePassword(Long id, String password) {
+		personDAO.updatePassword(id, password);
+	}
+
 }

@@ -22,4 +22,6 @@ public interface SecurityService {
 
 	public String register(Person p) throws RplException;
 
+	public void updatePassword(Long id, String password);
+
 }

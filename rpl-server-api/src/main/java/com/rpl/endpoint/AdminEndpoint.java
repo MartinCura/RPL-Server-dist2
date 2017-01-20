@@ -1,5 +1,14 @@
 package com.rpl.endpoint;
 
+import javax.inject.Inject;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import com.rpl.POJO.CourseInputPOJO;
 import com.rpl.POJO.CoursePersonInputPOJO;
 import com.rpl.annotation.Secured;
@@ -9,12 +18,6 @@ import com.rpl.model.Person;
 import com.rpl.model.RoleCourse;
 import com.rpl.service.CourseService;
 import com.rpl.service.PersonService;
-import com.rpl.service.UserService;
-
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 @Secured
 @Path("/admin")

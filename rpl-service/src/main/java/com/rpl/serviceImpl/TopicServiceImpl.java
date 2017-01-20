@@ -1,14 +1,15 @@
 package com.rpl.serviceImpl;
 
+import java.util.List;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+
 import com.rpl.model.Course;
 import com.rpl.model.Topic;
 import com.rpl.persistence.CourseDAO;
 import com.rpl.persistence.TopicDAO;
 import com.rpl.service.TopicService;
-
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import java.util.List;
 
 @Stateless
 public class TopicServiceImpl implements TopicService{
@@ -25,10 +26,10 @@ public class TopicServiceImpl implements TopicService{
         return topicDAO.findByCourseId(courseId);
     }
 
-    public void submit(Long courseId, Topic topic) {
+    public Topic submit(Long courseId, Topic topic) {
         Course course = courseDAO.find(courseId);
         topic.setCourse(course);
-        topicDAO.save(topic);
+        return topicDAO.save(topic);
     }
 
 	public void deleteTopicById(Long id) {

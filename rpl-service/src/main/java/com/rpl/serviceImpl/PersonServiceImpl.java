@@ -24,4 +24,9 @@ public class PersonServiceImpl implements PersonService {
 	public void addCoursePerson(CoursePerson coursePerson) {
 		coursePersonDAO.save(coursePerson);
 	}
+
+	public void updatePersonInfo(Long id, String name, String mail) {
+		personDAO.updatePersonInfo(id, name, mail);
+		
+	}
 }

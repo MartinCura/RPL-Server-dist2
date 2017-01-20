@@ -66,6 +66,16 @@ public class CourseEndpoint {
 		return Response.ok().build();
 	}
 	
+	
+	@PUT
+	@Path("/{id}/customization")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateCustomization(@PathParam("id") Long id, String customization) {
+
+		courseService.updateCustomization(id, customization);
+		return Response.ok().build();
+	}
+	
 	@PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)

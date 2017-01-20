@@ -19,7 +19,15 @@ public class Course {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "course", orphanRemoval = true)
 	private Set<Topic> topics;
 
-	//private Customization customization;
+	private String customization;
+
+	public String getCustomization() {
+		return customization;
+	}
+
+	public void setCustomization(String customization) {
+		this.customization = customization;
+	}
 
 	public Long getId() {
 		return id;

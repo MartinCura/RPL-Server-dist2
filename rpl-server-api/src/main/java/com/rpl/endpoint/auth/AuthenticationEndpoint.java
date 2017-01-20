@@ -27,7 +27,7 @@ public class AuthenticationEndpoint {
 	private SecurityService securityService;
 	@Inject
 	private UserService userService;
-	
+
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -44,6 +44,18 @@ public class AuthenticationEndpoint {
 		} catch (Exception e) {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}
+	}
+
+	@POST
+	@Path("/password")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updatePassword(String password) {
+
+		securityService.updatePassword(userService.getCurrentUser().getId(), password);
+
+		return Response.ok().build();
+
 	}
 
 	@Secured
@@ -85,7 +97,8 @@ public class AuthenticationEndpoint {
 		} catch (RplException e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(e.getMsg())).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(e.getMessage()))
+					.build();
 		}
 	}
 
