@@ -35,4 +35,8 @@ public class TopicServiceImpl implements TopicService{
 	public void deleteTopicById(Long id) {
 		topicDAO.delete(id);
 	}
+	
+	public void update(Topic updateTopic){
+		topicDAO.update(updateTopic.getId(), updateTopic.getName());
+	}
 }

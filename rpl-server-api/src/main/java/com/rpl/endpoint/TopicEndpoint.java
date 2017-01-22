@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.ActivityPOJO;
+import com.rpl.POJO.TopicInputPOJO;
 import com.rpl.POJO.TopicPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.model.Activity;
@@ -50,10 +51,12 @@ public class TopicEndpoint {
     @PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateCourseById(Topic topic) {
-
-		Topic updatedTopic = topicService.submit(topic.getCourse().getId(), topic);
-		return Response.status(200).entity(new TopicPOJO(updatedTopic)).build();
+	public Response updateCourseById(@PathParam("id") Long id, TopicInputPOJO topicPOJO) {
+    	Topic updateTopic = new Topic();
+    	updateTopic.setName(topicPOJO.getName());
+    	updateTopic.setId(id);
+		topicService.update(updateTopic);
+		return Response.ok().build();
 	}
 
     @GET
