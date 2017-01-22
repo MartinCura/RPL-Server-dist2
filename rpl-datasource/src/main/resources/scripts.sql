@@ -175,6 +175,20 @@ insert into person (
 	'USER'
 	);
 
+insert into person (
+	name,
+	mail,
+	username,
+	password,
+	role
+	) values (
+	'rpl-professor',
+	'rpl@rpl.com',
+	'rpl-professor',
+	'rpl',
+	'USER'
+	);
+
 DROP TABLE IF EXISTS course_person cascade;
 CREATE TABLE course_person (
 	id serial PRIMARY KEY,
@@ -187,3 +201,4 @@ CREATE TABLE course_person (
 
 insert into course_person (course_id, person_id, role, accepted) values (1, 2, 'ASSISTANT_PROFESSOR', true);
 insert into course_person (course_id, person_id, role, accepted, assistant_id) values (1, 1, 'STUDENT', true, 1);
+insert into course_person (course_id, person_id, role, accepted) values (1, 3, 'PROFESSOR', true);

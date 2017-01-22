@@ -68,6 +68,12 @@
 			<artifactId>cdi-api</artifactId>
 			<version>${cdi.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+			<scope>${hibernate.scope}</scope>
+		</dependency>
 	</dependencies>
 	<modules>
 		<module>rpl-server-api</module>
