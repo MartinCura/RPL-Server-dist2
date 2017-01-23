@@ -39,6 +39,11 @@ public class CourseServiceImpl implements CourseService{
         return courseDAO.findByPersonRole(person.getId(), RoleCourse.valueOf(role));
     }
 
+    public List<Course> getUnregisteredCourses() {
+        Person person = userService.getCurrentUser();
+        return courseDAO.findUnregisteredByPerson(person.getId());
+    }
+
     public Course getCourseById(Long id) {
         return courseDAO.find(id);
     }
@@ -78,9 +83,7 @@ public class CourseServiceImpl implements CourseService{
 	}
 
     public void accept(Long courseId, Long personId) {
-        CoursePerson person = coursePersonDAO.findByCourseAndPerson(courseId, personId);
-        person.setAccepted(true);
-        coursePersonDAO.save(person);
+        coursePersonDAO.acceptStudent(courseId, personId);
     }
 
     public List<CoursePerson> getStudents(Long id) {
@@ -89,5 +92,9 @@ public class CourseServiceImpl implements CourseService{
 
     public List<CoursePerson> getAssistants(Long id) {
         return coursePersonDAO.findByCourseIdAndRole(id, RoleCourse.ASSISTANT_PROFESSOR);
+    }
+
+    public void assignAssistant(Long courseId, Long student, Long assistant) {
+        coursePersonDAO.updateAssistant(courseId, student, assistant);
     }
 }

@@ -34,4 +34,12 @@ public class CourseDAO extends ApplicationDAO {
 	public void updateCustomization(Long id, String customization) {
 		entityManager.createQuery("UPDATE Course set customization = :customization where id = :id").setParameter("id", id).setParameter("customization", customization).executeUpdate();
 	}
+
+    public List<Course> findUnregisteredByPerson(Long personId) {
+        return entityManager.createQuery(
+                "SELECT c FROM Course c WHERE" +
+                        " c.id NOT IN (SELECT cp.course.id FROM CoursePerson cp WHERE cp.person.id = :personId)")
+                .setParameter("personId",  personId)
+                .getResultList();
+    }
 }

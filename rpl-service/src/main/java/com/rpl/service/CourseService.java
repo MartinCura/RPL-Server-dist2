@@ -26,5 +26,6 @@ public interface CourseService {
     public List<CoursePerson> getAssistants(Long id);
 	public void deleteCourseById(Long id);
 	public void updateCustomization(Long id, String customization);
-
+    public void assignAssistant(Long courseId, Long student, Long assistant);
+    public List<Course> getUnregisteredCourses();
 }

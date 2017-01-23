@@ -10,10 +10,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.rpl.POJO.ActivityInputPOJO;
-import com.rpl.POJO.CoursePOJO;
-import com.rpl.POJO.CourseStudentPOJO;
-import com.rpl.POJO.TopicInputPOJO;
+import com.rpl.POJO.*;
 import com.rpl.annotation.Secured;
 import com.rpl.model.*;
 import com.rpl.service.ActivityService;
@@ -36,7 +33,7 @@ public class CourseEndpoint {
 	public Response getCourses(@QueryParam("role") String role) {
 		List<Course> courses;
 		if (role == null) {
-			courses = courseService.getCourses();
+			courses = courseService.getUnregisteredCourses();
 		} else {
 			courses = courseService.getCoursesByRole(role);
 		}
@@ -150,6 +147,14 @@ public class CourseEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response acceptStudent(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
 		courseService.accept(courseId, personId);
+		return Response.status(200).build();
+	}
+
+	@POST
+	@Path("/{courseId}/assistant")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response assignAssistant(@PathParam("courseId") Long courseId, AssignAssistantInputPOJO assignAssistantInputPOJO) {
+		courseService.assignAssistant(courseId, assignAssistantInputPOJO.getStudent(), assignAssistantInputPOJO.getAssistant());
 		return Response.status(200).build();
 	}
 }

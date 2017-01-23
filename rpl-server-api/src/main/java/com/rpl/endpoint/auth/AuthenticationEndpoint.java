@@ -90,9 +90,9 @@ public class AuthenticationEndpoint {
 			c.setRole(Role.USER);
 			p.setCredentials(c);
 
-			String token = securityService.register(p);
+			securityService.register(p);
 
-			return Response.ok(token).build();
+			return Response.ok().build();
 
 		} catch (RplException e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(e.getMsg())).build();

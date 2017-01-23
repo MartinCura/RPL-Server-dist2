@@ -30,4 +30,19 @@ public class CoursePersonDAO extends ApplicationDAO {
                 .setParameter("role", role)
                 .getResultList();
     }
+
+    public void acceptStudent(Long courseId, Long personId) {
+        entityManager.createQuery("UPDATE CoursePerson c set c.accepted = true WHERE " +
+                "c.person.id = :personId AND c.course.id = :courseId")
+                .setParameter("personId", personId)
+                .setParameter("courseId", courseId).executeUpdate();
+    }
+
+    public void updateAssistant(Long courseId, Long student, Long assistant) {
+        entityManager.createQuery("UPDATE CoursePerson c set c.assistant.id = :assistantId WHERE " +
+                "c.person.id = :personId AND c.course.id = :courseId")
+                .setParameter("assistantId", assistant)
+                .setParameter("personId", student)
+                .setParameter("courseId", courseId).executeUpdate();
+    }
 }
