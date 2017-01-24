@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS course cascade;
 CREATE TABLE course (
 	id serial PRIMARY KEY,
 	name text NOT NULL,
-	customization text NOT NULL,
+	customization text,
 	state text NOT NULL DEFAULT 'ENABLED'
 );
 
