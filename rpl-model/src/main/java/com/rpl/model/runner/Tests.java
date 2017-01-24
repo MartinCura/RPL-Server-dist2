@@ -20,8 +20,7 @@ public class Tests {
 
     private boolean success;
 
-    @OneToMany
-    @JoinColumn(name="tests_id")
+    @OneToMany(mappedBy = "test")
     private List<TestResult> tests;
 
     public boolean isSuccess() {
