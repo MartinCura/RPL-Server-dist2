@@ -14,6 +14,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.OrderBy;
+import org.hibernate.annotations.SortNatural;
 
 @Entity
 @Table(name = "course")
@@ -30,6 +32,7 @@ public class Course {
 	private DatabaseState state;
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "course", orphanRemoval = true)
+	@OrderBy(clause = "id ASC")
 	private Set<Topic> topics;
 
 	private String customization;
