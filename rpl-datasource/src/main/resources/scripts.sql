@@ -123,6 +123,17 @@ insert into test_result (
 	'test'
 	);
 
+DROP TABLE IF EXISTS person cascade;
+CREATE TABLE person (
+	id serial PRIMARY KEY,
+	name text NOT NULL,
+	mail text NOT NULL,
+	username text UNIQUE NOT NULL,
+	password text NOT NULL,
+	token text,
+	role text NOT NULL
+);
+	
 DROP TABLE IF EXISTS activity_submission cascade;
 CREATE TABLE activity_submission (
 	id serial PRIMARY KEY,
@@ -134,17 +145,6 @@ CREATE TABLE activity_submission (
 	execution_output text,
 	result_id integer REFERENCES result,
 	selected boolean DEFAULT FALSE
-);
-
-DROP TABLE IF EXISTS person cascade;
-CREATE TABLE person (
-	id serial PRIMARY KEY,
-	name text NOT NULL,
-	mail text NOT NULL,
-	username text UNIQUE NOT NULL,
-	password text NOT NULL,
-	token text,
-	role text NOT NULL
 );
 
 insert into person (
