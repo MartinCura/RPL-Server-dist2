@@ -7,11 +7,13 @@ import java.util.List;
 
 public interface ActivitySubmissionService {
 	
-	public void submit(Long activityId, ActivitySubmission submission) throws RplQueueException;
+	public ActivitySubmission submit(Long activityId, ActivitySubmission submission);
 
 	public ActivitySubmission getSubmissionById(Long id);
 
 	public void markAsSelected(Long submissionId);
 
     public List<ActivitySubmission> getSubmissionsByActivity(Long activityId);
+
+	public void queueSubmission(Long id) throws RplQueueException;
 }

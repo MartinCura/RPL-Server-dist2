@@ -77,7 +77,8 @@ public class ActivityEndpoint {
 		try {
 			ActivitySubmission submission = new ActivitySubmission();
 			submission.setCode(submissionPOJO.getCode());
-			activitySubmissionService.submit(activityId, submission);
+			submission = activitySubmissionService.submit(activityId, submission);
+			activitySubmissionService.queueSubmission(submission.getId());
 		} catch (RplQueueException e) {
 			return Response.status(505).entity(e).build();
 		}

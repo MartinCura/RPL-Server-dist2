@@ -38,27 +38,15 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		return activitySubmissionDAO.find(id);
 	}
 
-	public void submit(Long activityId, ActivitySubmission submission) throws RplQueueException {
+	public ActivitySubmission submit(Long activityId, ActivitySubmission submission) {
 		Activity activity = activityDAO.find(activityId);
 		submission.setPerson(userService.getCurrentUser());
 		submission.setActivity(activity);
 		submission.setSubmissionDate(new Date());
 		submission.setStatus(Status.PENDING);
 		submission = activitySubmissionDAO.save(submission);
+		return submission;
 		
-		QueueMessage qm;
-		try {
-			qm = new QueueMessage(JsonUtils.objectToJson(submission.getId()));
-			queueService.send(qm);
-		} catch (JsonProcessingException e) {
-			// No deberia suceder nunca
-			e.printStackTrace();
-		} catch (IOException e) {
-			throw new RplQueueException(e);
-		} catch (TimeoutException e) {
-			throw new RplQueueException(e);
-		}
-
 	}
 
 	public void markAsSelected(Long submissionId) {
@@ -70,6 +58,21 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 
 	public List<ActivitySubmission> getSubmissionsByActivity(Long activityId) {
 		return activitySubmissionDAO.findByPersonAndActivity(userService.getCurrentUser().getId(), activityId);
+	}
+
+	public void queueSubmission(Long id)  throws RplQueueException {
+		QueueMessage qm;
+		try {
+			qm = new QueueMessage(JsonUtils.objectToJson(id));
+			queueService.send(qm);
+		} catch (JsonProcessingException e) {
+			// No deberia suceder nunca
+			e.printStackTrace();
+		} catch (IOException e) {
+			throw new RplQueueException(e);
+		} catch (TimeoutException e) {
+			throw new RplQueueException(e);
+		}
 	}
 
 }
