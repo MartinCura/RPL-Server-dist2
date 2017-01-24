@@ -43,9 +43,9 @@ insert into activity (
 	output,
 	template
 	) values (
-	'this is an activity',
+	'Actividad Input (C)',
 	'C',
-	10,
+	3,
 	1,
 	'INPUT',
 	'',
@@ -54,6 +54,42 @@ insert into activity (
 
 int main() {
 
+}'
+	);
+	
+insert into activity (
+	name,
+	language,
+	points,
+	topic_id,
+	test_type,
+	input,
+	output,
+	template,
+	tests
+	) values (
+	'Actividad Test (C)',
+	'C',
+	3,
+	1,
+	'TEST',
+	'',
+	'hello',
+	'#include <stdio.h>
+
+int test_method_1() {
+	return 1;
+}',
+'
+#include <criterion/criterion.h>
+#include "solution.c"
+
+Test(misc, failing) {
+    cr_assert(test_method_1());
+}
+
+Test(misc, passing) {
+    cr_assert(test_method_1());
 }'
 	);
 
@@ -155,6 +191,20 @@ insert into person (
 	'rpl-professor',
 	'rpl',
 	'USER'
+	);
+	
+insert into person (
+	name,
+	mail,
+	username,
+	password,
+	role
+	) values (
+	'rpl-admin',
+	'rpl-admin@rpl.com',
+	'rpl-admin',
+	'rpl',
+	'ADMIN'
 	);
 
 DROP TABLE IF EXISTS course_person cascade;
