@@ -13,7 +13,7 @@ public class TestResult {
 	private boolean success;
 	private String description;
 	@ManyToOne
-	@JoinColumn(name = "test_id")
+	@JoinColumn(name = "tests_id")
 	private Tests test;
 
 	public Long getId() {
