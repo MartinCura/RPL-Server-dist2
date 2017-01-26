@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -53,6 +54,14 @@ public class ActivityEndpoint {
 		return Response.status(200).entity(new ActivityCompletePOJO(activity)).build();
 
 	}
+	
+	@DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteActivityById(@PathParam("id") Long id) {
+        activityService.delete(id);
+        return Response.ok().build();
+    }
 
 	@GET
 	@Path("/{id}/submissions")

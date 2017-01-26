@@ -42,7 +42,7 @@ public class TopicEndpoint {
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteCourseById(@PathParam("id") Long id) {
+    public Response deleteTopicById(@PathParam("id") Long id) {
 
         topicService.deleteTopicById(id);
         return Response.ok().build();

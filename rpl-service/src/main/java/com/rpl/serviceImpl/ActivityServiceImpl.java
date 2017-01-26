@@ -28,9 +28,11 @@ public class ActivityServiceImpl implements ActivityService {
 		return activityDAO.findByTopic(topicId);
 	}
 
-
+	public void delete(Long id) {
+		activityDAO.delete(id);
+	}
+	
 	public void submit(Long courseId, Activity activity) {
 		activityDAO.save(activity);
-		
 	}
 }

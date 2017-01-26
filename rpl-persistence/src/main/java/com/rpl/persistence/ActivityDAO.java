@@ -1,6 +1,7 @@
 package com.rpl.persistence;
 
 import com.rpl.model.Activity;
+import com.rpl.model.DatabaseState;
 
 import java.util.List;
 
@@ -16,5 +17,9 @@ public class ActivityDAO extends ApplicationDAO {
 
 	public List<Activity> findByTopic(Long topicId) {
 		return entityManager.createQuery("SELECT a FROM Activity a WHERE a.topic.id = :id").setParameter("id", topicId).getResultList();
+	}
+	
+	public void delete(Long id) {
+		entityManager.createQuery("UPDATE Activity set state = :state where id = :id").setParameter("id", id).setParameter("state", DatabaseState.DELETED).executeUpdate();
 	}
 }
