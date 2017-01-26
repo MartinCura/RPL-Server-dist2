@@ -1,21 +1,21 @@
 package com.rpl.POJO;
 
 import com.rpl.model.ActivitySubmission;
-import com.rpl.model.runner.Result;
 
 public class ActivitySubmissionPOJO {
     private Long id;
     private Long activity;
     private String code;
     private String status;
-    private Result result;
+    private ResultPOJO result;
 
     public ActivitySubmissionPOJO(ActivitySubmission submission) {
         this.id = submission.getId();
         this.activity = submission.getActivity().getId();
         this.code = submission.getCode();
         this.status = submission.getStatus().toString();
-        this.result = submission.getResult();
+        if (submission.getResult() != null)
+            this.result = new ResultPOJO(submission.getResult());
     }
 
     public Long getId() {
@@ -34,7 +34,7 @@ public class ActivitySubmissionPOJO {
         return status;
     }
 
-    public Result getResult() {
+    public ResultPOJO getResult() {
         return result;
     }
 }

@@ -1,10 +1,6 @@
 package com.rpl.model.runner;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "test_result")
@@ -16,6 +12,9 @@ public class TestResult {
 	private String name;
 	private boolean success;
 	private String description;
+	@ManyToOne
+	@JoinColumn(name = "tests_id")
+	private Tests test;
 
 	public Long getId() {
 		return id;
@@ -47,5 +46,13 @@ public class TestResult {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Tests getTest() {
+		return test;
+	}
+
+	public void setTest(Tests test) {
+		this.test = test;
 	}
 }

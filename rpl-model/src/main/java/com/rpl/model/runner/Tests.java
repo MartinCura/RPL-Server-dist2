@@ -2,13 +2,7 @@ package com.rpl.model.runner;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "tests")
@@ -20,8 +14,7 @@ public class Tests {
 
     private boolean success;
 
-    @OneToMany
-    @JoinColumn(name="tests_id")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "test", cascade = CascadeType.ALL)
     private List<TestResult> tests;
 
     public boolean isSuccess() {
@@ -38,5 +31,8 @@ public class Tests {
 
     public void setTests(List<TestResult> tests) {
         this.tests = tests;
+        for ( TestResult tr : this.tests) {
+            tr.setTest(this);
+        }
     }
 }
