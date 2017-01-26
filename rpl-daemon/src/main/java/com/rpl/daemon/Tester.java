@@ -2,6 +2,7 @@ package com.rpl.daemon;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rpl.model.Activity;
@@ -19,13 +20,15 @@ public class Tester {
 	public Result runSubmission(ActivitySubmission submission) throws IOException, InterruptedException {
 
 		String[] command = prepareCommand(submission);		
+		System.out.println(Arrays.toString(command));
 		ProcessBuilder pb = new ProcessBuilder(command);
 		File file = new File(TMP_DIRECTORY + submission.getId() + TMP_EXTENSION);
-		
+
 		pb.redirectOutput(file);
 		Process process = pb.start();
 		process.waitFor();
 		String result = FileUtils.fileToString(file);
+		System.out.println(result);
 		return new ObjectMapper().readValue(result.getBytes(), Result.class);
 		
 	}

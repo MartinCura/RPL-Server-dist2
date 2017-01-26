@@ -28,6 +28,8 @@ public class Daemon {
 				ActivitySubmission submission = activitySubmissionDAO.find(Long.valueOf(submissionId));
 				Result result = tester.runSubmission(submission);
 				tester.analyzeResult(submission, result);
+				if (result.getTests() != null)
+					result.getTests().fixTestsResults();
 				result = resultDAO.save(result);
 				submission.setResult(result);
 				activitySubmissionDAO.save(submission);

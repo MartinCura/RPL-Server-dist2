@@ -31,6 +31,9 @@ public class Tests {
 
     public void setTests(List<TestResult> tests) {
         this.tests = tests;
+    }
+
+    public void fixTestsResults() {
         for ( TestResult tr : this.tests) {
             tr.setTest(this);
         }
