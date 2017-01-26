@@ -5,8 +5,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -17,10 +19,13 @@ import com.rpl.POJO.ActivityCompletePOJO;
 import com.rpl.POJO.ActivityPOJO;
 import com.rpl.POJO.ActivitySubmissionInputPOJO;
 import com.rpl.POJO.ActivitySubmissionSimplePOJO;
+import com.rpl.POJO.CoursePOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplQueueException;
 import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
+import com.rpl.model.Course;
+import com.rpl.model.Language;
 import com.rpl.service.ActivityService;
 import com.rpl.service.ActivitySubmissionService;
 
@@ -32,7 +37,6 @@ public class ActivityEndpoint {
 	private ActivityService activityService;
 	@Inject
 	private ActivitySubmissionService activitySubmissionService;
-
 
 	@GET
 	@Path("/{id}")
@@ -54,6 +58,23 @@ public class ActivityEndpoint {
 
 	}
 
+	@DELETE
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteActivityById(@PathParam("id") Long id) {
+		activityService.delete(id);
+		return Response.ok().build();
+	}
+
+	@PUT
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateActivityById(@PathParam("id") Long id, ActivityPOJO course) {
+
+		activityService.update(id, Language.valueOf(course.getLanguage()), course.getPoints(), course.getName(), course.getDescription(), course.getTemplate());
+		return Response.ok().build();
+	}
+
 	@GET
 	@Path("/{id}/submissions")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -67,13 +88,14 @@ public class ActivityEndpoint {
 		return Response.status(200).entity(submissionPOJOS).build();
 
 	}
-	
+
 	@POST
 	@Path("/{id}/submission")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response submitActivitySubmission(@PathParam("id") Long activityId, ActivitySubmissionInputPOJO submissionPOJO) {
-		
+	public Response submitActivitySubmission(@PathParam("id") Long activityId,
+			ActivitySubmissionInputPOJO submissionPOJO) {
+
 		try {
 			ActivitySubmission submission = new ActivitySubmission();
 			submission.setCode(submissionPOJO.getCode());

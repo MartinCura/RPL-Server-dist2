@@ -11,8 +11,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 @Entity
 @Table(name = "activity")
+@DynamicInsert
+@DynamicUpdate
 public class Activity {
 
 	@Id
@@ -33,6 +38,8 @@ public class Activity {
 	private String input;
 	private String output;
 	private String tests;
+	@Enumerated(EnumType.STRING)
+	private DatabaseState state;
 
 	public Long getId() {
 		return id;
@@ -120,5 +127,13 @@ public class Activity {
 
 	public void setTemplate(String template) {
 		this.template = template;
+	}
+	
+	public DatabaseState getState() {
+		return state;
+	}
+
+	public void setState(DatabaseState state) {
+		this.state = state;
 	}
 }

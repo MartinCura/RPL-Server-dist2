@@ -30,7 +30,8 @@ CREATE TABLE activity (
 	template text,
 	input text,
 	output text,
-	tests text
+	tests text,
+	state text NOT NULL DEFAULT 'ENABLED'
 );
 
 insert into activity (

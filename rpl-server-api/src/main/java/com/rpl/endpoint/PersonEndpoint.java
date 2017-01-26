@@ -14,6 +14,7 @@ import com.rpl.POJO.PersonInfoPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.model.Person;
 import com.rpl.service.PersonService;
+import com.rpl.service.UserService;
 
 @Secured
 @Path("/persons")
@@ -21,24 +22,27 @@ public class PersonEndpoint {
 	
 	@Inject
 	private PersonService personService;
+	
+	@Inject
+	private UserService userService;
 
 	@GET
-	@Path("/{id}/information")
+	@Path("/information")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getPersonInfoById(@PathParam("id") Long id) {
+	public Response getPersonInfo() {
 
-		Person p = personService.getPersonById(id);
+		Person p = personService.getPersonById(userService.getCurrentUser().getId());
 		return Response.status(200).entity(new PersonInfoPOJO(p)).build();
 
 	}
 	
 	@PUT
-	@Path("/{id}/information")
+	@Path("/information")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updatePersonInfoById(@PathParam("id") Long id, PersonInfoPOJO pojo) {
-		personService.updatePersonInfo(id, pojo.getName(), pojo.getMail());
+	public Response updatePersonInfoById(PersonInfoPOJO pojo) {
+		personService.updatePersonInfo(userService.getCurrentUser().getId(), pojo.getName(), pojo.getMail());
 		return Response.ok().build();
 	}
 
