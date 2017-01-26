@@ -9,6 +9,7 @@ public class ActivityPOJO {
     private String description;
     private String template;
     private int points;
+    private boolean success;
 
     public ActivityPOJO(Activity activity) {
         this.id = activity.getId();
@@ -17,6 +18,7 @@ public class ActivityPOJO {
         this.description = activity.getDescription();
         this.template = activity.getTemplate();
         this.points = activity.getPoints();
+        this.success = false;
     }
 
     public Long getId() {
@@ -42,5 +44,13 @@ public class ActivityPOJO {
 
     public String getTemplate() {
         return template;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 }

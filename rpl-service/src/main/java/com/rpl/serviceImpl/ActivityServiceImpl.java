@@ -1,20 +1,29 @@
 package com.rpl.serviceImpl;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.rpl.model.Activity;
+import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Language;
 import com.rpl.persistence.ActivityDAO;
+import com.rpl.persistence.ActivitySubmissionDAO;
 import com.rpl.service.ActivityService;
+import com.rpl.service.UserService;
 
 @Stateless
 public class ActivityServiceImpl implements ActivityService {
 	
 	@Inject
 	private ActivityDAO activityDAO;
+	@Inject
+	private UserService userService;
+	@Inject
+	private ActivitySubmissionDAO activitySubmissionDAO;
 	
 	
 	public Activity getActivityById(Long id) {
@@ -39,5 +48,14 @@ public class ActivityServiceImpl implements ActivityService {
 	
 	public void submit(Long courseId, Activity activity) {
 		activityDAO.save(activity);
+	}
+
+	public Set<Long> getActivitiesDoneByCourse(Long courseId) {
+		List<ActivitySubmission> submissions = activitySubmissionDAO.findSelectedByPersonAndCourse(userService.getCurrentUser().getId(), courseId);
+		Set<Long> activitiesId = new HashSet<Long>();
+		for (ActivitySubmission activitySubmission : submissions) {
+			activitiesId.add(activitySubmission.getActivity().getId());
+		}
+		return activitiesId;
 	}
 }

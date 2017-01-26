@@ -1,6 +1,7 @@
 package com.rpl.persistence;
 
 import com.rpl.model.ActivitySubmission;
+import com.rpl.model.Status;
 
 import java.util.List;
 
@@ -26,5 +27,16 @@ public class ActivitySubmissionDAO extends ApplicationDAO{
 				.setParameter("personId", personId)
 				.setParameter("activityId", activityId)
 				.executeUpdate();
+    }
+
+    public List<ActivitySubmission> findSelectedByPersonAndCourse(Long personId, Long courseId) {
+		return entityManager.createQuery(
+				"SELECT s FROM ActivitySubmission s " +
+						"WHERE s.person.id = :personId AND s.activity.topic.course.id = :courseId AND " +
+						"s.status = :status AND s.selected = 't'")
+				.setParameter("personId", personId)
+				.setParameter("courseId", courseId)
+				.setParameter("status", Status.SUCCESS)
+				.getResultList();
     }
 }

@@ -40,4 +40,14 @@ public class CoursePOJO {
     public List<TopicPOJO> getTopics() {
         return topics;
     }
+
+    public void markActivitiesAsSelected(Set<Long> activitiesSelected) {
+        for (TopicPOJO topic : topics) {
+            for (ActivityPOJO activity : topic.getActivities()) {
+                if (activitiesSelected.contains(activity.getId())) {
+                    activity.setSuccess(true);
+                }
+            }
+        }
+    }
 }

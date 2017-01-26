@@ -14,6 +14,7 @@ import com.rpl.POJO.*;
 import com.rpl.annotation.Secured;
 import com.rpl.model.*;
 import com.rpl.service.ActivityService;
+import com.rpl.service.ActivitySubmissionService;
 import com.rpl.service.CourseService;
 import com.rpl.service.TopicService;
 
@@ -51,7 +52,10 @@ public class CourseEndpoint {
 	public Response getCourseById(@PathParam("id") Long id) {
 
 		Course course = courseService.getCourseById(id);
-		return Response.status(200).entity(new CoursePOJO(course)).build();
+		Set<Long> activitiesSelected = activityService.getActivitiesDoneByCourse(id);
+		CoursePOJO coursePOJO = new CoursePOJO(course);
+		coursePOJO.markActivitiesAsSelected(activitiesSelected);
+		return Response.status(200).entity(coursePOJO).build();
 	}
 	
 	@DELETE
