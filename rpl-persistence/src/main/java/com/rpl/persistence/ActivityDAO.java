@@ -14,13 +14,14 @@ public class ActivityDAO extends ApplicationDAO {
 
 	public List<Activity> findByCourse(Long courseId) {
 		return entityManager
-				.createQuery("SELECT a FROM Activity a, Topic t WHERE a.topic.id = t.id AND t.course.id = :id")
+				.createQuery("SELECT a FROM Activity a, Topic t WHERE a.state = :state AND a.topic.id = t.id AND t.course.id = :id")
+				.setParameter("state", DatabaseState.ENABLED)
 				.setParameter("id", courseId).getResultList();
 	}
 
 	public List<Activity> findByTopic(Long topicId) {
-		return entityManager.createQuery("SELECT a FROM Activity a WHERE a.topic.id = :id").setParameter("id", topicId)
-				.getResultList();
+		return entityManager.createQuery("SELECT a FROM Activity a WHERE a.topic.id = :id AND a.state = :state").setParameter("id", topicId)
+				.setParameter("state", DatabaseState.DELETED).getResultList();
 	}
 
 	public void update(Long id, Language lang, int points, String name, String description, String template) {
