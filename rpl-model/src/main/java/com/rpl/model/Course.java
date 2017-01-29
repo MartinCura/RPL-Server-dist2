@@ -15,7 +15,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OrderBy;
-import org.hibernate.annotations.SortNatural;
 
 @Entity
 @Table(name = "course")

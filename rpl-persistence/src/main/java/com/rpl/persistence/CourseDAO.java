@@ -44,4 +44,12 @@ public class CourseDAO extends ApplicationDAO {
                 .setParameter("personId",  personId)
                 .getResultList();
     }
+
+	public void updateCourseName(Long id, String name) {
+
+		entityManager.createQuery("UPDATE Course set name = :name where id = :id").setParameter("id", id).setParameter("name", name).executeUpdate();
+		
+		
+		
+	}
 }

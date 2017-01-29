@@ -24,6 +24,12 @@ public class CoursePOJO {
         }
     }
     
+    public static CoursePOJO mapWithoutTopics(Course course){
+    	CoursePOJO pojo = new CoursePOJO(course);
+    	pojo.cleanTopics();
+    	return pojo;
+    }
+    
     public CoursePOJO(Set<Topic> topics) {
     	this.topics = new ArrayList<TopicPOJO>();
     	for (Topic topic : topics) {
@@ -41,6 +47,10 @@ public class CoursePOJO {
 
     public List<TopicPOJO> getTopics() {
         return topics;
+    }
+    
+    private void cleanTopics() {
+    	this.topics = null;
     }
 
     public boolean isInscripted() {

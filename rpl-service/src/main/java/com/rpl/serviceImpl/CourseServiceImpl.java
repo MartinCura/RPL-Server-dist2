@@ -103,4 +103,8 @@ public class CourseServiceImpl implements CourseService{
     public void assignAssistant(Long courseId, Long student, Long assistant) {
         coursePersonDAO.updateAssistant(courseId, student, assistant);
     }
+    
+    public void updateCourseName(Long id, String name){
+    	courseDAO.updateCourseName(id, name);
+    }
 }

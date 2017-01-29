@@ -1,7 +1,11 @@
 package com.rpl.endpoint;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -10,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.CourseInputPOJO;
+import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.CoursePersonInputPOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.annotation.Secured;
@@ -29,6 +34,16 @@ public class AdminEndpoint {
     @Inject
     private PersonService personService;
 
+    @GET
+    @Path("/courses")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createCourse() {
+    	List<Course> result = courseService.getCourses();
+    	List<CoursePOJO> resultPOJO = result.stream().map(c -> CoursePOJO.mapWithoutTopics(c)).collect(Collectors.toList());
+        return Response.ok(resultPOJO).build();
+    }
+    
     @POST
     @Path("/courses")
     @Produces(MediaType.APPLICATION_JSON)

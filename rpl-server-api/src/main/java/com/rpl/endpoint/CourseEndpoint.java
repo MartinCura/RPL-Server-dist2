@@ -6,14 +6,36 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.rpl.POJO.*;
+import com.rpl.POJO.ActivityInputPOJO;
+import com.rpl.POJO.AssignAssistantInputPOJO;
+import com.rpl.POJO.CourseInputPOJO;
+import com.rpl.POJO.CoursePOJO;
+import com.rpl.POJO.CourseStudentPOJO;
+import com.rpl.POJO.MessagePOJO;
+import com.rpl.POJO.TopicInputPOJO;
 import com.rpl.annotation.Secured;
-import com.rpl.model.*;
-import com.rpl.service.*;
+import com.rpl.model.Activity;
+import com.rpl.model.ActivitySubmission;
+import com.rpl.model.Course;
+import com.rpl.model.Language;
+import com.rpl.model.Person;
+import com.rpl.model.TestType;
+import com.rpl.model.Topic;
+import com.rpl.service.ActivityService;
+import com.rpl.service.CourseService;
+import com.rpl.service.TopicService;
 
 @Secured
 @Path("/courses")
@@ -80,10 +102,9 @@ public class CourseEndpoint {
 	@PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateCourseById(Course course) {
-
-		Course updatedCourse = courseService.submit(course);
-		return Response.status(200).entity(new CoursePOJO(updatedCourse)).build();
+	public Response updateCourseById(@PathParam("id") Long id, CourseInputPOJO course) {
+		courseService.updateCourseName(id, course.getName());
+		return Response.ok().build();
 	}
 	
 	@GET

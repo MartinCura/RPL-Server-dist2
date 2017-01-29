@@ -13,7 +13,6 @@ import javax.ws.rs.core.Response;
 
 import com.rpl.annotation.Secured;
 import com.rpl.model.Person;
-import com.rpl.model.Role;
 import com.rpl.service.EntityManagerTest;
 import com.rpl.service.UserService;
 

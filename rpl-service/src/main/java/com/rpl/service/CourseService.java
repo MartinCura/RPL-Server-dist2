@@ -1,13 +1,13 @@
 package com.rpl.service;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Course;
 import com.rpl.model.CoursePerson;
 import com.rpl.model.Person;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 
 public interface CourseService {
@@ -29,4 +29,5 @@ public interface CourseService {
     public void assignAssistant(Long courseId, Long student, Long assistant);
     public List<Course> getUnregisteredCourses();
     public Set<Long> getCoursesInscripted();
+	public void updateCourseName(Long id, String name);
 }
