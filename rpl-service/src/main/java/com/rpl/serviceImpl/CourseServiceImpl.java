@@ -1,9 +1,6 @@
 package com.rpl.serviceImpl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -42,6 +39,15 @@ public class CourseServiceImpl implements CourseService{
     public List<Course> getUnregisteredCourses() {
         Person person = userService.getCurrentUser();
         return courseDAO.findUnregisteredByPerson(person.getId());
+    }
+
+    public Set<Long> getCoursesInscripted() {
+        Person person = personDAO.find(userService.getCurrentUser().getId());
+        Set<Long> coursesInscripted = new HashSet<Long>();
+        for (Course course : person.getCourses()) {
+            coursesInscripted.add(course.getId());
+        }
+        return coursesInscripted;
     }
 
     public Course getCourseById(Long id) {

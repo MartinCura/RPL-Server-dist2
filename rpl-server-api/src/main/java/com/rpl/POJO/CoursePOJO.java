@@ -12,11 +12,13 @@ public class CoursePOJO {
     private Long id;
     private String name;
     private List<TopicPOJO> topics;
+    private boolean inscripted;
 
     public CoursePOJO(Course course) {
         this.id = course.getId();
         this.name = course.getName();
-        topics = new ArrayList<TopicPOJO>();
+        this.topics = new ArrayList<TopicPOJO>();
+        this.inscripted = false;
         for (Topic topic : course.getTopics()) {
             topics.add(new TopicPOJO(topic));
         }
@@ -39,6 +41,14 @@ public class CoursePOJO {
 
     public List<TopicPOJO> getTopics() {
         return topics;
+    }
+
+    public boolean isInscripted() {
+        return inscripted;
+    }
+
+    public void setInscripted(boolean inscripted) {
+        this.inscripted = inscripted;
     }
 
     public void markActivitiesAsSelected(Set<Long> activitiesSelected) {

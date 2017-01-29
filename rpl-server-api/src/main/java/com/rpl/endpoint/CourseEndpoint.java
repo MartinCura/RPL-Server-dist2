@@ -13,10 +13,7 @@ import javax.ws.rs.core.Response;
 import com.rpl.POJO.*;
 import com.rpl.annotation.Secured;
 import com.rpl.model.*;
-import com.rpl.service.ActivityService;
-import com.rpl.service.ActivitySubmissionService;
-import com.rpl.service.CourseService;
-import com.rpl.service.TopicService;
+import com.rpl.service.*;
 
 @Secured
 @Path("/courses")
@@ -34,13 +31,16 @@ public class CourseEndpoint {
 	public Response getCourses(@QueryParam("role") String role) {
 		List<Course> courses;
 		if (role == null) {
-			courses = courseService.getUnregisteredCourses();
+			courses = courseService.getCourses();
 		} else {
 			courses = courseService.getCoursesByRole(role);
 		}
+		Set<Long> coursesInscripted = courseService.getCoursesInscripted();
 		List<CoursePOJO> coursePOJOS = new ArrayList<CoursePOJO>();
 		for (Course course : courses) {
-			coursePOJOS.add(new CoursePOJO(course));
+			CoursePOJO coursePOJO = new CoursePOJO(course);
+			coursePOJO.setInscripted(coursesInscripted.contains(course.getId()));
+			coursePOJOS.add(coursePOJO);
 		}
 		return Response.status(200).entity(coursePOJOS).build();
 
@@ -133,7 +133,11 @@ public class CourseEndpoint {
 	@Path("/{id}/join")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response joinCourse(@PathParam("id") Long courseId) {
-		courseService.join(courseId);
+		try {
+			courseService.join(courseId);
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of("Already joined")).build();
+		}
 		return Response.status(200).build();
 	}
 
