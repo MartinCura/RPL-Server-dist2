@@ -2,6 +2,7 @@ package com.rpl.persistence;
 
 import java.util.List;
 
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
@@ -32,6 +33,7 @@ public class PersonDAO extends ApplicationDAO {
 				.setParameter("token", token).setParameter("username", username).executeUpdate();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Person> findByCourse(Long id) {
 		return entityManager
 				.createQuery(
@@ -48,5 +50,16 @@ public class PersonDAO extends ApplicationDAO {
 		entityManager.createQuery("UPDATE Person p set p.credentials.password = :password WHERE id = :id ").setParameter("id", id)
 		.setParameter("password", password).executeUpdate();
 		
+	}
+
+	@SuppressWarnings("unchecked")
+    public List<Person> findAll() {
+		return entityManager.createQuery("SELECT p FROM Person p").getResultList();
+    }
+
+	public Person findByUsername(String username) {
+		Query query =  entityManager.createQuery("SELECT p FROM Person p WHERE p.credentials.username = :username")
+				.setParameter("username", username);
+		return (Person) query.getSingleResult();
 	}
 }

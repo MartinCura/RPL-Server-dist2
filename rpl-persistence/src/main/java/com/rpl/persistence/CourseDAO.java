@@ -21,6 +21,7 @@ public class CourseDAO extends ApplicationDAO {
 		entityManager.createQuery("UPDATE Course set state = :state where id = :id").setParameter("id", id).setParameter("state", DatabaseState.DELETED).executeUpdate();
 	}
 
+    @SuppressWarnings("unchecked")
     public List<Course> findByPersonRole(Long personId, RoleCourse role) {
         return entityManager.createQuery(
                 "SELECT c FROM Course c, CoursePerson cp WHERE" +
@@ -35,6 +36,7 @@ public class CourseDAO extends ApplicationDAO {
 		entityManager.createQuery("UPDATE Course set customization = :customization where id = :id").setParameter("id", id).setParameter("customization", customization).executeUpdate();
 	}
 
+    @SuppressWarnings("unchecked")
     public List<Course> findUnregisteredByPerson(Long personId) {
         return entityManager.createQuery(
                 "SELECT c FROM Course c WHERE" +

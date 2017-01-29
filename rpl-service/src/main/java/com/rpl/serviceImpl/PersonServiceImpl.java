@@ -8,6 +8,7 @@ import com.rpl.service.PersonService;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.List;
 
 @Stateless
 public class PersonServiceImpl implements PersonService {
@@ -17,8 +18,16 @@ public class PersonServiceImpl implements PersonService {
 	@Inject
 	private CoursePersonDAO coursePersonDAO;
 
+	public List<Person> getPersons() {
+		return personDAO.findAll();
+	}
+
 	public Person getPersonById(Long id) {
 		return personDAO.find(id);
+	}
+
+	public Person getPersonByUsername(String username) {
+		return personDAO.findByUsername(username);
 	}
 
 	public void addCoursePerson(CoursePerson coursePerson) {

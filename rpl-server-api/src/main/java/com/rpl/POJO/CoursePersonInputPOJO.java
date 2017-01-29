@@ -2,15 +2,15 @@ package com.rpl.POJO;
 
 public class CoursePersonInputPOJO {
 
-    private Long personId;
+    private String username;
     private String role;
 
-    public Long getPersonId() {
-        return personId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setPersonId(Long personId) {
-        this.personId = personId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getRole() {

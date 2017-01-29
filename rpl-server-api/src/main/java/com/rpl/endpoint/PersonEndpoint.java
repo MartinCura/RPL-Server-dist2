@@ -11,10 +11,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.PersonInfoPOJO;
+import com.rpl.POJO.PersonPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.model.Person;
 import com.rpl.service.PersonService;
 import com.rpl.service.UserService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Secured
 @Path("/persons")
@@ -25,6 +29,19 @@ public class PersonEndpoint {
 	
 	@Inject
 	private UserService userService;
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPersons() {
+
+		List<Person> persons = personService.getPersons();
+		List<PersonPOJO> personPOJOS = new ArrayList<PersonPOJO>();
+		for (Person p : persons) {
+			personPOJOS.add(new PersonPOJO(p));
+		}
+		return Response.status(200).entity(personPOJOS).build();
+
+	}
 
 	@GET
 	@Path("/information")

@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.CourseInputPOJO;
 import com.rpl.POJO.CoursePersonInputPOJO;
+import com.rpl.POJO.MessagePOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.model.Course;
 import com.rpl.model.CoursePerson;
@@ -45,7 +46,10 @@ public class AdminEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addProfessor(@PathParam("id") Long id, CoursePersonInputPOJO coursePersonInputPOJO) {
         Course course = courseService.getCourseById(id);
-        Person person = personService.getPersonById(coursePersonInputPOJO.getPersonId());
+        Person person = personService.getPersonByUsername(coursePersonInputPOJO.getUsername());
+        if (person == null){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of("User not found")).build();
+        }
 
         CoursePerson coursePerson = new CoursePerson();
         coursePerson.setCourse(course);
