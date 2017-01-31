@@ -17,7 +17,8 @@ public interface CourseService {
     public List<Course> getCoursesByRole(String role);
     public Course submit(Course course);
     public void join(Long courseId);
-
+    public void leaveCourse(Long personId);
+    
     public Map<Person,Set<ActivitySubmission>> getSubmissionsByStudent(Long id);
 
     public void accept(Long courseId, Long personId);
@@ -31,4 +32,5 @@ public interface CourseService {
     public Set<Long> getCoursesInscripted();
 	public void updateCourseName(Long id, String name);
 	public List<CoursePerson> getProfessors(Long id);
+	
 }

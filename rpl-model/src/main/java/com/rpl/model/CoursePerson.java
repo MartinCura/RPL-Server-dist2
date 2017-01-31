@@ -22,6 +22,8 @@ public class CoursePerson {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "assistant_id")
     private Person assistant;
+    @Enumerated(EnumType.STRING)
+	private DatabaseState state;
 
     public Long getId() {
         return id;
@@ -70,4 +72,12 @@ public class CoursePerson {
     public void setAssistant(Person assistant) {
         this.assistant = assistant;
     }
+
+	public DatabaseState getState() {
+		return state;
+	}
+
+	public void setState(DatabaseState state) {
+		this.state = state;
+	}
 }

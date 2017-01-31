@@ -215,7 +215,8 @@ CREATE TABLE course_person (
 	person_id integer REFERENCES person,
 	role text NOT NULL,
 	accepted boolean NOT NULL DEFAULT FALSE,
-	assistant_id integer REFERENCES person
+	assistant_id integer REFERENCES person,
+	state text NOT NULL DEFAULT 'ENABLED'
 );
 ALTER TABLE course_person ADD UNIQUE (course_id, person_id);
 

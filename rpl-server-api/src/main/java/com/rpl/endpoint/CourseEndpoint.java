@@ -161,6 +161,14 @@ public class CourseEndpoint {
 		}
 		return Response.status(200).build();
 	}
+	
+	@POST
+	@Path("/{id}/leave")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response leaveCourse(@PathParam("id") Long personId) {
+		courseService.leaveCourse(personId);
+		return Response.status(200).build();
+	}
 
 	@GET
 	@Path("/{id}/students")

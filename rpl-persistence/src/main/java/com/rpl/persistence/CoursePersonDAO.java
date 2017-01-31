@@ -2,6 +2,7 @@ package com.rpl.persistence;
 
 
 import com.rpl.model.CoursePerson;
+import com.rpl.model.DatabaseState;
 import com.rpl.model.RoleCourse;
 
 import javax.persistence.Query;
@@ -16,8 +17,9 @@ public class CoursePersonDAO extends ApplicationDAO {
     public CoursePerson findByCourseAndPerson(Long courseId, Long personId) {
         Query query = entityManager.createQuery(
                 "SELECT cp FROM CoursePerson cp " +
-                        "WHERE cp.course.id = :courseId AND cp.person.id = :personId")
+                        "WHERE cp.course.id = :courseId AND cp.person.id = :personId AND cp.state = :state")
                 .setParameter("courseId", courseId)
+                .setParameter("state", DatabaseState.ENABLED)
                 .setParameter("personId", personId);
         return (CoursePerson) query.getSingleResult();
     }
@@ -25,12 +27,18 @@ public class CoursePersonDAO extends ApplicationDAO {
     public List<CoursePerson> findByCourseIdAndRole(Long courseId, RoleCourse role) {
         return entityManager.createQuery(
                 "SELECT cp FROM CoursePerson cp WHERE " +
-                        "cp.course.id = :courseId AND cp.role = :role")
+                        "cp.course.id = :courseId AND cp.role = :role AND cp.state = :state")
                 .setParameter("courseId", courseId)
+                .setParameter("state", DatabaseState.ENABLED)
                 .setParameter("role", role)
                 .getResultList();
     }
 
+    public void deleteByPersonId(Long personId){
+    	entityManager.createQuery("UPDATE CoursePerson cp set state = :state where cp.person.id = :id").setParameter("id", personId)
+		.setParameter("state", DatabaseState.DELETED).executeUpdate();
+    }
+    
     public void acceptStudent(Long courseId, Long personId) {
         entityManager.createQuery("UPDATE CoursePerson c set c.accepted = true WHERE " +
                 "c.person.id = :personId AND c.course.id = :courseId")

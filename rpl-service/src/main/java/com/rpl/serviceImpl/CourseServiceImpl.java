@@ -70,8 +70,12 @@ public class CourseServiceImpl implements CourseService{
         coursePerson.setCourse(course);
         coursePerson.setRole(RoleCourse.STUDENT);
         coursePersonDAO.save(coursePerson);
-
     }
+    
+    public void leaveCourse(Long personId) {
+        coursePersonDAO.deleteByPersonId(personId);
+    }
+
 
     public Map<Person, Set<ActivitySubmission>> getSubmissionsByStudent(Long id) {
         Map<Person, Set<ActivitySubmission>> submissionsByStudent = new HashMap<Person, Set<ActivitySubmission>>();
@@ -91,7 +95,7 @@ public class CourseServiceImpl implements CourseService{
     public void accept(Long courseId, Long personId) {
         coursePersonDAO.acceptStudent(courseId, personId);
     }
-
+    
     public List<CoursePerson> getStudents(Long id) {
         return coursePersonDAO.findByCourseIdAndRole(id, RoleCourse.STUDENT);
     }
