@@ -21,7 +21,7 @@ public class ActivityDAO extends ApplicationDAO {
 
 	public List<Activity> findByTopic(Long topicId) {
 		return entityManager.createQuery("SELECT a FROM Activity a WHERE a.topic.id = :id AND a.state = :state").setParameter("id", topicId)
-				.setParameter("state", DatabaseState.DELETED).getResultList();
+				.setParameter("state", DatabaseState.ENABLED).getResultList();
 	}
 
 	public void update(Long id, Language lang, int points, String name, String description, String template) {

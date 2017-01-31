@@ -30,4 +30,5 @@ public interface CourseService {
     public List<Course> getUnregisteredCourses();
     public Set<Long> getCoursesInscripted();
 	public void updateCourseName(Long id, String name);
+	public List<CoursePerson> getProfessors(Long id);
 }

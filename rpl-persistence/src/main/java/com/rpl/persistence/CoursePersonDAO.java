@@ -21,7 +21,7 @@ public class CoursePersonDAO extends ApplicationDAO {
                 .setParameter("personId", personId);
         return (CoursePerson) query.getSingleResult();
     }
-
+    
     public List<CoursePerson> findByCourseIdAndRole(Long courseId, RoleCourse role) {
         return entityManager.createQuery(
                 "SELECT cp FROM CoursePerson cp WHERE " +

@@ -99,6 +99,10 @@ public class CourseServiceImpl implements CourseService{
     public List<CoursePerson> getAssistants(Long id) {
         return coursePersonDAO.findByCourseIdAndRole(id, RoleCourse.ASSISTANT_PROFESSOR);
     }
+    
+	public List<CoursePerson> getProfessors(Long id) {
+		return coursePersonDAO.findByCourseIdAndRole(id, RoleCourse.PROFESSOR);
+	}
 
     public void assignAssistant(Long courseId, Long student, Long assistant) {
         coursePersonDAO.updateAssistant(courseId, student, assistant);
