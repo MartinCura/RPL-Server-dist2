@@ -15,15 +15,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.rpl.POJO.ActivityCompletePOJO;
-import com.rpl.POJO.ActivityPOJO;
-import com.rpl.POJO.ActivitySubmissionInputPOJO;
-import com.rpl.POJO.ActivitySubmissionSimplePOJO;
+import com.rpl.POJO.*;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplQueueException;
 import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Language;
+import com.rpl.model.TestType;
 import com.rpl.service.ActivityService;
 import com.rpl.service.ActivitySubmissionService;
 
@@ -67,9 +65,12 @@ public class ActivityEndpoint {
 	@PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateActivityById(@PathParam("id") Long id, ActivityPOJO course) {
+	public Response updateActivityById(@PathParam("id") Long id, ActivityInputPOJO activity) {
 
-		activityService.update(id, Language.valueOf(course.getLanguage()), course.getPoints(), course.getName(), course.getDescription(), course.getTemplate());
+		activityService.update(id,
+				activity.getName(), activity.getDescription(), Language.valueOf(activity.getLanguage()),
+				activity.getPoints(), activity.getTopic(), TestType.valueOf(activity.getTestType()), activity.getTemplate(),
+				activity.getInput(), activity.getOutput(), activity.getTests());
 		return Response.ok().build();
 	}
 

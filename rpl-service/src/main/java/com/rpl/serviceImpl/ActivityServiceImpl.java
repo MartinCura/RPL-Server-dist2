@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Language;
+import com.rpl.model.TestType;
 import com.rpl.persistence.ActivityDAO;
 import com.rpl.persistence.ActivitySubmissionDAO;
 import com.rpl.service.ActivityService;
@@ -42,8 +43,8 @@ public class ActivityServiceImpl implements ActivityService {
 		activityDAO.delete(id);
 	}
 	
-	public void update(Long id, Language lang, int points, String name, String description, String template){
-		activityDAO.update(id, lang, points, name, description, template);
+	public void update(Long id, String name, String description, Language language, int points, Long topic, TestType testType, String template, String input, String output, String tests) {
+		activityDAO.update(id, name, description, language, points, topic, testType, template, input, output, tests);
 	}
 	
 	public void submit(Long courseId, Activity activity) {

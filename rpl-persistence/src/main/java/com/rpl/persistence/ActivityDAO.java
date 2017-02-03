@@ -5,6 +5,7 @@ import java.util.List;
 import com.rpl.model.Activity;
 import com.rpl.model.DatabaseState;
 import com.rpl.model.Language;
+import com.rpl.model.TestType;
 
 public class ActivityDAO extends ApplicationDAO {
 
@@ -24,13 +25,13 @@ public class ActivityDAO extends ApplicationDAO {
 				.setParameter("state", DatabaseState.ENABLED).getResultList();
 	}
 
-	public void update(Long id, Language lang, int points, String name, String description, String template) {
-		entityManager
-				.createQuery(
-						"UPDATE Activity set language = :lang , points = :points , name = :name , description = :description , template = :template "
-								+ "where id = :id")
-				.setParameter("id", id).setParameter("lang", lang).setParameter("points", points)
-				.setParameter("name", name).setParameter("description", description).setParameter("template", template)
+	public void update(Long id, String name, String description, Language language, int points, Long topic, TestType testType, String template, String input, String output, String tests) {
+		entityManager.createQuery("UPDATE Activity set name = :name, description = :description, language = :language, points = :points, topic.id = :topic, " +
+					"testType = :testType, template = :template, input = :input, output = :output, tests = :tests"
+					+ " WHERE id = :id")
+				.setParameter("id", id).setParameter("name", name).setParameter("description", description).setParameter("language", language)
+				.setParameter("points", points).setParameter("topic", topic).setParameter("testType", testType)
+				.setParameter("template", template).setParameter("input", input).setParameter("output", output).setParameter("tests", tests)
 				.executeUpdate();
 	}
 
