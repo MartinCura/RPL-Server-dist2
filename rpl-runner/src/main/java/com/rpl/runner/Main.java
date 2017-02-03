@@ -49,6 +49,7 @@ public class Main {
             runner.setMode(mode);
             runner.setModeData(argumentParser.getModeData());
             runner.setSolution(argumentParser.getSolution());
+            runner.setExtraFiles(argumentParser.getExtraFiles());
 
             Result result = new Result();
             ResultStatus status = new ResultStatus();

@@ -5,12 +5,10 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rpl.model.Activity;
-import com.rpl.model.ActivitySubmission;
-import com.rpl.model.Status;
-import com.rpl.model.TestType;
+import com.rpl.model.*;
 import com.rpl.model.runner.Result;
 import com.rpl.model.runner.ResultStatus;
+import com.rpl.service.util.ArrayUtils;
 import com.rpl.service.util.FileUtils;
 
 public class Tester {
@@ -49,6 +47,9 @@ public class Tester {
 				"-s", submission.getCode(),
 				"-d", data
 			};
+		//for (ActivityFile file : activity.getActivityFiles()) {
+		//	args = ArrayUtils.addElement(args, "-f", file.getName(), file.getContent());
+		//}
 		return args;
 	}
 	

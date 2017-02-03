@@ -7,6 +7,9 @@ import com.rpl.runner.runner.Runner;
 import com.rpl.runner.utils.DirectoryCleaner;
 import junit.framework.TestCase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PythonTest extends TestCase {
 
     public void testBuildAndRunOk() {
@@ -153,4 +156,32 @@ public class PythonTest extends TestCase {
 
         assertTrue(testOk);
     }
+
+    public void testReadFile() {
+        DirectoryCleaner.clean();
+
+        String solution = "with open('file.txt') as f:\n" +
+                "     data = f.read()\n" +
+                "     print data";
+
+        Runner runner = new PythonRunner();
+        runner.setSolution(solution);
+        runner.setMode(Runner.TestMode.INPUT);
+        runner.setModeData("");
+
+        String[] f = new String[] {"file.txt", "test"};
+        List<String[]> files = new ArrayList<>();
+        files.add(f);
+        runner.setExtraFiles(files);
+
+        boolean testOk = true;
+        try {
+            runner.process();
+        } catch (RunnerException e) {
+            testOk = false;
+        }
+
+        assertTrue(testOk);
+    }
+
 }

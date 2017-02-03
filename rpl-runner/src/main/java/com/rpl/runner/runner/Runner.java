@@ -1,7 +1,11 @@
 package com.rpl.runner.runner;
 
+import com.rpl.runner.Settings;
 import com.rpl.runner.exception.RunnerException;
 import com.rpl.runner.exception.TimeoutException;
+import com.rpl.runner.utils.LocalFileUtils;
+
+import java.util.List;
 
 public abstract class Runner {
 
@@ -20,6 +24,8 @@ public abstract class Runner {
     protected TestMode mode = TestMode.INPUT;
     protected String modeData;
 
+    protected List<String[]> extraFiles;
+
     public void process() throws RunnerException {
         generateFiles();
         build();
@@ -28,6 +34,7 @@ public abstract class Runner {
 
     private void generateFiles() {
         generateGenericFiles();
+        generateExtraFiles();
 
         if (mode.equals(TestMode.TEST)) {
             generateFilesForTest();
@@ -59,6 +66,15 @@ public abstract class Runner {
     protected abstract void runForInput() throws RunnerException;
     protected abstract void runForTest() throws RunnerException;
 
+    public void generateExtraFiles() {
+        if (extraFiles == null) {
+            return;
+        }
+        for (String[] file : extraFiles) {
+            LocalFileUtils.write(Settings.EXECUTION_PATH + file[0], file[1]);
+        }
+    }
+
     public String getStdout() {
         return stdout;
     }
@@ -71,6 +87,10 @@ public abstract class Runner {
         this.solution = solution;
     }
 
+    public void setExtraFiles(List<String[]> extraFiles) {
+        this.extraFiles = extraFiles;
+    }
+
     public void setMode(TestMode mode) {
         this.mode = mode;
     }
@@ -78,4 +98,5 @@ public abstract class Runner {
     public void setModeData(String modeData) {
         this.modeData = modeData;
     }
+
 }
