@@ -1,6 +1,6 @@
-package com.rpl.POJO;
+package com.rpl.POJO.input;
 
-public class TopicInputPOJO {
+public class CourseInputPOJO {
     private String name;
 
     public String getName() {

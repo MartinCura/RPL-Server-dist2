@@ -16,6 +16,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.*;
+import com.rpl.POJO.input.ActivityInputPOJO;
+import com.rpl.POJO.input.ActivitySubmissionInputPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplQueueException;
 import com.rpl.model.Activity;

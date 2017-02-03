@@ -1,4 +1,4 @@
-package com.rpl.POJO;
+package com.rpl.POJO.input;
 
 public class ActivityInputPOJO {
     private String name;

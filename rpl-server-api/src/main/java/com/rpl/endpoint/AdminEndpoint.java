@@ -13,9 +13,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.rpl.POJO.CourseInputPOJO;
+import com.rpl.POJO.input.CourseInputPOJO;
 import com.rpl.POJO.CoursePOJO;
-import com.rpl.POJO.CoursePersonInputPOJO;
+import com.rpl.POJO.input.CoursePersonInputPOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.model.Course;

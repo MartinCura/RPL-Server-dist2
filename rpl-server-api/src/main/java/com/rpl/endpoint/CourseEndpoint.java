@@ -18,13 +18,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.rpl.POJO.ActivityInputPOJO;
-import com.rpl.POJO.AssignAssistantInputPOJO;
-import com.rpl.POJO.CourseInputPOJO;
+import com.rpl.POJO.input.ActivityInputPOJO;
+import com.rpl.POJO.input.AssignAssistantInputPOJO;
+import com.rpl.POJO.input.CourseInputPOJO;
 import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.CourseStudentPOJO;
 import com.rpl.POJO.MessagePOJO;
-import com.rpl.POJO.TopicInputPOJO;
+import com.rpl.POJO.input.TopicInputPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
