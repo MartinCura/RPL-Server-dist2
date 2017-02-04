@@ -2,6 +2,7 @@ package com.rpl.POJO;
 
 
 import com.rpl.model.Activity;
+import com.rpl.model.DatabaseState;
 import com.rpl.model.Topic;
 
 import java.util.ArrayList;
@@ -17,7 +18,9 @@ public class TopicPOJO {
         this.name = topic.getName();
         activities = new ArrayList<ActivityPOJO>();
         for (Activity activity : topic.getActivities()) {
-            activities.add(new ActivityPOJO(activity));
+            if (activity.getState().equals(DatabaseState.ENABLED)) {
+                activities.add(new ActivityPOJO(activity));
+            }
         }
     }
 

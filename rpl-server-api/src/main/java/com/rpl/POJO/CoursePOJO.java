@@ -6,21 +6,24 @@ import java.util.List;
 import java.util.Set;
 
 import com.rpl.model.Course;
+import com.rpl.model.DatabaseState;
 import com.rpl.model.Topic;
 
 public class CoursePOJO {
     private Long id;
     private String name;
     private List<TopicPOJO> topics;
-    private boolean inscripted;
+    private String inscripted;
 
     public CoursePOJO(Course course) {
         this.id = course.getId();
         this.name = course.getName();
         this.topics = new ArrayList<TopicPOJO>();
-        this.inscripted = false;
+        this.inscripted = "UNREGISTERED";
         for (Topic topic : course.getTopics()) {
-            topics.add(new TopicPOJO(topic));
+            if (topic.getState().equals(DatabaseState.ENABLED)) {
+                topics.add(new TopicPOJO(topic));
+            }
         }
     }
     
@@ -53,12 +56,12 @@ public class CoursePOJO {
     	this.topics = null;
     }
 
-    public boolean isInscripted() {
+    public String getInscripted() {
         return inscripted;
     }
 
-    public void setInscripted(boolean inscripted) {
-        this.inscripted = inscripted;
+    public void setInscripted(boolean accepted) {
+        this.inscripted = accepted ? "ACCEPTED" : "PENDING";
     }
 
     public void markActivitiesAsSelected(Set<Long> activitiesSelected) {

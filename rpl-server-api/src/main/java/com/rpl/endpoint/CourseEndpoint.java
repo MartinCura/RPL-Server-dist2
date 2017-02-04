@@ -57,11 +57,13 @@ public class CourseEndpoint {
 		} else {
 			courses = courseService.getCoursesByRole(role);
 		}
-		Set<Long> coursesInscripted = courseService.getCoursesInscripted();
+		Map<Long, Boolean> coursesInscripted = courseService.getCoursesInscripted();
 		List<CoursePOJO> coursePOJOS = new ArrayList<CoursePOJO>();
 		for (Course course : courses) {
 			CoursePOJO coursePOJO = new CoursePOJO(course);
-			coursePOJO.setInscripted(coursesInscripted.contains(course.getId()));
+			if (coursesInscripted.containsKey(course.getId())) {
+				coursePOJO.setInscripted(coursesInscripted.get(course.getId()));
+			}
 			coursePOJOS.add(coursePOJO);
 		}
 		return Response.status(200).entity(coursePOJOS).build();

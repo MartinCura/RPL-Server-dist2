@@ -5,11 +5,7 @@ import java.util.*;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import com.rpl.model.ActivitySubmission;
-import com.rpl.model.Course;
-import com.rpl.model.CoursePerson;
-import com.rpl.model.Person;
-import com.rpl.model.RoleCourse;
+import com.rpl.model.*;
 import com.rpl.persistence.CourseDAO;
 import com.rpl.persistence.CoursePersonDAO;
 import com.rpl.persistence.PersonDAO;
@@ -41,11 +37,11 @@ public class CourseServiceImpl implements CourseService{
         return courseDAO.findUnregisteredByPerson(person.getId());
     }
 
-    public Set<Long> getCoursesInscripted() {
-        Person person = personDAO.find(userService.getCurrentUser().getId());
-        Set<Long> coursesInscripted = new HashSet<Long>();
-        for (Course course : person.getCourses()) {
-            coursesInscripted.add(course.getId());
+    public Map<Long, Boolean> getCoursesInscripted() {
+        Map<Long, Boolean> coursesInscripted = new HashMap<Long, Boolean>();
+        List<CoursePerson> courses = coursePersonDAO.findByPerson(userService.getCurrentUser().getId());
+        for (CoursePerson cp : courses) {
+            coursesInscripted.put(cp.getCourse().getId(), cp.isAccepted());
         }
         return coursesInscripted;
     }
@@ -69,6 +65,7 @@ public class CourseServiceImpl implements CourseService{
         coursePerson.setPerson(person);
         coursePerson.setCourse(course);
         coursePerson.setRole(RoleCourse.STUDENT);
+        coursePerson.setState(DatabaseState.ENABLED);
         coursePersonDAO.save(coursePerson);
     }
     

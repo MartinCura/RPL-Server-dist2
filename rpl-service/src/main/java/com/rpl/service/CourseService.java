@@ -29,7 +29,7 @@ public interface CourseService {
 	public void updateCustomization(Long id, String customization);
     public void assignAssistant(Long courseId, Long student, Long assistant);
     public List<Course> getUnregisteredCourses();
-    public Set<Long> getCoursesInscripted();
+    public Map<Long, Boolean> getCoursesInscripted();
 	public void updateCourseName(Long id, String name);
 	public List<CoursePerson> getProfessors(Long id);
 	

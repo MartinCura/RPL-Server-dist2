@@ -53,4 +53,13 @@ public class CoursePersonDAO extends ApplicationDAO {
                 .setParameter("personId", student)
                 .setParameter("courseId", courseId).executeUpdate();
     }
+
+    public List<CoursePerson> findByPerson(Long personId) {
+        return entityManager.createQuery(
+                "SELECT cp FROM CoursePerson cp WHERE " +
+                        "cp.person.id = :personId AND cp.state = :state")
+                .setParameter("personId", personId)
+                .setParameter("state", DatabaseState.ENABLED)
+                .getResultList();
+    }
 }

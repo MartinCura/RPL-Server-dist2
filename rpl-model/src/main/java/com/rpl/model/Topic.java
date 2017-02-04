@@ -68,5 +68,12 @@ public class Topic {
 	public void setActivities(List<Activity> activities) {
 		this.activities = activities;
 	}
-	
+
+	public DatabaseState getState() {
+		return state;
+	}
+
+	public void setState(DatabaseState state) {
+		this.state = state;
+	}
 }
