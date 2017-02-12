@@ -25,9 +25,11 @@ public class Daemon {
 			try {
 				QueueMessage message = qs.receive();
 				String submissionId = message.getMsg();
+				activitySubmissionDAO.clear();
 				ActivitySubmission submission = activitySubmissionDAO.find(Long.valueOf(submissionId));
 				Result result = tester.runSubmission(submission);
 				tester.analyzeResult(submission, result);
+				result.setIds(submission.getId());
 				if (result.getTests() != null)
 					result.getTests().fixTestsResults();
 				result = resultDAO.save(result);
