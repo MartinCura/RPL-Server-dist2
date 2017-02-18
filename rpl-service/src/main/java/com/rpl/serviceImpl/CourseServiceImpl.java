@@ -68,9 +68,8 @@ public class CourseServiceImpl implements CourseService{
         coursePerson.setState(DatabaseState.ENABLED);
         coursePersonDAO.save(coursePerson);
     }
-    
-    public void leaveCourse(Long personId) {
-        coursePersonDAO.deleteByPersonId(personId);
+    public void leaveCourse(Long courseId, Long personId) {
+        coursePersonDAO.deleteByPersonId(courseId, personId);
     }
 
 

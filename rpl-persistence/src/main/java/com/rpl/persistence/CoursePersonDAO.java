@@ -34,9 +34,9 @@ public class CoursePersonDAO extends ApplicationDAO {
                 .getResultList();
     }
 
-    public void deleteByPersonId(Long personId){
-    	entityManager.createQuery("UPDATE CoursePerson cp set state = :state where cp.person.id = :id").setParameter("id", personId)
-		.setParameter("state", DatabaseState.DELETED).executeUpdate();
+    public void deleteByPersonId(Long courseId, Long personId){
+    	entityManager.createQuery("UPDATE CoursePerson cp set state = :state where cp.person.id = :personId and cp.course.id = :courseId").setParameter("personId", personId)
+    	.setParameter("courseId", courseId).setParameter("state", DatabaseState.DELETED).executeUpdate();
     }
     
     public void acceptStudent(Long courseId, Long personId) {

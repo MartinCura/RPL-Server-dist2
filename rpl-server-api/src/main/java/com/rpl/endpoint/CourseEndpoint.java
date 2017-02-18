@@ -40,7 +40,7 @@ import com.rpl.service.TopicService;
 @Secured
 @Path("/courses")
 public class CourseEndpoint {
-	
+
 	@Inject
 	private ActivityService activityService;
 	@Inject
@@ -81,7 +81,7 @@ public class CourseEndpoint {
 		coursePOJO.markActivitiesAsSelected(activitiesSelected);
 		return Response.status(200).entity(coursePOJO).build();
 	}
-	
+
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -90,8 +90,7 @@ public class CourseEndpoint {
 		courseService.deleteCourseById(id);
 		return Response.ok().build();
 	}
-	
-	
+
 	@PUT
 	@Path("/{id}/customization")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -100,7 +99,7 @@ public class CourseEndpoint {
 		courseService.updateCustomization(id, customization);
 		return Response.ok().build();
 	}
-	
+
 	@PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -108,7 +107,7 @@ public class CourseEndpoint {
 		courseService.updateCourseName(id, course.getName());
 		return Response.ok().build();
 	}
-	
+
 	@GET
 	@Path("/{id}/topics")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -117,8 +116,6 @@ public class CourseEndpoint {
 		Course course = courseService.getCourseById(id);
 		return Response.status(200).entity(new CoursePOJO(course.getTopics())).build();
 	}
-	
-	
 
 	@POST
 	@Path("/{id}/activities")
@@ -137,7 +134,7 @@ public class CourseEndpoint {
 		activity.setInput(activityInputPOJO.getInput());
 		activity.setOutput(activityInputPOJO.getOutput());
 		activity.setTests(activityInputPOJO.getTests());
-//		activity.setFiles(activityInputPOJO.getFiles());
+		// activity.setFiles(activityInputPOJO.getFiles());
 		activityService.submit(courseId, activity);
 		return Response.status(200).build();
 	}
@@ -160,23 +157,24 @@ public class CourseEndpoint {
 		try {
 			courseService.join(courseId);
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of("Already joined")).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of("Already joined"))
+					.build();
 		}
 		return Response.status(200).build();
 	}
-	
+
 	@POST
-	@Path("/{id}/leave")
+	@Path("/{courseId}/person/{personId}/leave")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response leaveCourse(@PathParam("id") Long personId) {
-		courseService.leaveCourse(personId);
+	public Response leaveCourse(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
+		courseService.leaveCourse(courseId, personId);
 		return Response.status(200).build();
 	}
 
 	@GET
 	@Path("/{id}/students")
 	@Produces(MediaType.APPLICATION_JSON)
-	//TODO mover a /reports
+	// TODO mover a /reports
 	public Response getStudentsActivities(@PathParam("id") Long id) {
 		Map<Person, Set<ActivitySubmission>> submissionsByPerson = courseService.getSubmissionsByStudent(id);
 		return Response.status(200).entity(new CourseStudentPOJO(id, submissionsByPerson)).build();
@@ -193,8 +191,10 @@ public class CourseEndpoint {
 	@POST
 	@Path("/{courseId}/assistant")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response assignAssistant(@PathParam("courseId") Long courseId, AssignAssistantInputPOJO assignAssistantInputPOJO) {
-		courseService.assignAssistant(courseId, assignAssistantInputPOJO.getStudent(), assignAssistantInputPOJO.getAssistant());
+	public Response assignAssistant(@PathParam("courseId") Long courseId,
+			AssignAssistantInputPOJO assignAssistantInputPOJO) {
+		courseService.assignAssistant(courseId, assignAssistantInputPOJO.getStudent(),
+				assignAssistantInputPOJO.getAssistant());
 		return Response.status(200).build();
 	}
 }

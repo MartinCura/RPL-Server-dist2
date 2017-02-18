@@ -17,7 +17,7 @@ public interface CourseService {
     public List<Course> getCoursesByRole(String role);
     public Course submit(Course course);
     public void join(Long courseId);
-    public void leaveCourse(Long personId);
+    public void leaveCourse(Long courseId, Long personId);
     
     public Map<Person,Set<ActivitySubmission>> getSubmissionsByStudent(Long id);
 
