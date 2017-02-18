@@ -1,5 +1,8 @@
 package com.rpl.model;
 
+import java.io.File;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -40,6 +43,7 @@ public class Activity {
 	private String tests;
 	@Enumerated(EnumType.STRING)
 	private DatabaseState state;
+//	private List<File> files;
 
 	public Long getId() {
 		return id;
@@ -136,4 +140,13 @@ public class Activity {
 	public void setState(DatabaseState state) {
 		this.state = state;
 	}
+
+//    public List<File> getFiles() {
+//		return files;
+//	}
+//
+//	public void setFiles(List<File> files) {
+//		this.files = files;
+//	}
+
 }

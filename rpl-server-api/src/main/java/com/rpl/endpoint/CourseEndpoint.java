@@ -137,6 +137,7 @@ public class CourseEndpoint {
 		activity.setInput(activityInputPOJO.getInput());
 		activity.setOutput(activityInputPOJO.getOutput());
 		activity.setTests(activityInputPOJO.getTests());
+//		activity.setFiles(activityInputPOJO.getFiles());
 		activityService.submit(courseId, activity);
 		return Response.status(200).build();
 	}

@@ -34,6 +34,11 @@ CREATE TABLE activity (
 	state text NOT NULL DEFAULT 'ENABLED'
 );
 
+CREATE TABLE activity_file (
+	id serial PRIMARY KEY, 
+	content blob NOT NULL
+);
+
 insert into activity (
 	name,
 	language,

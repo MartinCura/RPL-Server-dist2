@@ -1,5 +1,8 @@
 package com.rpl.POJO.input;
 
+import java.io.File;
+import java.util.List;
+
 public class ActivityInputPOJO {
     private String name;
     private String description;
@@ -11,8 +14,9 @@ public class ActivityInputPOJO {
     private String input;
     private String output;
     private String tests;
+    private List<File> files;
 
-    public String getName() {
+	public String getName() {
         return name;
     }
 
@@ -91,4 +95,13 @@ public class ActivityInputPOJO {
     public void setTests(String tests) {
         this.tests = tests;
     }
+
+    public List<File> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<File> files) {
+		this.files = files;
+	}
+
 }
