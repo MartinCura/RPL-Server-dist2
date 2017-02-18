@@ -1,20 +1,12 @@
 package com.rpl.model.runner;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "result")
 public class Result {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
 	@OneToOne(cascade = CascadeType.ALL)
@@ -57,5 +49,13 @@ public class Result {
 
 	public void setTests(Tests tests) {
 		this.tests = tests;
+	}
+
+	public void setIds(Long id) {
+		this.setId(id);
+		if (status != null)
+			status.setId(id);
+		if (tests != null)
+			tests.setId(id);
 	}
 }

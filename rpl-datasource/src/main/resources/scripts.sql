@@ -153,7 +153,6 @@ CREATE TABLE activity_submission (
 	code text NOT NULL,
 	status text NOT NULL,
 	execution_output text,
-	result_id integer REFERENCES result,
 	selected boolean DEFAULT FALSE
 );
 

@@ -41,4 +41,8 @@ public class ApplicationDAO {
 		return entityManager.getCriteriaBuilder();
 	}
 
+	public void clear() {
+		entityManager.clear();
+	}
+
 }

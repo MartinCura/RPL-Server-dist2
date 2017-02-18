@@ -9,13 +9,20 @@ import javax.persistence.*;
 public class Tests {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
     private boolean success;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "test", cascade = CascadeType.ALL)
     private List<TestResult> tests;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public boolean isSuccess() {
         return success;
