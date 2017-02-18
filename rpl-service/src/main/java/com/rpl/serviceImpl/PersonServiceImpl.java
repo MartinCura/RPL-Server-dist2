@@ -1,6 +1,7 @@
 package com.rpl.serviceImpl;
 
 import com.rpl.model.CoursePerson;
+import com.rpl.model.DatabaseState;
 import com.rpl.model.Person;
 import com.rpl.persistence.CoursePersonDAO;
 import com.rpl.persistence.PersonDAO;
@@ -31,6 +32,7 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 	public void addCoursePerson(CoursePerson coursePerson) {
+		coursePerson.setState(DatabaseState.ENABLED);
 		coursePersonDAO.save(coursePerson);
 	}
 
