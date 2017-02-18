@@ -7,6 +7,9 @@ public class PersonInfoPOJO {
 	private String name;
 	private String mail;
 	
+	public PersonInfoPOJO() {
+	}
+	
 	public PersonInfoPOJO(Person p) {
 		this.name = p.getName();
 		this.mail = p.getMail();
