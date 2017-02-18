@@ -48,6 +48,7 @@ public class AuthenticationEndpoint {
 		}
 	}
 
+	@Secured
 	@PUT
 	@Path("/password")
 	@Consumes(MediaType.APPLICATION_JSON)
