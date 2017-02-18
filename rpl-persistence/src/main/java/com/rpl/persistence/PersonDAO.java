@@ -62,4 +62,5 @@ public class PersonDAO extends ApplicationDAO {
 				.setParameter("username", username);
 		return (Person) query.getSingleResult();
 	}
+
 }

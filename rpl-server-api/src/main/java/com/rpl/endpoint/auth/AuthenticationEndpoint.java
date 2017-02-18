@@ -3,6 +3,7 @@ package com.rpl.endpoint.auth;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -10,6 +11,7 @@ import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.CredentialsPOJO;
 import com.rpl.POJO.MessagePOJO;
+import com.rpl.POJO.PersonPasswordPOJO;
 import com.rpl.POJO.RegisterPOJO;
 import com.rpl.POJO.TokenPOJO;
 import com.rpl.annotation.Secured;
@@ -46,13 +48,13 @@ public class AuthenticationEndpoint {
 		}
 	}
 
-	@POST
+	@PUT
 	@Path("/password")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updatePassword(String password) {
+	public Response updatePassword(PersonPasswordPOJO pojo) {
 
-		securityService.updatePassword(userService.getCurrentUser().getId(), password);
+		securityService.updatePassword(userService.getCurrentUser().getId(), pojo.getPassword());
 
 		return Response.ok().build();
 

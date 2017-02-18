@@ -1,5 +1,8 @@
 package com.rpl.endpoint;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -15,9 +18,6 @@ import com.rpl.annotation.Secured;
 import com.rpl.model.Person;
 import com.rpl.service.PersonService;
 import com.rpl.service.UserService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Secured
 @Path("/persons")
@@ -61,5 +61,4 @@ public class PersonEndpoint {
 		personService.updatePersonInfo(userService.getCurrentUser().getId(), pojo.getName(), pojo.getMail());
 		return Response.ok().build();
 	}
-
 }
