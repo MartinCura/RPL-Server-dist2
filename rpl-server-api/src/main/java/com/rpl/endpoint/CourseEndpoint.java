@@ -229,6 +229,14 @@ public class CourseEndpoint {
 		courseService.accept(courseId, personId);
 		return Response.status(200).build();
 	}
+	
+	@POST
+	@Path("/{courseId}/person/{personId}/pending")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response pendingStudent(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
+		courseService.pending(courseId, personId);
+		return Response.status(200).build();
+	}
 
 	@POST
 	@Path("/{courseId}/assistant")

@@ -22,7 +22,8 @@ public interface CourseService {
     public Map<Person,Set<ActivitySubmission>> getSubmissionsByStudent(Long id);
 
     public void accept(Long courseId, Long personId);
-
+    public void pending(Long courseId, Long personId);
+    
     public List<CoursePerson> getStudents(Long id);
     public List<CoursePerson> getAssistants(Long id);
 	public void deleteCourseById(Long id);
@@ -32,5 +33,4 @@ public interface CourseService {
     public Map<Long, Boolean> getCoursesInscripted();
 	public void updateCourseName(Long id, String name);
 	public List<CoursePerson> getProfessors(Long id);
-	
 }

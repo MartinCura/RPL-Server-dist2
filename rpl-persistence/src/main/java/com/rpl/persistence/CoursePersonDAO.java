@@ -45,6 +45,13 @@ public class CoursePersonDAO extends ApplicationDAO {
                 .setParameter("personId", personId)
                 .setParameter("courseId", courseId).executeUpdate();
     }
+    
+    public void pendingStudent(Long courseId, Long personId) {
+        entityManager.createQuery("UPDATE CoursePerson c set c.accepted = false WHERE " +
+                "c.person.id = :personId AND c.course.id = :courseId")
+                .setParameter("personId", personId)
+                .setParameter("courseId", courseId).executeUpdate();
+    }
 
     public void updateAssistant(Long courseId, Long student, Long assistant) {
         entityManager.createQuery("UPDATE CoursePerson c set c.assistant.id = :assistantId WHERE " +

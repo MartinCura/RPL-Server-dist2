@@ -92,6 +92,11 @@ public class CourseServiceImpl implements CourseService{
         coursePersonDAO.acceptStudent(courseId, personId);
     }
     
+    public void pending(Long courseId, Long personId) {
+        coursePersonDAO.pendingStudent(courseId, personId);
+    }
+    
+    
     public List<CoursePerson> getStudents(Long id) {
         return coursePersonDAO.findByCourseIdAndRole(id, RoleCourse.STUDENT);
     }
