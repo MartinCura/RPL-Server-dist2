@@ -44,7 +44,7 @@ public class Activity {
 	private String tests;
 	@Enumerated(EnumType.STRING)
 	private DatabaseState state;
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "activity", orphanRemoval = true)
+	@OneToMany(mappedBy = "activity")
 	private Set<ActivityInputFile> files;
 
 	public Long getId() {
