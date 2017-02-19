@@ -1,21 +1,22 @@
 package com.rpl.POJO;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.rpl.model.ActivityInputFile;
 
 public class ActivityInputFilesPOJO {
-    private List<ActivityInputFile> files;
+    private List<ActivityInputFilePOJO> files;
 
     public ActivityInputFilesPOJO(List<ActivityInputFile> files) {
-    	this.setFiles(files);
+    	this.files = files.stream().map(f -> new ActivityInputFilePOJO(f)).collect(Collectors.toList());
     }
 
-	public List<ActivityInputFile> getFiles() {
+	public List<ActivityInputFilePOJO> getFiles() {
 		return files;
 	}
 
-	public void setFiles(List<ActivityInputFile> files) {
+	public void setFiles(List<ActivityInputFilePOJO> files) {
 		this.files = files;
 	}
 }
