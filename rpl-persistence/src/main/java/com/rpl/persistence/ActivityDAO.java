@@ -50,6 +50,6 @@ public class ActivityDAO extends ApplicationDAO {
 	}
 
 	public List<ActivityInputFile> findFiles(Long activityId) {
-		return entityManager.createQuery("SELECT file FROM activity_file file WHERE file.activity_id = :id").setParameter("id", activityId).getResultList();
+		return entityManager.createQuery("SELECT file FROM ActivityInputFile file WHERE file.activity.id = :id").setParameter("id", activityId).getResultList();
 	}
 }
