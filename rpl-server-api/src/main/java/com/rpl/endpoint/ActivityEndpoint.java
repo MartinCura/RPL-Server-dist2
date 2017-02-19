@@ -3,6 +3,7 @@ package com.rpl.endpoint;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -17,7 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.ActivityCompletePOJO;
-import com.rpl.POJO.ActivityInputFilesPOJO;
+import com.rpl.POJO.ActivityInputFilePOJO;
 import com.rpl.POJO.ActivityPOJO;
 import com.rpl.POJO.ActivitySubmissionPOJO;
 import com.rpl.POJO.ActivitySubmissionSimplePOJO;
@@ -26,6 +27,7 @@ import com.rpl.POJO.input.ActivitySubmissionInputPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplQueueException;
 import com.rpl.model.Activity;
+import com.rpl.model.ActivityInputFile;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Language;
 import com.rpl.model.TestType;
@@ -127,7 +129,8 @@ public class ActivityEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getFiles(@PathParam("id") Long activityId) throws IOException {
-		return Response.status(200).entity(new ActivityInputFilesPOJO(activityService.findAllFiles(activityId))).build();
+		List<ActivityInputFile> list = activityService.findAllFiles(activityId);
+		return Response.status(200).entity(list.stream().map(f -> new ActivityInputFilePOJO(f)).collect(Collectors.toList())).build();
 	}
 	
 }
