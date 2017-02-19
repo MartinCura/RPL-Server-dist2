@@ -63,6 +63,12 @@ public class ActivityServiceImpl implements ActivityService {
 	
 	public void saveFile(Long activityId, ActivityInputFile file){
 		Activity act = activityDAO.find(activityId);
+		ActivityInputFile recoveredFile = activityDAO.findFileByActivityAndName(activityId, file.getFileName());
+		if (recoveredFile != null){
+			recoveredFile.setContent(file.getContent());
+			activityDAO.save(recoveredFile);
+			return;
+		}
 		file.setActivity(act);
 		activityDAO.save(file);
 	}
