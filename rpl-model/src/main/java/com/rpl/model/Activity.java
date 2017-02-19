@@ -1,17 +1,18 @@
 package com.rpl.model;
 
-import java.io.File;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -43,7 +44,8 @@ public class Activity {
 	private String tests;
 	@Enumerated(EnumType.STRING)
 	private DatabaseState state;
-//	private List<File> files;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "activity", orphanRemoval = true)
+	private Set<ActivityInputFile> files;
 
 	public Long getId() {
 		return id;
@@ -141,12 +143,12 @@ public class Activity {
 		this.state = state;
 	}
 
-//    public List<File> getFiles() {
-//		return files;
-//	}
-//
-//	public void setFiles(List<File> files) {
-//		this.files = files;
-//	}
+	public Set<ActivityInputFile> getFiles() {
+		return files;
+	}
+
+	public void setFiles(Set<ActivityInputFile> files) {
+		this.files = files;
+	}
 
 }

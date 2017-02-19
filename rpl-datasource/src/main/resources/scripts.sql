@@ -34,9 +34,12 @@ CREATE TABLE activity (
 	state text NOT NULL DEFAULT 'ENABLED'
 );
 
+DROP TABLE IF EXISTS activity_file cascade;
 CREATE TABLE activity_file (
-	id serial PRIMARY KEY, 
-	content blob NOT NULL
+	id serial PRIMARY KEY,
+	activity_id integer REFERENCES activity,
+	fileName text NOT NULL,
+	content bytea NOT NULL
 );
 
 insert into activity (

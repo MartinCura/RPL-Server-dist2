@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.rpl.model.Activity;
+import com.rpl.model.ActivityInputFile;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Language;
 import com.rpl.model.TestType;
@@ -58,5 +59,11 @@ public class ActivityServiceImpl implements ActivityService {
 			activitiesId.add(activitySubmission.getActivity().getId());
 		}
 		return activitiesId;
+	}
+	
+	public void saveFile(Long activityId, ActivityInputFile file){
+		Activity act = activityDAO.find(activityId);
+		file.setActivity(act);
+		activityDAO.save(file);
 	}
 }

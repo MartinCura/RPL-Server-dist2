@@ -1,11 +1,7 @@
 package com.rpl.endpoint;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,11 +18,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
-import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
 
 import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.CourseStudentPOJO;
@@ -37,6 +34,7 @@ import com.rpl.POJO.input.CourseInputPOJO;
 import com.rpl.POJO.input.TopicInputPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.model.Activity;
+import com.rpl.model.ActivityInputFile;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Course;
 import com.rpl.model.Language;
@@ -153,39 +151,34 @@ public class CourseEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadFile(@PathParam("id") Long activityId, MultipartFormDataInput input) throws IOException {
+		
+		
+		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
+		List<InputPart> inputParts = uploadForm.get("file");
 
-		/*Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
-		// Get file data to save
-		List<InputPart> inputParts = uploadForm.get("file1");
 		for (InputPart inputPart : inputParts) {
-			try {
-				// header for extra processing if required
+			String fileName = getFileName(inputPart.getHeaders());
+			InputStream inputStream = inputPart.getBody(InputStream.class,null);
+			byte [] bytes = IOUtils.toByteArray(inputStream);
+			activityService.saveFile(activityId, new ActivityInputFile(fileName, bytes));
+		}
+		return Response.status(200).build();
+	}
+	
+	private String getFileName(MultivaluedMap<String, String> header) {
 
-				// MultivaluedMap<String, String> header =
-				// inputPart.getHeaders();
+		String[] contentDisposition = header.getFirst("Content-Disposition").split(";");
 
-				// convert the uploaded file to inputstream and write it to disk
-				InputStream inputStream = inputPart.getBody(InputStream.class, null);
-				OutputStream out = new FileOutputStream(new File("c:\\temp\\bigfile2.iso"));
-				int read = 0;
-				byte[] bytes = new byte[2048];
-				while ((read = inputStream.read(bytes)) != -1) {
-					out.write(bytes, 0, read);
-				}
-				inputStream.close();
-				out.flush();
-				out.close();
+		for (String filename : contentDisposition) {
+			if ((filename.trim().startsWith("filename"))) {
 
-				System.out.println("ok");
-			} catch (Exception e) {
-				e.printStackTrace();
+				String[] name = filename.split("=");
+
+				String finalFileName = name[1].trim().replaceAll("\"", "");
+				return finalFileName;
 			}
 		}
-		// return the result
-		MultipartFormDataOutput mdo = new MultipartFormDataOutput();
-		mdo.addFormData("file2", new FileInputStream(new File("c:\\temp\\bigfile2.iso")),
-				MediaType.APPLICATION_OCTET_STREAM_TYPE);*/
-		return Response.status(200).build();
+		return null;
 	}
 
 	@POST
