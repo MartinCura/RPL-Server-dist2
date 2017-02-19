@@ -3,6 +3,7 @@ package com.rpl.persistence;
 import java.util.List;
 
 import com.rpl.model.Activity;
+import com.rpl.model.ActivityInputFile;
 import com.rpl.model.DatabaseState;
 import com.rpl.model.Language;
 import com.rpl.model.TestType;
@@ -38,5 +39,17 @@ public class ActivityDAO extends ApplicationDAO {
 	public void delete(Long id) {
 		entityManager.createQuery("UPDATE Activity set state = :state where id = :id").setParameter("id", id)
 				.setParameter("state", DatabaseState.DELETED).executeUpdate();
+	}
+	
+	public ActivityInputFile findFile(Long fileId){
+		return entityManager.find(ActivityInputFile.class, fileId);
+	}
+	
+	public void deleteFile(ActivityInputFile file) {
+		entityManager.remove(file);
+	}
+
+	public List<ActivityInputFile> findFiles(Long activityId) {
+		return entityManager.createQuery("SELECT file FROM activity_file file WHERE file.activity_id = :id").setParameter("id", activityId).getResultList();
 	}
 }

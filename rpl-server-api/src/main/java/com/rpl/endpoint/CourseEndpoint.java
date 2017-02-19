@@ -145,7 +145,7 @@ public class CourseEndpoint {
 		activityService.submit(courseId, activity);
 		return Response.status(200).build();
 	}
-
+	
 	@POST
 	@Path("activity/{id}/file")
 	@Produces(MediaType.APPLICATION_JSON)

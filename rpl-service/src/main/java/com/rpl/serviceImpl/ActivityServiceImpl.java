@@ -66,4 +66,13 @@ public class ActivityServiceImpl implements ActivityService {
 		file.setActivity(act);
 		activityDAO.save(file);
 	}
+	
+	public void deleteFile(Long fileId){
+		ActivityInputFile file = activityDAO.findFile(fileId);
+		activityDAO.deleteFile(file);
+	}
+	
+	public List<ActivityInputFile> findAllFiles(Long activityId){
+		return activityDAO.findFiles(activityId);
+	}
 }

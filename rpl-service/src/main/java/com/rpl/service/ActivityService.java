@@ -18,5 +18,6 @@ public interface ActivityService {
     public void update(Long id, String name, String description, Language language, int points, Long topic, TestType testType, String template, String input, String output, String tests);
 	public Set<Long> getActivitiesDoneByCourse(Long courseId);
 	public void saveFile(Long activityId, ActivityInputFile file);
-
+	public void deleteFile(Long fileId);
+	public List<ActivityInputFile> findAllFiles(Long activityId);
 }
