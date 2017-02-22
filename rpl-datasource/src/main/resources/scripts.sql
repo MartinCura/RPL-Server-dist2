@@ -4,6 +4,7 @@ CREATE TABLE course (
 	name text NOT NULL,
 	customization text,
 	rules text,
+	description text,
 	state text NOT NULL DEFAULT 'ENABLED'
 );
 
