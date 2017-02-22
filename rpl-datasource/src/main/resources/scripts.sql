@@ -148,6 +148,15 @@ CREATE TABLE person (
 	token text,
 	role text NOT NULL
 );
+
+DROP TABLE IF EXISTS logged_action cascade;
+CREATE TABLE logged_action (
+	id serial PRIMARY KEY,
+	person_id integer REFERENCES person,
+	action_description text NOT NULL,
+	action_date date NOT NULL
+);
+
 	
 DROP TABLE IF EXISTS activity_submission cascade;
 CREATE TABLE activity_submission (
