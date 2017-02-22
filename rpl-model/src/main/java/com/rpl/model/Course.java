@@ -33,6 +33,8 @@ public class Course {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "course", orphanRemoval = true)
 	@OrderBy(clause = "id ASC")
 	private Set<Topic> topics;
+	
+	private String rules;
 
 	private String customization;
 
@@ -74,5 +76,13 @@ public class Course {
 
 	public void setState(DatabaseState state) {
 		this.state = state;
+	}
+
+	public String getRules() {
+		return rules;
+	}
+
+	public void setRules(String rules) {
+		this.rules = rules;
 	}
 }

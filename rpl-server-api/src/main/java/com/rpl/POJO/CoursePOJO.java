@@ -13,11 +13,13 @@ public class CoursePOJO {
     private Long id;
     private String name;
     private List<TopicPOJO> topics;
+    private String rules;
     private String inscripted;
 
     public CoursePOJO(Course course) {
         this.id = course.getId();
         this.name = course.getName();
+        this.rules = course.getRules();
         this.topics = new ArrayList<TopicPOJO>();
         this.inscripted = "UNREGISTERED";
         for (Topic topic : course.getTopics()) {
