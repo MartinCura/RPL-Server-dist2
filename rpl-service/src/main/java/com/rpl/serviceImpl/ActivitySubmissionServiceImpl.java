@@ -58,6 +58,7 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		submission.setSelected(true);
 		activitySubmissionDAO.save(submission);
 		activitySubmissionDAO.setUnselectedSubmissions(submissionId, submission.getPerson().getId(), submission.getActivity().getId());
+		actionLogService.logMarkActivitySubmissionAsSelected(submissionId);
 	}
 
 	public List<ActivitySubmission> getSubmissionsByActivity(Long activityId) {

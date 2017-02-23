@@ -14,6 +14,7 @@ import com.rpl.model.Language;
 import com.rpl.model.TestType;
 import com.rpl.persistence.ActivityDAO;
 import com.rpl.persistence.ActivitySubmissionDAO;
+import com.rpl.service.ActionLogService;
 import com.rpl.service.ActivityService;
 import com.rpl.service.UserService;
 
@@ -26,6 +27,8 @@ public class ActivityServiceImpl implements ActivityService {
 	private UserService userService;
 	@Inject
 	private ActivitySubmissionDAO activitySubmissionDAO;
+	@Inject
+	private ActionLogService actionLogService;
 	
 	
 	public Activity getActivityById(Long id) {
@@ -42,6 +45,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	public void delete(Long id) {
 		activityDAO.delete(id);
+		actionLogService.logDeletedActivity(id);
 	}
 	
 	public void update(Long id, String name, String description, Language language, int points, Long topic, TestType testType, String template, String input, String output, String tests) {
@@ -49,7 +53,8 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 	
 	public void submit(Long courseId, Activity activity) {
-		activityDAO.save(activity);
+		Activity newActivity = activityDAO.save(activity);
+		actionLogService.logNewActivity(newActivity.getId());
 	}
 
 	public Set<Long> getActivitiesDoneByCourse(Long courseId) {

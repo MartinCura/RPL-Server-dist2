@@ -1,14 +1,23 @@
 package com.rpl.serviceImpl;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import com.rpl.model.*;
+import com.rpl.model.ActivitySubmission;
+import com.rpl.model.Course;
+import com.rpl.model.CoursePerson;
+import com.rpl.model.DatabaseState;
+import com.rpl.model.Person;
+import com.rpl.model.RoleCourse;
 import com.rpl.persistence.CourseDAO;
 import com.rpl.persistence.CoursePersonDAO;
 import com.rpl.persistence.PersonDAO;
+import com.rpl.service.ActionLogService;
 import com.rpl.service.CourseService;
 import com.rpl.service.UserService;
 
@@ -22,6 +31,8 @@ public class CourseServiceImpl implements CourseService{
     private CoursePersonDAO coursePersonDAO;
     @Inject
     private PersonDAO personDAO;
+    @Inject
+    private ActionLogService actionLogService;
 
     public List<Course> getCourses() {
         return courseDAO.findAll();
@@ -51,11 +62,14 @@ public class CourseServiceImpl implements CourseService{
     }
 
     public Course submit(Course course) {
-        return courseDAO.save(course);
+    	Course newCourse = courseDAO.save(course);
+    	actionLogService.logNewCourse(course.getId());
+        return newCourse;
     }
     
     public void deleteCourseById(Long id){
     	courseDAO.delete(id);
+    	actionLogService.logDeletedCourse(id);
     }
 
     public void join(Long courseId) {
@@ -67,9 +81,12 @@ public class CourseServiceImpl implements CourseService{
         coursePerson.setRole(RoleCourse.STUDENT);
         coursePerson.setState(DatabaseState.ENABLED);
         coursePersonDAO.save(coursePerson);
+        actionLogService.logJoinedCourse(courseId, coursePerson.getPerson().getId());
     }
+    
     public void leaveCourse(Long courseId, Long personId) {
         coursePersonDAO.deleteByPersonId(courseId, personId);
+        actionLogService.logLeftCourse(courseId, personId);
     }
 
 

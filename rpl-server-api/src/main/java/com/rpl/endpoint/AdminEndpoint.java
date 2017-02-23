@@ -38,7 +38,7 @@ public class AdminEndpoint {
     @Path("/courses")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createCourse() {
+    public Response getCourses() {
     	List<Course> result = courseService.getCourses();
     	List<CoursePOJO> resultPOJO = result.stream().map(c -> CoursePOJO.mapWithoutTopics(c)).collect(Collectors.toList());
         return Response.ok(resultPOJO).build();

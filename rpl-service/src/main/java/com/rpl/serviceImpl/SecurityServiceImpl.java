@@ -89,6 +89,7 @@ public class SecurityServiceImpl implements SecurityService {
 			validatePassword(p.getCredentials().getPassword());
 			p.getCredentials().setToken(token);
 			personDAO.save(p);
+			actionLogService.logNewUserRegistered(p);
 		} catch (PersistenceException e) {
 			throw RplException.of("Username debe ser unico", e);
 		}
@@ -108,6 +109,7 @@ public class SecurityServiceImpl implements SecurityService {
 
 	public void updatePassword(Long id, String password) {
 		personDAO.updatePassword(id, password);
+		actionLogService.logPasswordUpdate();
 	}
 
 }
