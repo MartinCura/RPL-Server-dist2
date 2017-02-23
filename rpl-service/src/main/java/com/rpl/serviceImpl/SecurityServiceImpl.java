@@ -13,6 +13,7 @@ import com.rpl.exception.RplRoleException;
 import com.rpl.model.Person;
 import com.rpl.model.Role;
 import com.rpl.persistence.PersonDAO;
+import com.rpl.service.ActionLogService;
 import com.rpl.service.SecurityService;
 
 import io.jsonwebtoken.Claims;
@@ -31,9 +32,13 @@ public class SecurityServiceImpl implements SecurityService {
 	@Inject
 	private PersonDAO personDAO;
 
+	@Inject
+	private ActionLogService actionLogService;
+	
 	public String issueToken(Person p) throws Exception {
 		String generatedToken = generateToken(p);
 		personDAO.updatePersonToken(p.getCredentials().getUsername(), generatedToken);
+		actionLogService.logLogin(p);
 		return generatedToken;
 	}
 	
@@ -44,6 +49,7 @@ public class SecurityServiceImpl implements SecurityService {
 
 	public void logout(String username){
 		personDAO.updatePersonToken(username, "");
+		actionLogService.logLogout();
 	}
 	
 	public Person authenticate(String username, String password) throws RplNotAuthorizedException {

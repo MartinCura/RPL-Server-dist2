@@ -30,7 +30,19 @@ public class ActionLogServiceImpl implements ActionLogService {
 
 	@Override
 	public void logLogin(Person p) {
-		this.logAction(p, p.getCredentials().getUsername() + " logged in");
+		this.logAction(p, "Logged in");
 	}
+
+	@Override
+	public void logLogout() {
+		this.logAction("Logged out");
+	}
+
+	@Override
+	public void logActivitySubmission(Long activitySubmissionId) {
+		this.logAction("Submitted activity with id: " + activitySubmissionId.toString());
+	}
+	
+	
 	
 }

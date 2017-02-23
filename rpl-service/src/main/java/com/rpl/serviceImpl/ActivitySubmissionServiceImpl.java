@@ -16,6 +16,7 @@ import com.rpl.model.QueueMessage;
 import com.rpl.model.Status;
 import com.rpl.persistence.ActivityDAO;
 import com.rpl.persistence.ActivitySubmissionDAO;
+import com.rpl.service.ActionLogService;
 import com.rpl.service.ActivitySubmissionService;
 import com.rpl.service.QueueService;
 import com.rpl.service.UserService;
@@ -32,8 +33,10 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 	private ActivitySubmissionDAO activitySubmissionDAO;
 	@Inject
 	private ActivityDAO activityDAO;
-	
+	@Inject
+	private ActionLogService actionLogService;
 
+	
 	public ActivitySubmission getSubmissionById(Long id) {
 		return activitySubmissionDAO.find(id);
 	}
@@ -45,6 +48,7 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		submission.setSubmissionDate(new Date());
 		submission.setStatus(Status.PENDING);
 		submission = activitySubmissionDAO.save(submission);
+		actionLogService.logActivitySubmission(submission.getId());
 		return submission;
 		
 	}
