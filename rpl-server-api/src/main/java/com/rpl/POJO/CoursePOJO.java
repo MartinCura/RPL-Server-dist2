@@ -14,12 +14,14 @@ public class CoursePOJO {
     private String name;
     private List<TopicPOJO> topics;
     private String rules;
+    private String description;
     private String inscripted;
 
     public CoursePOJO(Course course) {
         this.id = course.getId();
         this.name = course.getName();
         this.rules = course.getRules();
+        this.description = course.getDescription();
         this.topics = new ArrayList<TopicPOJO>();
         this.inscripted = "UNREGISTERED";
         for (Topic topic : course.getTopics()) {
@@ -74,5 +76,21 @@ public class CoursePOJO {
                 }
             }
         }
+    }
+
+    public String getRules() {
+        return rules;
+    }
+
+    public void setRules(String rules) {
+        this.rules = rules;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

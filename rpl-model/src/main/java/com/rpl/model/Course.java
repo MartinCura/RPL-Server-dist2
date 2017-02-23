@@ -36,6 +36,8 @@ public class Course {
 	
 	private String rules;
 
+	private String description;
+
 	private String customization;
 
 	public String getCustomization() {
@@ -84,5 +86,13 @@ public class Course {
 
 	public void setRules(String rules) {
 		this.rules = rules;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }
