@@ -81,9 +81,9 @@ public class SecurityInterceptor implements ContainerRequestFilter {
 		List<Role> methodRoles = extractRoles(resourceInfo.getResourceMethod());
 		try {
 			if (methodRoles.isEmpty())
-				securityService.checkPermissions(classRoles, p);
+				SecurityHelper.checkPermissions(classRoles, p);
 			else
-				securityService.checkPermissions(methodRoles, p);
+				SecurityHelper.checkPermissions(methodRoles, p);
 		} catch (RplRoleException e) {
 			throw new ForbiddenException();
 		}

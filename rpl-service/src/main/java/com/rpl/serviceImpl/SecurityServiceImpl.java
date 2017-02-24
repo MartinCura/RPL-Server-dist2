@@ -76,11 +76,6 @@ public class SecurityServiceImpl implements SecurityService {
 		return validateToken(token, retrievedPerson);
 	}
 
-	public void checkPermissions(List<Role> allowedRoles, Person p) throws RplRoleException {
-		//TODO: MOCKED IMPL!
-		//if (!allowedRoles.contains(p.getCredentials().getRole())) throw new RplRoleException();
-	}
-
 	@Override
 	public String register(Person p) throws RplException {
 		String token = generateToken(p);

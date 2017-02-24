@@ -28,6 +28,9 @@ public class Person {
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy="person")
 	private Set<ActivitySubmission> submissions;
+	
+	@OneToMany(mappedBy="person")
+	private List<CoursePerson> coursePersons;
 
 	public Long getId() {
 		return id;
@@ -75,6 +78,14 @@ public class Person {
 
 	public void setSubmissions(Set<ActivitySubmission> submissions) {
 		this.submissions = submissions;
+	}
+
+	public List<CoursePerson> getCoursePersons() {
+		return coursePersons;
+	}
+
+	public void setCoursePersons(List<CoursePerson> coursePersons) {
+		this.coursePersons = coursePersons;
 	}
 
 }
