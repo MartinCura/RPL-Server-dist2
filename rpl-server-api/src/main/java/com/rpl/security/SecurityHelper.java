@@ -7,6 +7,7 @@ import com.rpl.exception.RplRoleException;
 import com.rpl.model.Person;
 import com.rpl.model.Role;
 import com.rpl.model.RoleCourse;
+import com.rpl.service.util.Utils;
 
 public class SecurityHelper {
 
@@ -24,6 +25,11 @@ public class SecurityHelper {
 			if (personRoles.contains(allowedRole)) return;
 		}
 		throw new RplRoleException();
+	}
+	
+	public static void checkPermissions(Long courseId, RoleCourse allowedRole, Person p) throws RplRoleException {
+		// TODO: MOCKED IMPL!
+		SecurityHelper.checkPermissions(courseId,  Utils.listOf(allowedRole), p);
 	}
 
 }
