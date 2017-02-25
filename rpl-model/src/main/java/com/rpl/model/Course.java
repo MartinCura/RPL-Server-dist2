@@ -39,7 +39,7 @@ public class Course {
 	private String description;
 
 	private String customization;
-
+	
 	public String getCustomization() {
 		return customization;
 	}

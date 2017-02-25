@@ -16,6 +16,7 @@ public class CoursePOJO {
     private String rules;
     private String description;
     private String inscripted;
+	private String customization;
 
     public CoursePOJO(Course course) {
         this.id = course.getId();
@@ -23,6 +24,7 @@ public class CoursePOJO {
         this.rules = course.getRules();
         this.description = course.getDescription();
         this.topics = new ArrayList<TopicPOJO>();
+        this.customization = course.getCustomization();
         this.inscripted = "UNREGISTERED";
         for (Topic topic : course.getTopics()) {
             if (topic.getState().equals(DatabaseState.ENABLED)) {
@@ -93,4 +95,28 @@ public class CoursePOJO {
     public void setDescription(String description) {
         this.description = description;
     }
+
+	public String getCustomization() {
+		return customization;
+	}
+
+	public void setCustomization(String customization) {
+		this.customization = customization;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setTopics(List<TopicPOJO> topics) {
+		this.topics = topics;
+	}
+
+	public void setInscripted(String inscripted) {
+		this.inscripted = inscripted;
+	}
 }

@@ -133,4 +133,8 @@ public class CourseServiceImpl implements CourseService{
     public void updateCourseName(Long id, String name){
     	courseDAO.updateCourseName(id, name);
     }
+    
+    public void updateDescRulesAndCustomization(Long id, String customization, String description, String rules){
+    	courseDAO.updateDescRulesAndCustomization(id, customization, description, rules);
+    }
 }

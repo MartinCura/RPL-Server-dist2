@@ -25,6 +25,7 @@ import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
+import com.rpl.POJO.CourseCustomizationPOJO;
 import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.CourseStudentPOJO;
 import com.rpl.POJO.MessagePOJO;
@@ -96,6 +97,14 @@ public class CourseEndpoint {
 		coursePOJO.markActivitiesAsSelected(activitiesSelected);
 		return Response.status(200).entity(coursePOJO).build();
 	}
+	
+	@GET
+	@Path("/{id}/customization")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response getCourseCustomization(@PathParam("id") Long id) {
+		Course course = courseService.getCourseById(id);
+		return Response.ok(course.getCustomization()).build();
+	}
 
 	@DELETE
 	@Path("/{id}")
@@ -119,6 +128,15 @@ public class CourseEndpoint {
 		return Response.ok().build();
 	}
 
+	@PUT
+	@Path("/{id}/descAndCust")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateCustomization(@PathParam("id") Long id, CourseCustomizationPOJO pojo) {
+
+		courseService.updateDescRulesAndCustomization(id, pojo.getCustomization(), pojo.getDescription(), pojo.getRules());
+		return Response.ok().build();
+	}
+	
 	@PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
