@@ -33,17 +33,22 @@ import com.rpl.POJO.input.AssignAssistantInputPOJO;
 import com.rpl.POJO.input.CourseInputPOJO;
 import com.rpl.POJO.input.TopicInputPOJO;
 import com.rpl.annotation.Secured;
+import com.rpl.exception.RplRoleException;
 import com.rpl.model.Activity;
 import com.rpl.model.ActivityInputFile;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Course;
 import com.rpl.model.Language;
 import com.rpl.model.Person;
+import com.rpl.model.RoleCourse;
 import com.rpl.model.TestType;
 import com.rpl.model.Topic;
+import com.rpl.security.SecurityHelper;
 import com.rpl.service.ActivityService;
 import com.rpl.service.CourseService;
 import com.rpl.service.TopicService;
+import com.rpl.service.UserService;
+import com.rpl.service.util.Utils;
 
 @Secured
 @Path("/courses")
@@ -55,6 +60,8 @@ public class CourseEndpoint {
 	private CourseService courseService;
 	@Inject
 	private TopicService topicService;
+	@Inject
+	private UserService userService;
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -94,7 +101,11 @@ public class CourseEndpoint {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteCourseById(@PathParam("id") Long id) {
-
+		try {
+			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e){
+			return Response.serverError().build();
+		}
 		courseService.deleteCourseById(id);
 		return Response.ok().build();
 	}
