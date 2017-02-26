@@ -51,7 +51,6 @@ import com.rpl.service.TopicService;
 import com.rpl.service.UserService;
 import com.rpl.service.util.Utils;
 
-@Secured
 @Path("/courses")
 public class CourseEndpoint {
 
@@ -64,6 +63,7 @@ public class CourseEndpoint {
 	@Inject
 	private UserService userService;
 
+	@Secured
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCourses(@QueryParam("role") String role) {
@@ -86,6 +86,7 @@ public class CourseEndpoint {
 
 	}
 
+	@Secured
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -97,15 +98,16 @@ public class CourseEndpoint {
 		coursePOJO.markActivitiesAsSelected(activitiesSelected);
 		return Response.status(200).entity(coursePOJO).build();
 	}
-	
+
 	@GET
-	@Path("/{id}/customization")
+	@Path("/{id}/customization.css")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response getCourseCustomization(@PathParam("id") Long id) {
 		Course course = courseService.getCourseById(id);
 		return Response.ok(course.getCustomization()).build();
 	}
 
+	@Secured
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -119,6 +121,7 @@ public class CourseEndpoint {
 		return Response.ok().build();
 	}
 
+	@Secured
 	@PUT
 	@Path("/{id}/customization")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -127,7 +130,8 @@ public class CourseEndpoint {
 		courseService.updateDescRulesAndCustomization(id, pojo.getCustomization(), pojo.getDescription(), pojo.getRules());
 		return Response.ok().build();
 	}
-	
+
+	@Secured
 	@PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -136,6 +140,7 @@ public class CourseEndpoint {
 		return Response.ok().build();
 	}
 
+	@Secured
 	@GET
 	@Path("/{id}/topics")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -145,6 +150,7 @@ public class CourseEndpoint {
 		return Response.status(200).entity(new CoursePOJO(course.getTopics())).build();
 	}
 
+	@Secured
 	@POST
 	@Path("/{id}/activities")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -165,7 +171,8 @@ public class CourseEndpoint {
 		activityService.submit(courseId, activity);
 		return Response.status(200).build();
 	}
-	
+
+	@Secured
 	@POST
 	@Path("activity/{id}/file")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -201,6 +208,7 @@ public class CourseEndpoint {
 		return null;
 	}
 
+	@Secured
 	@POST
 	@Path("/{id}/topics")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -212,6 +220,7 @@ public class CourseEndpoint {
 		return Response.status(200).build();
 	}
 
+	@Secured
 	@POST
 	@Path("/{id}/join")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -225,6 +234,7 @@ public class CourseEndpoint {
 		return Response.status(200).build();
 	}
 
+	@Secured
 	@POST
 	@Path("/{courseId}/person/{personId}/leave")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -233,6 +243,7 @@ public class CourseEndpoint {
 		return Response.status(200).build();
 	}
 
+	@Secured
 	@GET
 	@Path("/{id}/students")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -242,6 +253,7 @@ public class CourseEndpoint {
 		return Response.status(200).entity(new CourseStudentPOJO(id, submissionsByPerson)).build();
 	}
 
+	@Secured
 	@POST
 	@Path("/{courseId}/person/{personId}/accept")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -249,7 +261,8 @@ public class CourseEndpoint {
 		courseService.accept(courseId, personId);
 		return Response.status(200).build();
 	}
-	
+
+	@Secured
 	@POST
 	@Path("/{courseId}/person/{personId}/pending")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -258,6 +271,7 @@ public class CourseEndpoint {
 		return Response.status(200).build();
 	}
 
+	@Secured
 	@POST
 	@Path("/{courseId}/assistant")
 	@Produces(MediaType.APPLICATION_JSON)
