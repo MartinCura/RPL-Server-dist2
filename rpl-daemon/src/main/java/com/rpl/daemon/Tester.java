@@ -39,6 +39,8 @@ public class Tester {
 		} else {
 			data = activity.getTests();
 		}
+		if (data == null)
+			data = "";
 		
 		// Command: docker run --rm rpl -l language -m mode -s solution -d data
 		String[] args = {"docker", "run", "--rm", "rpl",
@@ -47,9 +49,9 @@ public class Tester {
 				"-s", submission.getCode(),
 				"-d", data
 			};
-		//for (ActivityFile file : activity.getActivityFiles()) {
-		//	args = ArrayUtils.addElement(args, "-f", file.getName(), file.getContent());
-		//}
+		for (ActivityInputFile file : activity.getFiles()) {
+			args = ArrayUtils.addElement(args, "-f", file.getFileName(), new String (file.getContent()));
+		}
 		return args;
 	}
 	
