@@ -122,15 +122,6 @@ public class CourseEndpoint {
 	@PUT
 	@Path("/{id}/customization")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateCustomization(@PathParam("id") Long id, String customization) {
-
-		courseService.updateCustomization(id, customization);
-		return Response.ok().build();
-	}
-
-	@PUT
-	@Path("/{id}/descAndCust")
-	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateCustomization(@PathParam("id") Long id, CourseCustomizationPOJO pojo) {
 
 		courseService.updateDescRulesAndCustomization(id, pojo.getCustomization(), pojo.getDescription(), pojo.getRules());
