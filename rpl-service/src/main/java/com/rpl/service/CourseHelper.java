@@ -26,6 +26,15 @@ public class CourseHelper {
 				.filter(course -> getTopicByFileId(fileId, course) != null).findFirst().get();
 	}
 	
+	public static Course getCourseByTopicId(Long topicId, Person p) {
+		return p.getCoursePersons().stream().map(cp -> cp.getCourse())
+				.filter(course -> getTopicById(topicId, course) != null).findFirst().get();
+	}
+	
+	private static Topic getTopicById(Long topicId, Course course) {
+		return course.getTopics().stream().filter(topic -> topic.getId().equals(topicId)).findFirst().get();
+	}
+
 	public static Topic getTopicByFileId(Long fileId, Course course) {
 		return course.getTopics().stream().filter(topic -> getActivityByFileId(fileId, topic) != null).findFirst().get();
 	}

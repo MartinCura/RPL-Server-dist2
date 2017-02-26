@@ -54,6 +54,16 @@ public class SecurityHelper {
 			throw new RplRoleException();
 		}
 	}
+	
+	public static void checkPermissionsByTopicId(Long topicId, List<RoleCourse> allowedRoles, Person p)
+			throws RplRoleException {
+		Course c = CourseHelper.getCourseByTopicId(topicId, p);
+		if (c != null) {
+			checkPermissions(c.getId(), allowedRoles, p);
+		} else {
+			throw new RplRoleException();
+		}
+	}
 
 	public static void checkPermissionsByFileId(Long fileId, List<RoleCourse> allowedRoles, Person p)
 			throws RplRoleException {
