@@ -40,7 +40,7 @@ public class ManageEndpoint {
 	@Path("/{id}/activities")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getActivities(@PathParam("id") Long courseId) {
-
+		//TODO professor
 		List<Activity> activities = activityService.getActivitiesByCourse(courseId);
 		List<ActivityPOJO> activityPOJOS = new ArrayList<ActivityPOJO>();
 		for (Activity activity : activities) {
@@ -53,7 +53,7 @@ public class ManageEndpoint {
 	@Path("/{id}/topics")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTopics(@PathParam("id") Long courseId) {
-
+		//TODO professor
 		List<Topic> topics = topicService.getTopicsByCourse(courseId);
 		List<TopicPOJO> topicPOJOS = new ArrayList<TopicPOJO>();
 		for (Topic topic : topics) {
@@ -66,7 +66,7 @@ public class ManageEndpoint {
 	@Path("/{id}/students")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getStudents(@PathParam("id") Long id) {
-
+		//TODO professor
 		List<CoursePerson> students = courseService.getStudents(id);
 		List<StudentPOJO> studentPOJOS = new ArrayList<StudentPOJO>();
 		for (CoursePerson student : students) {
@@ -79,7 +79,7 @@ public class ManageEndpoint {
 	@Path("/{id}/assistants")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAssistants(@PathParam("id") Long id) {
-
+		//TODO professor
 		List<CoursePerson> assistants = courseService.getAssistants(id);
 		List<AssistantPOJO> assistantPOJOS = new ArrayList<AssistantPOJO>();
 		for (CoursePerson assistant : assistants) {
@@ -92,7 +92,7 @@ public class ManageEndpoint {
 	@Path("/{id}/professors")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getProfessors(@PathParam("id") Long id) {
-
+		//TODO professor
 		List<CoursePerson> professors = courseService.getProfessors(id);
 
 		List<ProfessorPOJO> professorPOJOS = professors.stream().map(coursePerson -> new ProfessorPOJO(coursePerson))

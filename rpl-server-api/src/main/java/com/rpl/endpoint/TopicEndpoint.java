@@ -33,8 +33,8 @@ public class TopicEndpoint {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCourseById(@PathParam("id") Long id) {
-
+    public Response getTopicById(@PathParam("id") Long id) {
+    	//TODO professor
         Topic topic = topicService.getTopicById(id);
         return Response.status(200).entity(new TopicPOJO(topic)).build();
     }
@@ -43,7 +43,7 @@ public class TopicEndpoint {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteTopicById(@PathParam("id") Long id) {
-
+    	//TODO professor
         topicService.deleteTopicById(id);
         return Response.ok().build();
     }
@@ -51,7 +51,8 @@ public class TopicEndpoint {
     @PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateCourseById(@PathParam("id") Long id, TopicInputPOJO topicPOJO) {
+	public Response updateTopicById(@PathParam("id") Long id, TopicInputPOJO topicPOJO) {
+    	//TODO professor
     	Topic updateTopic = new Topic();
     	updateTopic.setName(topicPOJO.getName());
     	updateTopic.setId(id);

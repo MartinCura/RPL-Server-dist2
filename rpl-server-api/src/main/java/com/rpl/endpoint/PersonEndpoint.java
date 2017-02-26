@@ -16,6 +16,7 @@ import com.rpl.POJO.PersonInfoPOJO;
 import com.rpl.POJO.PersonPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.model.Person;
+import com.rpl.model.Role;
 import com.rpl.service.PersonService;
 import com.rpl.service.UserService;
 
@@ -29,6 +30,7 @@ public class PersonEndpoint {
 	@Inject
 	private UserService userService;
 
+	@Secured(Role.ADMIN)
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPersons() {

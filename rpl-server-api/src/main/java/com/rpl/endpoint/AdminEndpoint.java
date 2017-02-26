@@ -21,11 +21,12 @@ import com.rpl.annotation.Secured;
 import com.rpl.model.Course;
 import com.rpl.model.CoursePerson;
 import com.rpl.model.Person;
+import com.rpl.model.Role;
 import com.rpl.model.RoleCourse;
 import com.rpl.service.CourseService;
 import com.rpl.service.PersonService;
 
-@Secured
+@Secured(Role.ADMIN)
 @Path("/admin")
 public class AdminEndpoint {
 

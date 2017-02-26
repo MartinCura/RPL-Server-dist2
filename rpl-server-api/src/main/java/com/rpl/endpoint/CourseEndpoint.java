@@ -41,6 +41,7 @@ import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Course;
 import com.rpl.model.Language;
 import com.rpl.model.Person;
+import com.rpl.model.Role;
 import com.rpl.model.RoleCourse;
 import com.rpl.model.TestType;
 import com.rpl.model.Topic;
@@ -91,7 +92,7 @@ public class CourseEndpoint {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCourseById(@PathParam("id") Long id) {
-
+		// TODO student, professor o lo que sea pero del curso este.
 		Course course = courseService.getCourseById(id);
 		Set<Long> activitiesSelected = activityService.getActivitiesSelectedByCourse(id);
 		Set<Long> activitiesDefinitive = activityService.getActivitiesDefinitiveByCourse(id);
@@ -109,14 +110,14 @@ public class CourseEndpoint {
 		return Response.ok(course.getCustomization()).build();
 	}
 
-	@Secured
+	@Secured(Role.ADMIN)
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteCourseById(@PathParam("id") Long id) {
 		try {
 			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e){
+		} catch (RplRoleException e) {
 			return Response.serverError().build();
 		}
 		courseService.deleteCourseById(id);
@@ -128,8 +129,9 @@ public class CourseEndpoint {
 	@Path("/{id}/customization")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateCustomization(@PathParam("id") Long id, CourseCustomizationPOJO pojo) {
-
-		courseService.updateDescRulesAndCustomization(id, pojo.getCustomization(), pojo.getDescription(), pojo.getRules());
+		// TODO professor
+		courseService.updateDescRulesAndCustomization(id, pojo.getCustomization(), pojo.getDescription(),
+				pojo.getRules());
 		return Response.ok().build();
 	}
 
@@ -138,6 +140,7 @@ public class CourseEndpoint {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateCourseById(@PathParam("id") Long id, CourseInputPOJO course) {
+		// TODO professor
 		courseService.updateCourseName(id, course.getName());
 		return Response.ok().build();
 	}
@@ -147,7 +150,7 @@ public class CourseEndpoint {
 	@Path("/{id}/topics")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCourseTopicsById(@PathParam("id") Long id) {
-
+		// TODO professor
 		Course course = courseService.getCourseById(id);
 		return Response.status(200).entity(new CoursePOJO(course.getTopics())).build();
 	}
@@ -158,6 +161,7 @@ public class CourseEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response submitActivity(@PathParam("id") Long courseId, ActivityInputPOJO activityInputPOJO) {
+		// TODO PROFESSOR
 		Topic topic = topicService.getTopicById(activityInputPOJO.getTopic());
 		Activity activity = new Activity();
 		activity.setTopic(topic);
@@ -180,20 +184,20 @@ public class CourseEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadFile(@PathParam("id") Long activityId, MultipartFormDataInput input) throws IOException {
-		
-		
+		// TODO professor
+
 		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
 		List<InputPart> inputParts = uploadForm.get("file");
 
 		for (InputPart inputPart : inputParts) {
 			String fileName = getFileName(inputPart.getHeaders());
-			InputStream inputStream = inputPart.getBody(InputStream.class,null);
-			byte [] bytes = IOUtils.toByteArray(inputStream);
+			InputStream inputStream = inputPart.getBody(InputStream.class, null);
+			byte[] bytes = IOUtils.toByteArray(inputStream);
 			activityService.saveFile(activityId, new ActivityInputFile(fileName, bytes));
 		}
 		return Response.status(200).build();
 	}
-	
+
 	private String getFileName(MultivaluedMap<String, String> header) {
 
 		String[] contentDisposition = header.getFirst("Content-Disposition").split(";");
@@ -216,6 +220,7 @@ public class CourseEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response submitTopic(@PathParam("id") Long courseId, TopicInputPOJO topicInputPOJO) {
+		// TODO PROFESSOR
 		Topic topic = new Topic();
 		topic.setName(topicInputPOJO.getName());
 		topicService.submit(courseId, topic);
@@ -241,6 +246,7 @@ public class CourseEndpoint {
 	@Path("/{courseId}/person/{personId}/leave")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response leaveCourse(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
+		// TODO Professor
 		courseService.leaveCourse(courseId, personId);
 		return Response.status(200).build();
 	}
@@ -260,6 +266,7 @@ public class CourseEndpoint {
 	@Path("/{courseId}/person/{personId}/accept")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response acceptStudent(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
+		// TODO professor
 		courseService.accept(courseId, personId);
 		return Response.status(200).build();
 	}
@@ -269,6 +276,7 @@ public class CourseEndpoint {
 	@Path("/{courseId}/person/{personId}/pending")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response pendingStudent(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
+		// TODO professor
 		courseService.pending(courseId, personId);
 		return Response.status(200).build();
 	}
@@ -279,6 +287,7 @@ public class CourseEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response assignAssistant(@PathParam("courseId") Long courseId,
 			AssignAssistantInputPOJO assignAssistantInputPOJO) {
+		//TODO professor
 		courseService.assignAssistant(courseId, assignAssistantInputPOJO.getStudent(),
 				assignAssistantInputPOJO.getAssistant());
 		return Response.status(200).build();
