@@ -43,7 +43,6 @@ public class ActivityEndpoint {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getActivityById(@PathParam("id") Long id) {
-
 		Activity activity = activityService.getActivityById(id);
 		return Response.status(200).entity(new ActivityPOJO(activity)).build();
 
@@ -53,7 +52,7 @@ public class ActivityEndpoint {
 	@Path("/{id}/edit")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getActivityCompleteById(@PathParam("id") Long id) {
-
+		// TODO professor
 		Activity activity = activityService.getActivityById(id);
 		return Response.status(200).entity(new ActivityCompletePOJO(activity)).build();
 
@@ -63,6 +62,7 @@ public class ActivityEndpoint {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteActivityById(@PathParam("id") Long id) {
+		// TODO professor
 		activityService.delete(id);
 		return Response.ok().build();
 	}
@@ -71,11 +71,11 @@ public class ActivityEndpoint {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateActivityById(@PathParam("id") Long id, ActivityInputPOJO activity) {
-
-		activityService.update(id,
-				activity.getName(), activity.getDescription(), Language.valueOf(activity.getLanguage()),
-				activity.getPoints(), activity.getTopic(), TestType.valueOf(activity.getTestType()), activity.getTemplate(),
-				activity.getInput(), activity.getOutput(), activity.getTests());
+		// TODO professor
+		activityService.update(id, activity.getName(), activity.getDescription(),
+				Language.valueOf(activity.getLanguage()), activity.getPoints(), activity.getTopic(),
+				TestType.valueOf(activity.getTestType()), activity.getTemplate(), activity.getInput(),
+				activity.getOutput(), activity.getTests());
 		return Response.ok().build();
 	}
 
@@ -83,7 +83,6 @@ public class ActivityEndpoint {
 	@Path("/{id}/submissions")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubmissionsByActivity(@PathParam("id") Long activityId) {
-
 		List<ActivitySubmission> submissions = activitySubmissionService.getSubmissionsByActivity(activityId);
 		List<ActivitySubmissionSimplePOJO> submissionPOJOS = new ArrayList<ActivitySubmissionSimplePOJO>();
 		for (ActivitySubmission submission : submissions) {
@@ -99,7 +98,7 @@ public class ActivityEndpoint {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response submitActivitySubmission(@PathParam("id") Long activityId,
 			ActivitySubmissionInputPOJO submissionPOJO) {
-
+		// TODO student
 		try {
 			ActivitySubmission submission = new ActivitySubmission();
 			submission.setCode(submissionPOJO.getCode());
@@ -110,30 +109,33 @@ public class ActivityEndpoint {
 			return Response.status(505).entity(e).build();
 		}
 	}
-	
+
 	@DELETE
 	@Path("{id}/file")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteFile(@PathParam("id") Long fileId) throws IOException {
+		// TODO professor
 		activityService.deleteFile(fileId);
 		return Response.status(200).build();
 	}
-	
+
 	@GET
 	@Path("{id}/files")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getFiles(@PathParam("id") Long activityId) throws IOException {
+		// TODO professor
 		List<ActivityInputFile> list = activityService.findAllFiles(activityId);
-		return Response.status(200).entity(list.stream().map(f -> new ActivityInputFilePOJO(f)).collect(Collectors.toList())).build();
+		return Response.status(200)
+				.entity(list.stream().map(f -> new ActivityInputFilePOJO(f)).collect(Collectors.toList())).build();
 	}
 
 	@GET
 	@Path("/{id}/solutions")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getDefinitiveSubmissionsByActivity(@PathParam("id") Long activityId) {
-
+		// TODO kevin: check the student has already sent a definitive solution
 		List<ActivitySubmission> submissions = activitySubmissionService.getDefinitiveSubmissionsByActivity(activityId);
 		List<ActivitySubmissionSolutionPOJO> submissionPOJOS = new ArrayList<ActivitySubmissionSolutionPOJO>();
 		for (ActivitySubmission submission : submissions) {

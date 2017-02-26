@@ -54,6 +54,8 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 	}
 
 	public void markAsSelected(Long submissionId) {
+		//TODO check que la submission sea success
+		
 		ActivitySubmission submission = activitySubmissionDAO.find(submissionId);
 		submission.setSelected(true);
 		activitySubmissionDAO.save(submission);
@@ -86,6 +88,7 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 	}
 
 	public void markAsDefinitive(Long submissionId) {
+		//TODO check que la submission sea success
 		ActivitySubmission submission = activitySubmissionDAO.find(submissionId);
 		submission.setDefinitive(true);
 		activitySubmissionDAO.save(submission);
