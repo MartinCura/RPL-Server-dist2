@@ -17,18 +17,30 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.rpl.POJO.*;
+import com.rpl.POJO.ActivityCompletePOJO;
+import com.rpl.POJO.ActivityInputFilePOJO;
+import com.rpl.POJO.ActivityPOJO;
+import com.rpl.POJO.ActivitySubmissionPOJO;
+import com.rpl.POJO.ActivitySubmissionSimplePOJO;
+import com.rpl.POJO.ActivitySubmissionSolutionPOJO;
+import com.rpl.POJO.MessageCodes;
+import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.input.ActivityInputPOJO;
 import com.rpl.POJO.input.ActivitySubmissionInputPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplQueueException;
+import com.rpl.exception.RplRoleException;
 import com.rpl.model.Activity;
 import com.rpl.model.ActivityInputFile;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Language;
+import com.rpl.model.RoleCourse;
 import com.rpl.model.TestType;
+import com.rpl.security.SecurityHelper;
 import com.rpl.service.ActivityService;
 import com.rpl.service.ActivitySubmissionService;
+import com.rpl.service.UserService;
+import com.rpl.service.util.Utils;
 
 @Secured
 @Path("/activities")
@@ -38,6 +50,8 @@ public class ActivityEndpoint {
 	private ActivityService activityService;
 	@Inject
 	private ActivitySubmissionService activitySubmissionService;
+	@Inject
+	private UserService userService;
 
 	@GET
 	@Path("/{id}")
@@ -52,7 +66,11 @@ public class ActivityEndpoint {
 	@Path("/{id}/edit")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getActivityCompleteById(@PathParam("id") Long id) {
-		// TODO professor
+		try {
+			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		Activity activity = activityService.getActivityById(id);
 		return Response.status(200).entity(new ActivityCompletePOJO(activity)).build();
 
@@ -62,7 +80,11 @@ public class ActivityEndpoint {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteActivityById(@PathParam("id") Long id) {
-		// TODO professor
+		try {
+			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		activityService.delete(id);
 		return Response.ok().build();
 	}
@@ -71,7 +93,11 @@ public class ActivityEndpoint {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateActivityById(@PathParam("id") Long id, ActivityInputPOJO activity) {
-		// TODO professor
+		try {
+			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		activityService.update(id, activity.getName(), activity.getDescription(),
 				Language.valueOf(activity.getLanguage()), activity.getPoints(), activity.getTopic(),
 				TestType.valueOf(activity.getTestType()), activity.getTemplate(), activity.getInput(),

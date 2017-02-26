@@ -28,6 +28,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import com.rpl.POJO.CourseCustomizationPOJO;
 import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.CourseStudentPOJO;
+import com.rpl.POJO.MessageCodes;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.input.ActivityInputPOJO;
 import com.rpl.POJO.input.AssignAssistantInputPOJO;
@@ -118,7 +119,7 @@ public class CourseEndpoint {
 		try {
 			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
-			return Response.serverError().build();
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
 		courseService.deleteCourseById(id);
 		return Response.ok().build();
@@ -129,7 +130,11 @@ public class CourseEndpoint {
 	@Path("/{id}/customization")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateCustomization(@PathParam("id") Long id, CourseCustomizationPOJO pojo) {
-		// TODO professor
+		try {
+			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		courseService.updateDescRulesAndCustomization(id, pojo.getCustomization(), pojo.getDescription(),
 				pojo.getRules());
 		return Response.ok().build();
