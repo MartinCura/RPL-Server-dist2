@@ -27,6 +27,7 @@ public class ActivitySubmission {
 	@PrimaryKeyJoinColumn
 	private Result result;
 	private boolean selected;
+	private boolean definitive;
 	
 	public Date getSubmissionDate() {
 		return submissionDate;
@@ -90,5 +91,13 @@ public class ActivitySubmission {
 
 	public void setSelected(boolean selected) {
 		this.selected = selected;
+	}
+
+	public boolean isDefinitive() {
+		return definitive;
+	}
+
+	public void setDefinitive(boolean definitive) {
+		this.definitive = definitive;
 	}
 }

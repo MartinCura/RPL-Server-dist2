@@ -14,6 +14,8 @@ public interface ActionLogService {
 
 	public void logMarkActivitySubmissionAsSelected(Long submissionId);
 
+	public void logMarkActivitySubmissionAsDefinitive(Long submissionId);
+
 	public void logNewUserRegistered(Person p);
 
 	public void logDeletedActivity(Long id);

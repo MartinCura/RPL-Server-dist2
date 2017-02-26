@@ -167,7 +167,8 @@ CREATE TABLE activity_submission (
 	code text NOT NULL,
 	status text NOT NULL,
 	execution_output text,
-	selected boolean DEFAULT FALSE
+	selected boolean DEFAULT FALSE,
+	definitive boolean DEFAULT FALSE
 );
 
 insert into person (

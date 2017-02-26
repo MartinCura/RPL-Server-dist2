@@ -80,6 +80,16 @@ public class CoursePOJO {
         }
     }
 
+    public void markActivitiesAsDefinitive(Set<Long> activitiesDefinitive) {
+        for (TopicPOJO topic : topics) {
+            for (ActivityPOJO activity : topic.getActivities()) {
+                if (activitiesDefinitive.contains(activity.getId())) {
+                    activity.setDefinitive(true);
+                }
+            }
+        }
+    }
+
     public String getRules() {
         return rules;
     }

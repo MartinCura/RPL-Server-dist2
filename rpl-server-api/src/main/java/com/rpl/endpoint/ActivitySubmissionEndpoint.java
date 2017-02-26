@@ -38,4 +38,12 @@ public class ActivitySubmissionEndpoint {
 		activitySubmissionService.markAsSelected(submissionId);
 		return Response.status(200).build();
 	}
+
+	@POST
+	@Path("/{id}/definitive")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response markAsDefinitive(@PathParam("id") Long submissionId) {
+		activitySubmissionService.markAsDefinitive(submissionId);
+		return Response.status(200).build();
+	}
 }

@@ -92,9 +92,11 @@ public class CourseEndpoint {
 	public Response getCourseById(@PathParam("id") Long id) {
 
 		Course course = courseService.getCourseById(id);
-		Set<Long> activitiesSelected = activityService.getActivitiesDoneByCourse(id);
+		Set<Long> activitiesSelected = activityService.getActivitiesSelectedByCourse(id);
+		Set<Long> activitiesDefinitive = activityService.getActivitiesDefinitiveByCourse(id);
 		CoursePOJO coursePOJO = new CoursePOJO(course);
 		coursePOJO.markActivitiesAsSelected(activitiesSelected);
+		coursePOJO.markActivitiesAsDefinitive(activitiesDefinitive);
 		return Response.status(200).entity(coursePOJO).build();
 	}
 	

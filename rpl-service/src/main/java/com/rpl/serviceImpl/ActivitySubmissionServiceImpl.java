@@ -80,4 +80,11 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		}
 	}
 
+	public void markAsDefinitive(Long submissionId) {
+		ActivitySubmission submission = activitySubmissionDAO.find(submissionId);
+		submission.setDefinitive(true);
+		activitySubmissionDAO.save(submission);
+		actionLogService.logMarkActivitySubmissionAsDefinitive(submissionId);
+	}
+
 }

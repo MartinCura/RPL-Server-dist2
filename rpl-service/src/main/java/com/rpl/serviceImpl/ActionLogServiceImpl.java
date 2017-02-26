@@ -46,7 +46,11 @@ public class ActionLogServiceImpl implements ActionLogService {
 	@Override
 	public void logMarkActivitySubmissionAsSelected(Long submissionId) {
 		this.logAction("Marked activity submission with id: " + submissionId.toString() + " as selected");
-		
+	}
+
+	@Override
+	public void logMarkActivitySubmissionAsDefinitive(Long submissionId) {
+		this.logAction("Marked activity submission with id: " + submissionId.toString() + " as definitive");
 	}
 
 	@Override

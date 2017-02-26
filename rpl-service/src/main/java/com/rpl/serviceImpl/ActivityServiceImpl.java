@@ -57,7 +57,7 @@ public class ActivityServiceImpl implements ActivityService {
 		actionLogService.logNewActivity(newActivity.getId());
 	}
 
-	public Set<Long> getActivitiesDoneByCourse(Long courseId) {
+	public Set<Long> getActivitiesSelectedByCourse(Long courseId) {
 		List<ActivitySubmission> submissions = activitySubmissionDAO.findSelectedByPersonAndCourse(userService.getCurrentUser().getId(), courseId);
 		Set<Long> activitiesId = new HashSet<Long>();
 		for (ActivitySubmission activitySubmission : submissions) {
@@ -65,7 +65,17 @@ public class ActivityServiceImpl implements ActivityService {
 		}
 		return activitiesId;
 	}
-	
+
+	public Set<Long> getActivitiesDefinitiveByCourse(Long courseId) {
+		List<ActivitySubmission> submissions = activitySubmissionDAO.findSelectedByPersonAndCourse(userService.getCurrentUser().getId(), courseId);
+		Set<Long> activitiesId = new HashSet<Long>();
+		for (ActivitySubmission activitySubmission : submissions) {
+			if (activitySubmission.isDefinitive())
+				activitiesId.add(activitySubmission.getActivity().getId());
+		}
+		return activitiesId;
+	}
+
 	public void saveFile(Long activityId, ActivityInputFile file){
 		Activity act = activityDAO.find(activityId);
 		ActivityInputFile recoveredFile = activityDAO.findFileByActivityAndName(activityId, file.getFileName());

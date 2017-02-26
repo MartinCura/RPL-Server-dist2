@@ -10,6 +10,7 @@ public class ActivityPOJO {
     private String template;
     private int points;
     private boolean success;
+    private boolean definitive;
 
     public ActivityPOJO(Activity activity) {
         this.id = activity.getId();
@@ -52,5 +53,13 @@ public class ActivityPOJO {
 
     public void setSuccess(boolean success) {
         this.success = success;
+    }
+
+    public boolean isDefinitive() {
+        return definitive;
+    }
+
+    public void setDefinitive(boolean definitive) {
+        this.definitive = definitive;
     }
 }
