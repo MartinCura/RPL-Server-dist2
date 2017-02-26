@@ -101,7 +101,7 @@ public class CourseEndpoint {
 
 	@GET
 	@Path("/{id}/customization.css")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces("text/css")
 	public Response getCourseCustomization(@PathParam("id") Long id) {
 		Course course = courseService.getCourseById(id);
 		return Response.ok(course.getCustomization()).build();
