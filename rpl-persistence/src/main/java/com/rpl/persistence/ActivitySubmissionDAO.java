@@ -39,4 +39,12 @@ public class ActivitySubmissionDAO extends ApplicationDAO{
 				.setParameter("status", Status.SUCCESS)
 				.getResultList();
     }
+
+    public List<ActivitySubmission> findDefinitiveByActivity(Long activityId) {
+		return entityManager.createQuery(
+				"SELECT s FROM ActivitySubmission s " +
+						"WHERE s.activity.id = :activityId AND s.definitive = 't'")
+				.setParameter("activityId", activityId)
+				.getResultList();
+    }
 }

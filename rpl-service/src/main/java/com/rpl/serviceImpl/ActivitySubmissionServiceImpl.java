@@ -65,6 +65,11 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		return activitySubmissionDAO.findByPersonAndActivity(userService.getCurrentUser().getId(), activityId);
 	}
 
+	@Override
+	public List<ActivitySubmission> getDefinitiveSubmissionsByActivity(Long activityId) {
+		return activitySubmissionDAO.findDefinitiveByActivity(activityId);
+	}
+
 	public void queueSubmission(Long id)  throws RplQueueException {
 		QueueMessage qm;
 		try {

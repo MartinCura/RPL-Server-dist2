@@ -17,11 +17,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.rpl.POJO.ActivityCompletePOJO;
-import com.rpl.POJO.ActivityInputFilePOJO;
-import com.rpl.POJO.ActivityPOJO;
-import com.rpl.POJO.ActivitySubmissionPOJO;
-import com.rpl.POJO.ActivitySubmissionSimplePOJO;
+import com.rpl.POJO.*;
 import com.rpl.POJO.input.ActivityInputPOJO;
 import com.rpl.POJO.input.ActivitySubmissionInputPOJO;
 import com.rpl.annotation.Secured;
@@ -132,5 +128,18 @@ public class ActivityEndpoint {
 		List<ActivityInputFile> list = activityService.findAllFiles(activityId);
 		return Response.status(200).entity(list.stream().map(f -> new ActivityInputFilePOJO(f)).collect(Collectors.toList())).build();
 	}
-	
+
+	@GET
+	@Path("/{id}/solutions")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getDefinitiveSubmissionsByActivity(@PathParam("id") Long activityId) {
+
+		List<ActivitySubmission> submissions = activitySubmissionService.getDefinitiveSubmissionsByActivity(activityId);
+		List<ActivitySubmissionSolutionPOJO> submissionPOJOS = new ArrayList<ActivitySubmissionSolutionPOJO>();
+		for (ActivitySubmission submission : submissions) {
+			submissionPOJOS.add(new ActivitySubmissionSolutionPOJO(submission));
+		}
+		return Response.status(200).entity(submissionPOJOS).build();
+
+	}
 }
