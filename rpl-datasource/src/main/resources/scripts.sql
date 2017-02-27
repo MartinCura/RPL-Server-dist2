@@ -181,7 +181,7 @@ insert into person (
 	'rpl-student',
 	'rpl@rpl.com',
 	'rpl-student',
-	'rpl',
+	'eyJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6InJwbCJ9.DWprsOtybwN-ol3yNidm6FzkfpYoO0pmVO1ya54wXxhf7Ovku8q8c-CCu2SuvSiVs_Sv2cuD3C4ZuEP5n2RUvw',
 	'USER'
 	);
 
@@ -195,7 +195,7 @@ insert into person (
 	'rpl-assistant',
 	'rpl@rpl.com',
 	'rpl-assistant',
-	'rpl',
+	'eyJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6InJwbCJ9.DWprsOtybwN-ol3yNidm6FzkfpYoO0pmVO1ya54wXxhf7Ovku8q8c-CCu2SuvSiVs_Sv2cuD3C4ZuEP5n2RUvw',
 	'USER'
 	);
 
@@ -209,7 +209,7 @@ insert into person (
 	'rpl-professor',
 	'rpl@rpl.com',
 	'rpl-professor',
-	'rpl',
+	'eyJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6InJwbCJ9.DWprsOtybwN-ol3yNidm6FzkfpYoO0pmVO1ya54wXxhf7Ovku8q8c-CCu2SuvSiVs_Sv2cuD3C4ZuEP5n2RUvw',
 	'USER'
 	);
 	
@@ -223,7 +223,7 @@ insert into person (
 	'rpl-admin',
 	'rpl-admin@rpl.com',
 	'rpl-admin',
-	'rpl',
+	'eyJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6InJwbCJ9.DWprsOtybwN-ol3yNidm6FzkfpYoO0pmVO1ya54wXxhf7Ovku8q8c-CCu2SuvSiVs_Sv2cuD3C4ZuEP5n2RUvw',
 	'ADMIN'
 	);
 

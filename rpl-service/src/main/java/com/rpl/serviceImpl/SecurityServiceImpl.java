@@ -65,7 +65,7 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	private Person validatePassword(String password, Person retrievedPerson) throws RplNotAuthorizedException {
-		if (retrievedPerson.getCredentials().getPassword().equals(password))
+		if (retrievedPerson.getCredentials().getPassword().equals(encodePassword(password)))
 			return retrievedPerson;
 		throw new RplNotAuthorizedException();
 	}
