@@ -14,7 +14,6 @@ import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.ActivityPOJO;
 import com.rpl.POJO.AssistantPOJO;
-import com.rpl.POJO.MessageCodes;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.ProfessorPOJO;
 import com.rpl.POJO.StudentPOJO;
@@ -23,6 +22,8 @@ import com.rpl.annotation.Secured;
 import com.rpl.exception.RplRoleException;
 import com.rpl.model.Activity;
 import com.rpl.model.CoursePerson;
+import com.rpl.model.MessageCodes;
+import com.rpl.model.Role;
 import com.rpl.model.RoleCourse;
 import com.rpl.model.Topic;
 import com.rpl.security.SecurityHelper;
@@ -112,21 +113,5 @@ public class ManageEndpoint {
 		}
 		return Response.status(200).entity(assistantPOJOS).build();
 	}
-
-	@GET
-	@Path("/{id}/professors")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getProfessors(@PathParam("id") Long id) {
-		try {
-			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		List<CoursePerson> professors = courseService.getProfessors(id);
-
-		List<ProfessorPOJO> professorPOJOS = professors.stream().map(coursePerson -> new ProfessorPOJO(coursePerson))
-				.collect(Collectors.toList());
-
-		return Response.status(200).entity(professorPOJOS).build();
-	}
+	
 }

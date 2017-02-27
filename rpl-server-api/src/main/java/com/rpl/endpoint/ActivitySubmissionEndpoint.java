@@ -10,11 +10,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.ActivitySubmissionPOJO;
-import com.rpl.POJO.MessageCodes;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplItemDoesNotBelongToPersonException;
 import com.rpl.model.ActivitySubmission;
+import com.rpl.model.MessageCodes;
 import com.rpl.model.RoleCourse;
 import com.rpl.security.SecurityHelper;
 import com.rpl.service.ActivitySubmissionService;

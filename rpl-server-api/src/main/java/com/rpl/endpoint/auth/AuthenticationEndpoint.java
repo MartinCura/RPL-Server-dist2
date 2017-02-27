@@ -17,6 +17,7 @@ import com.rpl.POJO.TokenPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplException;
 import com.rpl.model.Credentials;
+import com.rpl.model.MessageCodes;
 import com.rpl.model.Person;
 import com.rpl.model.Role;
 import com.rpl.service.SecurityService;
@@ -98,9 +99,9 @@ public class AuthenticationEndpoint {
 			return Response.ok().build();
 
 		} catch (RplException e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(e.getMsg())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(e.getCode(), e.getMsg())).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(e.getMessage()))
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(MessageCodes.SERVER_ERROR, e.getMessage()))
 					.build();
 		}
 	}

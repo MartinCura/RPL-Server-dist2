@@ -27,7 +27,6 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import com.rpl.POJO.CourseCustomizationPOJO;
 import com.rpl.POJO.CoursePOJO;
-import com.rpl.POJO.MessageCodes;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.input.ActivityInputPOJO;
 import com.rpl.POJO.input.AssignAssistantInputPOJO;
@@ -39,6 +38,7 @@ import com.rpl.model.Activity;
 import com.rpl.model.ActivityInputFile;
 import com.rpl.model.Course;
 import com.rpl.model.Language;
+import com.rpl.model.MessageCodes;
 import com.rpl.model.Role;
 import com.rpl.model.RoleCourse;
 import com.rpl.model.TestType;
