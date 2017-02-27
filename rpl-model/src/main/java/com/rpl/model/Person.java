@@ -1,5 +1,8 @@
 package com.rpl.model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
@@ -26,10 +29,11 @@ public class Person {
 	)
 	private List<Course> courses;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy="person")
+	@OneToMany(mappedBy="person")
 	private Set<ActivitySubmission> submissions;
 	
 	@OneToMany(mappedBy="person")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<CoursePerson> coursePersons;
 
 	public Long getId() {
