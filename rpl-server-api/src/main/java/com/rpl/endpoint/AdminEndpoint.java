@@ -64,7 +64,7 @@ public class AdminEndpoint {
     @Path("/courses/{courseId}/person")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addProfessor(@PathParam("courseId") Long id, CoursePersonInputPOJO coursePersonInputPOJO) {
+    public Response addPersonToCourse(@PathParam("courseId") Long id, CoursePersonInputPOJO coursePersonInputPOJO) {
         Course course = courseService.getCourseById(id);
         Person person = personService.getPersonByUsername(coursePersonInputPOJO.getUsername());
         if (person == null){
