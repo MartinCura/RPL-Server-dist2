@@ -27,7 +27,6 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import com.rpl.POJO.CourseCustomizationPOJO;
 import com.rpl.POJO.CoursePOJO;
-import com.rpl.POJO.CourseStudentPOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.input.ActivityInputPOJO;
 import com.rpl.POJO.input.AssignAssistantInputPOJO;
@@ -37,10 +36,8 @@ import com.rpl.annotation.Secured;
 import com.rpl.exception.RplRoleException;
 import com.rpl.model.Activity;
 import com.rpl.model.ActivityInputFile;
-import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Course;
 import com.rpl.model.Language;
-import com.rpl.model.Person;
 import com.rpl.model.Role;
 import com.rpl.model.RoleCourse;
 import com.rpl.model.TestType;
@@ -249,16 +246,6 @@ public class CourseEndpoint {
 		// TODO Professor
 		courseService.leaveCourse(courseId, personId);
 		return Response.status(200).build();
-	}
-
-	@Secured
-	@GET
-	@Path("/{id}/students")
-	@Produces(MediaType.APPLICATION_JSON)
-	// TODO mover a /reports
-	public Response getStudentsActivities(@PathParam("id") Long id) {
-		Map<Person, Set<ActivitySubmission>> submissionsByPerson = courseService.getSubmissionsByStudent(id);
-		return Response.status(200).entity(new CourseStudentPOJO(id, submissionsByPerson)).build();
 	}
 
 	@Secured

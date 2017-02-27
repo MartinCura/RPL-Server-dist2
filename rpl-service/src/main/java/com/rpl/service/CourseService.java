@@ -4,10 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.rpl.model.ActivitySubmission;
-import com.rpl.model.Course;
-import com.rpl.model.CoursePerson;
-import com.rpl.model.Person;
+import com.rpl.model.*;
 
 
 public interface CourseService {
@@ -18,8 +15,6 @@ public interface CourseService {
     public Course submit(Course course);
     public void join(Long courseId);
     public void leaveCourse(Long courseId, Long personId);
-    
-    public Map<Person,Set<ActivitySubmission>> getSubmissionsByStudent(Long id);
 
     public void accept(Long courseId, Long personId);
     public void pending(Long courseId, Long personId);

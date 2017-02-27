@@ -8,12 +8,7 @@ import java.util.Set;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import com.rpl.model.ActivitySubmission;
-import com.rpl.model.Course;
-import com.rpl.model.CoursePerson;
-import com.rpl.model.DatabaseState;
-import com.rpl.model.Person;
-import com.rpl.model.RoleCourse;
+import com.rpl.model.*;
 import com.rpl.persistence.CourseDAO;
 import com.rpl.persistence.CoursePersonDAO;
 import com.rpl.persistence.PersonDAO;
@@ -89,18 +84,6 @@ public class CourseServiceImpl implements CourseService{
         actionLogService.logLeftCourse(courseId, personId);
     }
 
-
-    public Map<Person, Set<ActivitySubmission>> getSubmissionsByStudent(Long id) {
-        Map<Person, Set<ActivitySubmission>> submissionsByStudent = new HashMap<Person, Set<ActivitySubmission>>();
-        List<Person> students = personDAO.findByCourse(id);
-        //FIXME devolver solo las submissions de este curso y que fueron SUCCESS
-        for (Person person : students) {
-            submissionsByStudent.put(person, person.getSubmissions());
-        }
-        return submissionsByStudent;
-
-    }
-    
 	public void updateCustomization(Long id, String customization){
 		courseDAO.updateCustomization(id, customization);
 	}

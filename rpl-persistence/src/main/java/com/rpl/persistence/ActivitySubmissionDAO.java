@@ -47,4 +47,14 @@ public class ActivitySubmissionDAO extends ApplicationDAO{
 				.setParameter("activityId", activityId)
 				.getResultList();
     }
+
+    public List<ActivitySubmission> findSelectedByCourse(Long courseId) {
+		return entityManager.createQuery(
+				"SELECT s FROM ActivitySubmission s " +
+						"WHERE s.activity.topic.course.id = :courseId AND " +
+						"s.status = :status AND s.selected = 't'")
+				.setParameter("courseId", courseId)
+				.setParameter("status", Status.SUCCESS)
+				.getResultList();
+    }
 }
