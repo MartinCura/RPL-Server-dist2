@@ -10,9 +10,15 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.ActivitySubmissionPOJO;
+import com.rpl.POJO.MessageCodes;
+import com.rpl.POJO.MessagePOJO;
 import com.rpl.annotation.Secured;
+import com.rpl.exception.RplItemDoesNotBelongToPersonException;
 import com.rpl.model.ActivitySubmission;
+import com.rpl.model.RoleCourse;
+import com.rpl.security.SecurityHelper;
 import com.rpl.service.ActivitySubmissionService;
+import com.rpl.service.UserService;
 
 @Secured
 @Path("/submissions")
@@ -20,13 +26,22 @@ public class ActivitySubmissionEndpoint {
 
 	@Inject
 	private ActivitySubmissionService activitySubmissionService;
+	@Inject
+	private UserService userService;
 
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubmissionById(@PathParam("id") Long id) {
-		// TODO si es estudiante hay que checkear que sea tu submission
 		ActivitySubmission submission = activitySubmissionService.getSubmissionById(id);
+		try {
+			if (RoleCourse.STUDENT.equals(SecurityHelper.findRoleOnCourse(
+					submission.getActivity().getTopic().getCourse().getId(), userService.getCurrentUser()))) {
+				SecurityHelper.checkSubmissionBelongsToPerson(submission, userService.getCurrentUser());
+			}
+		} catch (RplItemDoesNotBelongToPersonException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		return Response.status(200).entity(new ActivitySubmissionPOJO(submission)).build();
 
 	}
@@ -35,7 +50,15 @@ public class ActivitySubmissionEndpoint {
 	@Path("/{id}/select")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response markAsSelected(@PathParam("id") Long submissionId) {
-		// TODO mismo caso que arriba 
+		ActivitySubmission submission = activitySubmissionService.getSubmissionById(submissionId);
+		try {
+			if (RoleCourse.STUDENT.equals(SecurityHelper.findRoleOnCourse(
+					submission.getActivity().getTopic().getCourse().getId(), userService.getCurrentUser()))) {
+				SecurityHelper.checkSubmissionBelongsToPerson(submission, userService.getCurrentUser());
+			}
+		} catch (RplItemDoesNotBelongToPersonException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		activitySubmissionService.markAsSelected(submissionId);
 		return Response.status(200).build();
 	}
@@ -44,7 +67,15 @@ public class ActivitySubmissionEndpoint {
 	@Path("/{id}/definitive")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response markAsDefinitive(@PathParam("id") Long submissionId) {
-		// TODO Idem anteriores
+		ActivitySubmission submission = activitySubmissionService.getSubmissionById(submissionId);
+		try {
+			if (RoleCourse.STUDENT.equals(SecurityHelper.findRoleOnCourse(
+					submission.getActivity().getTopic().getCourse().getId(), userService.getCurrentUser()))) {
+				SecurityHelper.checkSubmissionBelongsToPerson(submission, userService.getCurrentUser());
+			}
+		} catch (RplItemDoesNotBelongToPersonException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		activitySubmissionService.markAsDefinitive(submissionId);
 		return Response.status(200).build();
 	}

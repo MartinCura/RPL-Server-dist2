@@ -29,4 +29,6 @@ public interface CourseService {
 	public void updateCourseName(Long id, String name);
 	public List<CoursePerson> getProfessors(Long id);
 	public void updateDescRulesAndCustomization(Long id, String customization, String description, String rules);
+	
+	
 }

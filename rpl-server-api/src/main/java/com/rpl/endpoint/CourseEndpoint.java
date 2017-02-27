@@ -27,6 +27,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import com.rpl.POJO.CourseCustomizationPOJO;
 import com.rpl.POJO.CoursePOJO;
+import com.rpl.POJO.MessageCodes;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.input.ActivityInputPOJO;
 import com.rpl.POJO.input.AssignAssistantInputPOJO;
@@ -89,7 +90,13 @@ public class CourseEndpoint {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCourseById(@PathParam("id") Long id) {
-		// TODO student, professor o lo que sea pero del curso este.
+		try {
+			SecurityHelper.checkPermissions(id,
+					Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.STUDENT, RoleCourse.ASSISTANT_PROFESSOR),
+					userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		Course course = courseService.getCourseById(id);
 		Set<Long> activitiesSelected = activityService.getActivitiesSelectedByCourse(id);
 		Set<Long> activitiesDefinitive = activityService.getActivitiesDefinitiveByCourse(id);
@@ -115,7 +122,7 @@ public class CourseEndpoint {
 		try {
 			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
-			return Response.serverError().build();
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
 		courseService.deleteCourseById(id);
 		return Response.ok().build();
@@ -126,7 +133,11 @@ public class CourseEndpoint {
 	@Path("/{id}/customization")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateCustomization(@PathParam("id") Long id, CourseCustomizationPOJO pojo) {
-		// TODO professor
+		try {
+			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		courseService.updateDescRulesAndCustomization(id, pojo.getCustomization(), pojo.getDescription(),
 				pojo.getRules());
 		return Response.ok().build();
@@ -137,7 +148,11 @@ public class CourseEndpoint {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateCourseById(@PathParam("id") Long id, CourseInputPOJO course) {
-		// TODO professor
+		try {
+			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		courseService.updateCourseName(id, course.getName());
 		return Response.ok().build();
 	}
@@ -147,7 +162,11 @@ public class CourseEndpoint {
 	@Path("/{id}/topics")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCourseTopicsById(@PathParam("id") Long id) {
-		// TODO professor
+		try {
+			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		Course course = courseService.getCourseById(id);
 		return Response.status(200).entity(new CoursePOJO(course.getTopics())).build();
 	}
@@ -158,7 +177,11 @@ public class CourseEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response submitActivity(@PathParam("id") Long courseId, ActivityInputPOJO activityInputPOJO) {
-		// TODO PROFESSOR
+		try {
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		Topic topic = topicService.getTopicById(activityInputPOJO.getTopic());
 		Activity activity = new Activity();
 		activity.setTopic(topic);
@@ -181,8 +204,11 @@ public class CourseEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadFile(@PathParam("id") Long activityId, MultipartFormDataInput input) throws IOException {
-		// TODO professor
-
+		try {
+			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
 		List<InputPart> inputParts = uploadForm.get("file");
 
@@ -217,7 +243,11 @@ public class CourseEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response submitTopic(@PathParam("id") Long courseId, TopicInputPOJO topicInputPOJO) {
-		// TODO PROFESSOR
+		try {
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		Topic topic = new Topic();
 		topic.setName(topicInputPOJO.getName());
 		topicService.submit(courseId, topic);
@@ -243,7 +273,11 @@ public class CourseEndpoint {
 	@Path("/{courseId}/person/{personId}/leave")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response leaveCourse(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
-		// TODO Professor
+		try {
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		courseService.leaveCourse(courseId, personId);
 		return Response.status(200).build();
 	}
@@ -253,7 +287,11 @@ public class CourseEndpoint {
 	@Path("/{courseId}/person/{personId}/accept")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response acceptStudent(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
-		// TODO professor
+		try {
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		courseService.accept(courseId, personId);
 		return Response.status(200).build();
 	}
@@ -263,7 +301,11 @@ public class CourseEndpoint {
 	@Path("/{courseId}/person/{personId}/pending")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response pendingStudent(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
-		// TODO professor
+		try {
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		courseService.pending(courseId, personId);
 		return Response.status(200).build();
 	}
@@ -274,7 +316,11 @@ public class CourseEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response assignAssistant(@PathParam("courseId") Long courseId,
 			AssignAssistantInputPOJO assignAssistantInputPOJO) {
-		//TODO professor
+		try {
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		courseService.assignAssistant(courseId, assignAssistantInputPOJO.getStudent(),
 				assignAssistantInputPOJO.getAssistant());
 		return Response.status(200).build();

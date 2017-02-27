@@ -14,13 +14,20 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.ActivityPOJO;
-import com.rpl.POJO.input.TopicInputPOJO;
+import com.rpl.POJO.MessageCodes;
+import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.TopicPOJO;
+import com.rpl.POJO.input.TopicInputPOJO;
 import com.rpl.annotation.Secured;
+import com.rpl.exception.RplRoleException;
 import com.rpl.model.Activity;
+import com.rpl.model.RoleCourse;
 import com.rpl.model.Topic;
+import com.rpl.security.SecurityHelper;
 import com.rpl.service.ActivityService;
 import com.rpl.service.TopicService;
+import com.rpl.service.UserService;
+import com.rpl.service.util.Utils;
 
 @Secured
 @Path("/topics")
@@ -29,12 +36,18 @@ public class TopicEndpoint {
     private TopicService topicService;
     @Inject
     private ActivityService activityService;
+    @Inject
+	private UserService userService;
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTopicById(@PathParam("id") Long id) {
-    	//TODO professor
+    	try {
+			SecurityHelper.checkPermissionsByTopicId(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
         Topic topic = topicService.getTopicById(id);
         return Response.status(200).entity(new TopicPOJO(topic)).build();
     }
@@ -43,7 +56,11 @@ public class TopicEndpoint {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteTopicById(@PathParam("id") Long id) {
-    	//TODO professor
+    	try {
+			SecurityHelper.checkPermissionsByTopicId(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
         topicService.deleteTopicById(id);
         return Response.ok().build();
     }
@@ -52,7 +69,11 @@ public class TopicEndpoint {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateTopicById(@PathParam("id") Long id, TopicInputPOJO topicPOJO) {
-    	//TODO professor
+    	try {
+			SecurityHelper.checkPermissionsByTopicId(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
     	Topic updateTopic = new Topic();
     	updateTopic.setName(topicPOJO.getName());
     	updateTopic.setId(id);
@@ -64,7 +85,6 @@ public class TopicEndpoint {
     @Path("/{id}/activities")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getActivities(@PathParam("id") Long topicId) {
-
         List<Activity> activities = activityService.getActivitiesByTopic(topicId);
         List<ActivityPOJO> activityPOJOS = new ArrayList<ActivityPOJO>();
         for (Activity activity : activities) {

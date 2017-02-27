@@ -14,16 +14,23 @@ import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.ActivityPOJO;
 import com.rpl.POJO.AssistantPOJO;
+import com.rpl.POJO.MessageCodes;
+import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.ProfessorPOJO;
 import com.rpl.POJO.StudentPOJO;
 import com.rpl.POJO.TopicPOJO;
 import com.rpl.annotation.Secured;
+import com.rpl.exception.RplRoleException;
 import com.rpl.model.Activity;
 import com.rpl.model.CoursePerson;
+import com.rpl.model.RoleCourse;
 import com.rpl.model.Topic;
+import com.rpl.security.SecurityHelper;
 import com.rpl.service.ActivityService;
 import com.rpl.service.CourseService;
 import com.rpl.service.TopicService;
+import com.rpl.service.UserService;
+import com.rpl.service.util.Utils;
 
 @Secured
 @Path("/manage/courses")
@@ -35,12 +42,18 @@ public class ManageEndpoint {
 	private ActivityService activityService;
 	@Inject
 	private TopicService topicService;
+	@Inject
+	private UserService userService;
 
 	@GET
 	@Path("/{id}/activities")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getActivities(@PathParam("id") Long courseId) {
-		//TODO professor
+		try {
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		List<Activity> activities = activityService.getActivitiesByCourse(courseId);
 		List<ActivityPOJO> activityPOJOS = new ArrayList<ActivityPOJO>();
 		for (Activity activity : activities) {
@@ -53,7 +66,11 @@ public class ManageEndpoint {
 	@Path("/{id}/topics")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTopics(@PathParam("id") Long courseId) {
-		//TODO professor
+		try {
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		List<Topic> topics = topicService.getTopicsByCourse(courseId);
 		List<TopicPOJO> topicPOJOS = new ArrayList<TopicPOJO>();
 		for (Topic topic : topics) {
@@ -66,7 +83,11 @@ public class ManageEndpoint {
 	@Path("/{id}/students")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getStudents(@PathParam("id") Long id) {
-		//TODO professor
+		try {
+			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		List<CoursePerson> students = courseService.getStudents(id);
 		List<StudentPOJO> studentPOJOS = new ArrayList<StudentPOJO>();
 		for (CoursePerson student : students) {
@@ -79,7 +100,11 @@ public class ManageEndpoint {
 	@Path("/{id}/assistants")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAssistants(@PathParam("id") Long id) {
-		//TODO professor
+		try {
+			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		List<CoursePerson> assistants = courseService.getAssistants(id);
 		List<AssistantPOJO> assistantPOJOS = new ArrayList<AssistantPOJO>();
 		for (CoursePerson assistant : assistants) {
@@ -92,7 +117,11 @@ public class ManageEndpoint {
 	@Path("/{id}/professors")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getProfessors(@PathParam("id") Long id) {
-		//TODO professor
+		try {
+			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		List<CoursePerson> professors = courseService.getProfessors(id);
 
 		List<ProfessorPOJO> professorPOJOS = professors.stream().map(coursePerson -> new ProfessorPOJO(coursePerson))
