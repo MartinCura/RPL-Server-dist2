@@ -3,17 +3,20 @@ package com.rpl.POJO;
 
 import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
+import com.rpl.model.Course;
 import com.rpl.model.CoursePerson;
 
 import java.util.*;
 
 public class ReportCoursePOJO {
     private Long courseId;
+    private String courseName;
     private List<String> students;
     private List<ReportActivityPOJO> activities;
 
-    public ReportCoursePOJO(Long courseId, List<CoursePerson> persons, Map<Activity, List<ActivitySubmission>> submissionsByActivity) {
-        this.courseId = courseId;
+    public ReportCoursePOJO(Course course, List<CoursePerson> persons, Map<Activity, List<ActivitySubmission>> submissionsByActivity) {
+        this.courseId = course.getId();
+        this.courseName = course.getName();
         this.students = new ArrayList<String>();
         for (CoursePerson p : persons) {
             students.add(p.getPerson().getName());
@@ -27,6 +30,10 @@ public class ReportCoursePOJO {
 
     public Long getCourseId() {
         return courseId;
+    }
+
+    public String getCourseName() {
+        return courseName;
     }
 
     public List<String> getStudents() {
