@@ -119,11 +119,6 @@ public class CourseEndpoint {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteCourseById(@PathParam("id") Long id) {
-		try {
-			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
 		courseService.deleteCourseById(id);
 		return Response.ok().build();
 	}
