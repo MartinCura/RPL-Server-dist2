@@ -242,4 +242,3 @@ ALTER TABLE course_person ADD UNIQUE (course_id, person_id);
 insert into course_person (course_id, person_id, role, accepted) values (1, 2, 'ASSISTANT_PROFESSOR', true);
 insert into course_person (course_id, person_id, role, accepted, assistant_id) values (1, 1, 'STUDENT', true, 2);
 insert into course_person (course_id, person_id, role, accepted) values (1, 3, 'PROFESSOR', true);
-insert into course_person (course_id, person_id, role, accepted) values (1, 4, 'PROFESSOR', true);

@@ -58,7 +58,7 @@ public class CourseServiceImpl implements CourseService{
 
     public Course submit(Course course) {
     	Course newCourse = courseDAO.save(course);
-    	actionLogService.logNewCourse(course.getId());
+    	actionLogService.logNewCourse(newCourse.getId());
         return newCourse;
     }
     
