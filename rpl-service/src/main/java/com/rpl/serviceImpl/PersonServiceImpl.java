@@ -1,15 +1,21 @@
 package com.rpl.serviceImpl;
 
+import java.util.List;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.persistence.NoResultException;
+
+import org.hibernate.exception.ConstraintViolationException;
+
+import com.rpl.exception.RplException;
 import com.rpl.model.CoursePerson;
 import com.rpl.model.DatabaseState;
+import com.rpl.model.MessageCodes;
 import com.rpl.model.Person;
 import com.rpl.persistence.CoursePersonDAO;
 import com.rpl.persistence.PersonDAO;
 import com.rpl.service.PersonService;
-
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import java.util.List;
 
 @Stateless
 public class PersonServiceImpl implements PersonService {
@@ -31,9 +37,16 @@ public class PersonServiceImpl implements PersonService {
 		return personDAO.findByUsername(username);
 	}
 
-	public void addCoursePerson(CoursePerson coursePerson) {
+	public void addCoursePerson(CoursePerson coursePerson) throws RplException {
 		coursePerson.setState(DatabaseState.ENABLED);
-		coursePersonDAO.save(coursePerson);
+		try {
+			coursePersonDAO.save(coursePerson);
+		} catch (NoResultException e){
+			throw RplException.of(MessageCodes.ERROR_INEXISTENT_USER, "");
+		} catch (ConstraintViolationException e){
+			throw RplException.of(MessageCodes.ERROR_USER_ALREADY_ASSIGNED, "");
+		}
+		
 	}
 
 	public void updatePersonInfo(Long id, String name, String mail) {

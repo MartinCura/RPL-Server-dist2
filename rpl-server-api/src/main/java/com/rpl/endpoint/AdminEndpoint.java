@@ -14,24 +14,21 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.rpl.POJO.input.CourseInputPOJO;
 import com.rpl.POJO.AssistantPOJO;
 import com.rpl.POJO.CoursePOJO;
-import com.rpl.POJO.input.CoursePersonInputPOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.ProfessorPOJO;
+import com.rpl.POJO.input.CourseInputPOJO;
+import com.rpl.POJO.input.CoursePersonInputPOJO;
 import com.rpl.annotation.Secured;
-import com.rpl.exception.RplRoleException;
+import com.rpl.exception.RplException;
 import com.rpl.model.Course;
 import com.rpl.model.CoursePerson;
-import com.rpl.model.MessageCodes;
 import com.rpl.model.Person;
 import com.rpl.model.Role;
 import com.rpl.model.RoleCourse;
-import com.rpl.security.SecurityHelper;
 import com.rpl.service.CourseService;
 import com.rpl.service.PersonService;
-import com.rpl.service.util.Utils;
 
 @Secured(Role.ADMIN)
 @Path("/admin")
@@ -79,7 +76,11 @@ public class AdminEndpoint {
         coursePerson.setPerson(person);
         coursePerson.setRole(RoleCourse.valueOf(coursePersonInputPOJO.getRole()));
         coursePerson.setAccepted(true);
-        personService.addCoursePerson(coursePerson);
+        try {
+			personService.addCoursePerson(coursePerson);
+		} catch (RplException e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(e.getCode(), e.getMsg())).build();
+		}
         return Response.status(200).build();
     }
     
