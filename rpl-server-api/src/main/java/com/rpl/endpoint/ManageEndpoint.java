@@ -2,7 +2,6 @@ package com.rpl.endpoint;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -15,7 +14,6 @@ import javax.ws.rs.core.Response;
 import com.rpl.POJO.ActivityPOJO;
 import com.rpl.POJO.AssistantPOJO;
 import com.rpl.POJO.MessagePOJO;
-import com.rpl.POJO.ProfessorPOJO;
 import com.rpl.POJO.StudentPOJO;
 import com.rpl.POJO.TopicPOJO;
 import com.rpl.annotation.Secured;
@@ -23,7 +21,6 @@ import com.rpl.exception.RplRoleException;
 import com.rpl.model.Activity;
 import com.rpl.model.CoursePerson;
 import com.rpl.model.MessageCodes;
-import com.rpl.model.Role;
 import com.rpl.model.RoleCourse;
 import com.rpl.model.Topic;
 import com.rpl.security.SecurityHelper;
