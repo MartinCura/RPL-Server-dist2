@@ -1,5 +1,7 @@
 package com.rpl.serviceImpl;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.ejb.Stateless;
@@ -44,6 +46,13 @@ public class SecurityServiceImpl implements SecurityService {
 		return Jwts.builder().signWith(SignatureAlgorithm.HS512, PRIVATE_KEY.getBytes())
 				.setClaims(p.getCredentials().toMap()).compact();
 	}
+	
+	private String encodePassword(String password) {
+		Map<String, Object> claims = new HashMap<>();
+		claims.put("password", password);
+		return Jwts.builder().signWith(SignatureAlgorithm.HS512, PRIVATE_KEY.getBytes())
+				.setClaims(claims).compact();
+	}
 
 	public void logout(String username) {
 		personDAO.updatePersonToken(username, "");
@@ -76,10 +85,13 @@ public class SecurityServiceImpl implements SecurityService {
 
 	@Override
 	public String register(Person p) throws RplException {
+		String originalPassword = p.getCredentials().getPassword();
+		String encodedPassword = encodePassword(originalPassword);
+		p.getCredentials().setPassword(encodedPassword);
 		String token = generateToken(p);
 		try {
 			validateUsername(p.getCredentials().getUsername());
-			validatePassword(p.getCredentials().getPassword());
+			validatePassword(originalPassword);
 			p.getCredentials().setToken(token);
 			Person savedPerson = personDAO.save(p);
 			actionLogService.logNewUserRegistered(savedPerson);
@@ -104,7 +116,8 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	public void updatePassword(Long id, String password) {
-		personDAO.updatePassword(id, password);
+		String encodedPassword = encodePassword(password);
+		personDAO.updatePassword(id, encodedPassword);
 		actionLogService.logPasswordUpdate();
 	}
 
