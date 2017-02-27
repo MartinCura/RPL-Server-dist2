@@ -23,7 +23,7 @@ public class SecurityServiceImpl implements SecurityService {
 
 	private static final String PRIVATE_KEY = "RPL";
 
-	private static final String USERNAME_PATTERN = "^[a-z0-9_-]{8,20}$";
+	private static final String USERNAME_PATTERN = "^[a-zA-Z0-9_-]{8,20}$";
 
 	private static final Integer PASSWORD_MIN_LENGTH = 4;
 
