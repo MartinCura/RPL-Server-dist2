@@ -35,6 +35,7 @@ import com.rpl.POJO.input.AssignAssistantInputPOJO;
 import com.rpl.POJO.input.CourseInputPOJO;
 import com.rpl.POJO.input.TopicInputPOJO;
 import com.rpl.annotation.Secured;
+import com.rpl.exception.RplException;
 import com.rpl.exception.RplRoleException;
 import com.rpl.security.SecurityHelper;
 import com.rpl.service.ActivityService;
@@ -204,7 +205,11 @@ public class CourseEndpoint {
 			String fileName = getFileName(inputPart.getHeaders());
 			InputStream inputStream = inputPart.getBody(InputStream.class, null);
 			byte[] bytes = IOUtils.toByteArray(inputStream);
-			activityService.saveFile(activityId, new ActivityInputFile(fileName, bytes));
+			try {
+				activityService.saveFile(activityId, new ActivityInputFile(fileName, bytes));
+			} catch (RplException e) {
+				return Response.ok(MessagePOJO.of(e.getCode(), e.getMessage())).build();
+			}
 		}
 		return Response.status(200).build();
 	}
@@ -256,16 +261,11 @@ public class CourseEndpoint {
 		return Response.status(200).build();
 	}
 
-	@Secured
+	@Secured(Role.ADMIN)
 	@POST
 	@Path("/{courseId}/person/{personId}/leave")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response leaveCourse(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
-		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
 		courseService.leaveCourse(courseId, personId);
 		return Response.status(200).build();
 	}
