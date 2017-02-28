@@ -27,6 +27,8 @@ import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.input.ActivityInputPOJO;
 import com.rpl.POJO.input.ActivitySubmissionInputPOJO;
 import com.rpl.annotation.Secured;
+import com.rpl.exception.RplException;
+import com.rpl.exception.RplNotAuthorizedException;
 import com.rpl.exception.RplQueueException;
 import com.rpl.exception.RplRoleException;
 import com.rpl.model.Activity;
@@ -67,7 +69,7 @@ public class ActivityEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getActivityCompleteById(@PathParam("id") Long id) {
 		try {
-			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissionsByActivityId(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -94,7 +96,7 @@ public class ActivityEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateActivityById(@PathParam("id") Long id, ActivityInputPOJO activity) {
 		try {
-			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissionsByActivityId(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -138,6 +140,8 @@ public class ActivityEndpoint {
 			return Response.status(200).entity(new ActivitySubmissionPOJO(submission)).build();
 		} catch (RplQueueException e) {
 			return Response.status(505).entity(e).build();
+		} catch (RplException e) {
+			return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
 		}
 	}
 
@@ -174,8 +178,12 @@ public class ActivityEndpoint {
 	@Path("/{id}/solutions")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getDefinitiveSubmissionsByActivity(@PathParam("id") Long activityId) {
-		// TODO kevin: check the student has already sent a definitive solution
-		List<ActivitySubmission> submissions = activitySubmissionService.getDefinitiveSubmissionsByActivity(activityId);
+		List<ActivitySubmission> submissions;
+		try {
+			submissions = activitySubmissionService.getDefinitiveSubmissionsByActivity(activityId);
+		} catch (RplNotAuthorizedException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		List<ActivitySubmissionSolutionPOJO> submissionPOJOS = new ArrayList<ActivitySubmissionSolutionPOJO>();
 		for (ActivitySubmission submission : submissions) {
 			submissionPOJOS.add(new ActivitySubmissionSolutionPOJO(submission));

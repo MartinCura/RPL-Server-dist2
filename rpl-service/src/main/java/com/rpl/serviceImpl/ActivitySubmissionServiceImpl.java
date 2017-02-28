@@ -1,19 +1,10 @@
 package com.rpl.serviceImpl;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.TimeoutException;
-
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.rpl.exception.RplException;
+import com.rpl.exception.RplNotAuthorizedException;
 import com.rpl.exception.RplQueueException;
-import com.rpl.model.Activity;
-import com.rpl.model.ActivitySubmission;
-import com.rpl.model.QueueMessage;
-import com.rpl.model.Status;
+import com.rpl.model.*;
 import com.rpl.persistence.ActivityDAO;
 import com.rpl.persistence.ActivitySubmissionDAO;
 import com.rpl.service.ActionLogService;
@@ -21,6 +12,13 @@ import com.rpl.service.ActivitySubmissionService;
 import com.rpl.service.QueueService;
 import com.rpl.service.UserService;
 import com.rpl.service.util.JsonUtils;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 @Stateless
 public class ActivitySubmissionServiceImpl implements ActivitySubmissionService {
@@ -36,12 +34,25 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 	@Inject
 	private ActionLogService actionLogService;
 
+	private boolean hasDefinitiveSubmsission(Long personId, Long activityId) {
+		try {
+			activitySubmissionDAO.findDefinitiveByActivityAndPerson(activityId, personId);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
 	
 	public ActivitySubmission getSubmissionById(Long id) {
 		return activitySubmissionDAO.find(id);
 	}
 
-	public ActivitySubmission submit(Long activityId, ActivitySubmission submission) {
+	public ActivitySubmission submit(Long activityId, ActivitySubmission submission) throws RplException {
+
+		if (hasDefinitiveSubmsission(userService.getCurrentUser().getId(), activityId)) {
+			throw RplException.of(MessageCodes.SERVER_ERROR, "");
+		}
+
 		Activity activity = activityDAO.find(activityId);
 		submission.setPerson(userService.getCurrentUser());
 		submission.setActivity(activity);
@@ -53,10 +64,14 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		
 	}
 
-	public void markAsSelected(Long submissionId) {
-		//TODO check que la submission sea success
-		
+	public void markAsSelected(Long submissionId) throws RplException{
 		ActivitySubmission submission = activitySubmissionDAO.find(submissionId);
+		if (! submission.getStatus().equals(Status.SUCCESS)) {
+			throw RplException.of(MessageCodes.SERVER_ERROR, "");
+		}
+		if (hasDefinitiveSubmsission(submission.getPerson().getId(), submission.getActivity().getId())) {
+			throw RplException.of(MessageCodes.SERVER_ERROR, "");
+		}
 		submission.setSelected(true);
 		activitySubmissionDAO.save(submission);
 		activitySubmissionDAO.setUnselectedSubmissions(submissionId, submission.getPerson().getId(), submission.getActivity().getId());
@@ -68,7 +83,12 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 	}
 
 	@Override
-	public List<ActivitySubmission> getDefinitiveSubmissionsByActivity(Long activityId) {
+	public List<ActivitySubmission> getDefinitiveSubmissionsByActivity(Long activityId) throws RplNotAuthorizedException {
+		try {
+			ActivitySubmission submission = activitySubmissionDAO.findDefinitiveByActivityAndPerson(activityId, userService.getCurrentUser().getId());
+		} catch (Exception e) {
+			throw new RplNotAuthorizedException();
+		}
 		return activitySubmissionDAO.findDefinitiveByActivity(activityId);
 	}
 
@@ -87,11 +107,18 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		}
 	}
 
-	public void markAsDefinitive(Long submissionId) {
-		//TODO check que la submission sea success
+	public void markAsDefinitive(Long submissionId) throws RplException {
 		ActivitySubmission submission = activitySubmissionDAO.find(submissionId);
+		if (! submission.getStatus().equals(Status.SUCCESS)) {
+			throw RplException.of(MessageCodes.SERVER_ERROR, "");
+		}
+		if (hasDefinitiveSubmsission(submission.getPerson().getId(), submission.getActivity().getId())) {
+			throw RplException.of(MessageCodes.SERVER_ERROR, "");
+		}
+		submission.setSelected(true);
 		submission.setDefinitive(true);
 		activitySubmissionDAO.save(submission);
+		activitySubmissionDAO.setUnselectedSubmissions(submissionId, submission.getPerson().getId(), submission.getActivity().getId());
 		actionLogService.logMarkActivitySubmissionAsDefinitive(submissionId);
 	}
 

@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 import com.rpl.POJO.ActivitySubmissionPOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.annotation.Secured;
+import com.rpl.exception.RplException;
 import com.rpl.exception.RplItemDoesNotBelongToPersonException;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.MessageCodes;
@@ -59,7 +60,12 @@ public class ActivitySubmissionEndpoint {
 		} catch (RplItemDoesNotBelongToPersonException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
-		activitySubmissionService.markAsSelected(submissionId);
+
+		try {
+			activitySubmissionService.markAsSelected(submissionId);
+		} catch (RplException e) {
+			return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
+		}
 		return Response.status(200).build();
 	}
 
@@ -76,7 +82,12 @@ public class ActivitySubmissionEndpoint {
 		} catch (RplItemDoesNotBelongToPersonException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
-		activitySubmissionService.markAsDefinitive(submissionId);
+
+		try {
+			activitySubmissionService.markAsDefinitive(submissionId);
+		} catch (RplException e) {
+			return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
+		}
 		return Response.status(200).build();
 	}
 }
