@@ -2,11 +2,9 @@ package com.rpl.runner.utils;
 
 import com.rpl.runner.Settings;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Scanner;
 
 public class LocalFileUtils {
@@ -20,6 +18,19 @@ public class LocalFileUtils {
         }
         out.print(content);
         out.close();
+    }
+
+    public static void write(String path, byte[] content) {
+        File file = new File(path);
+        BufferedOutputStream writer = null;
+        try {
+            writer = new BufferedOutputStream(new FileOutputStream(file));
+            writer.write(content);
+            writer.flush();
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static String fileToString(File file) {
