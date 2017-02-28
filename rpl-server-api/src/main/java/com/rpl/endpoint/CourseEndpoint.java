@@ -25,6 +25,7 @@ import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import com.rpl.POJO.CourseCustomizationPOJO;
+import com.rpl.POJO.CourseImagePOJO;
 import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.RankingPOJO;
@@ -227,6 +228,16 @@ public class CourseEndpoint {
 		return Response.status(200).build();
 	}
 
+	@GET
+	@Path("/{id}/image")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPersonImage(@PathParam("id")Long courseId) {
+		Course c = courseService.getCourseById(courseId);
+		return Response.status(200).entity(new CourseImagePOJO(c.getCourseImage())).build();
+
+	}
+	
 	@Secured
 	@POST
 	@Path("{id}/image")
