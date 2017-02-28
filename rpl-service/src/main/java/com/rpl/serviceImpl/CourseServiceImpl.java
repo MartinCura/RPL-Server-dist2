@@ -3,12 +3,19 @@ package com.rpl.serviceImpl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import com.rpl.model.*;
+import com.rpl.exception.RplException;
+import com.rpl.model.ActivityInputFile;
+import com.rpl.model.ActivitySubmission;
+import com.rpl.model.Course;
+import com.rpl.model.CourseImage;
+import com.rpl.model.CoursePerson;
+import com.rpl.model.DatabaseState;
+import com.rpl.model.Person;
+import com.rpl.model.RoleCourse;
 import com.rpl.persistence.ActivitySubmissionDAO;
 import com.rpl.persistence.CourseDAO;
 import com.rpl.persistence.CoursePersonDAO;
@@ -16,6 +23,7 @@ import com.rpl.persistence.PersonDAO;
 import com.rpl.service.ActionLogService;
 import com.rpl.service.CourseService;
 import com.rpl.service.UserService;
+import com.rpl.service.util.FileUtils;
 
 @Stateless
 public class CourseServiceImpl implements CourseService{
@@ -140,4 +148,24 @@ public class CourseServiceImpl implements CourseService{
         }
         return pointsByPerson;
     }
+
+	@Override
+	public void saveImage(Long courseId, CourseImage courseImage) throws RplException {
+		FileUtils.validateFile(courseImage.getContent());
+		Course course = courseDAO.find(courseId);
+		CourseImage recoveredFile = courseDAO.findFileByCourseAndName(courseId, courseImage.getFileName());
+		if (recoveredFile != null){
+			recoveredFile.setContent(courseImage.getContent());
+			courseDAO.save(recoveredFile);
+			return;
+		}
+		courseImage.setCourse(course);
+		courseDAO.save(courseImage);
+		
+	}
+	
+	public void deleteFile(Long fileId){
+		CourseImage file = courseDAO.findFile(fileId);
+		courseDAO.deleteFile(file);
+	}
 }

@@ -44,6 +44,22 @@ CREATE TABLE activity_file (
 	content bytea NOT NULL
 );
 
+DROP TABLE IF EXISTS course_image cascade;
+CREATE TABLE course_image (
+	id serial PRIMARY KEY,
+	course_id integer REFERENCES activity,
+	fileName text NOT NULL,
+	content bytea NOT NULL
+);
+
+DROP TABLE IF EXISTS user_image cascade;
+CREATE TABLE user_image (
+	id serial PRIMARY KEY,
+	person_id integer REFERENCES activity,
+	fileName text NOT NULL,
+	content bytea NOT NULL
+);
+
 insert into activity (
 	name,
 	language,

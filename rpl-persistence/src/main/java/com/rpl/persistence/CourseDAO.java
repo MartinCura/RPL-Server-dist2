@@ -1,10 +1,14 @@
 package com.rpl.persistence;
 
+import java.util.List;
+
+import javax.persistence.NoResultException;
+
+import com.rpl.model.ActivityInputFile;
 import com.rpl.model.Course;
+import com.rpl.model.CourseImage;
 import com.rpl.model.DatabaseState;
 import com.rpl.model.RoleCourse;
-
-import java.util.List;
 
 public class CourseDAO extends ApplicationDAO {
 
@@ -58,4 +62,23 @@ public class CourseDAO extends ApplicationDAO {
 				.setParameter("description", description).setParameter("rules", rules)
 				.executeUpdate();
 	}
+	
+	public CourseImage findFile(Long fileId) {
+		return entityManager.find(CourseImage.class, fileId);
+	}
+
+	public CourseImage findFileByCourseAndName(Long courseId, String fileName) {
+		try{
+			return (CourseImage) entityManager
+					.createQuery("SELECT file FROM CourseImage file WHERE file.course.id = :courseId AND file.fileName = :fileName")
+					.setParameter("courseId", courseId).setParameter("fileName", fileName).getSingleResult();
+		} catch (NoResultException e){
+			return null;
+		}
+		
+	}
+
+	public void deleteFile(CourseImage file) {
+		entityManager.remove(file);
+	}	
 }

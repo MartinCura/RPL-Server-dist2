@@ -211,6 +211,47 @@ public class CourseEndpoint {
 		}
 		return Response.status(200).build();
 	}
+	
+	@Secured
+	@POST
+	@Path("{id}/image")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response uploadImage(@PathParam("id") Long courseId, MultipartFormDataInput input) throws IOException {
+		try {
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
+		List<InputPart> inputParts = uploadForm.get("file");
+
+		for (InputPart inputPart : inputParts) {
+			String fileName = getFileName(inputPart.getHeaders());
+			InputStream inputStream = inputPart.getBody(InputStream.class, null);
+			byte[] bytes = IOUtils.toByteArray(inputStream);
+			try {
+				courseService.saveImage(courseId, new CourseImage(fileName, bytes));
+			} catch (RplException e) {
+				return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
+			}
+		}
+		return Response.status(200).build();
+	}
+	
+	@DELETE
+	@Path("{id}/file")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response deleteFile(@PathParam("id") Long fileId) throws IOException {
+		try {
+			SecurityHelper.checkPermissionsByFileId(fileId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+		courseService.deleteFile(fileId);
+		return Response.status(200).build();
+	}
 
 	private String getFileName(MultivaluedMap<String, String> header) {
 

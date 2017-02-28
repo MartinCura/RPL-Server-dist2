@@ -20,10 +20,12 @@ public class SecurityHelper {
 				.map(cp -> cp.getRole()).findFirst().get();
 	}
 
-	public static void checkSubmissionBelongsToPerson(ActivitySubmission activitySubmission, Person p) throws RplItemDoesNotBelongToPersonException{
-		if (!activitySubmission.getPerson().getId().equals(p.getId())) throw new RplItemDoesNotBelongToPersonException();
+	public static void checkSubmissionBelongsToPerson(ActivitySubmission activitySubmission, Person p)
+			throws RplItemDoesNotBelongToPersonException {
+		if (!activitySubmission.getPerson().getId().equals(p.getId()))
+			throw new RplItemDoesNotBelongToPersonException();
 	}
-	
+
 	public static void checkPermissions(List<Role> allowedRoles, Person p) throws RplRoleException {
 		// TODO: MOCKED IMPL!
 		// if (!allowedRoles.contains(p.getCredentials().getRole())) throw new
@@ -54,10 +56,21 @@ public class SecurityHelper {
 			throw new RplRoleException();
 		}
 	}
-	
+
 	public static void checkPermissionsByTopicId(Long topicId, List<RoleCourse> allowedRoles, Person p)
 			throws RplRoleException {
 		Course c = CourseHelper.getCourseByTopicId(topicId, p);
+		if (c != null) {
+			checkPermissions(c.getId(), allowedRoles, p);
+		} else {
+			throw new RplRoleException();
+		}
+	}
+
+	public static void checkPermissionsByImageFileId(Long fileId, List<RoleCourse> allowedRoles, Person p)
+			throws RplRoleException {
+		
+		Course c = CourseHelper.getCourseByImageFileId(fileId, p);
 		if (c != null) {
 			checkPermissions(c.getId(), allowedRoles, p);
 		} else {

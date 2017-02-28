@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -39,6 +40,9 @@ public class Course {
 	private String description;
 
 	private String customization;
+	
+	@OneToOne
+	private CourseImage courseImage;
 	
 	public String getCustomization() {
 		return customization;
@@ -94,5 +98,13 @@ public class Course {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public CourseImage getCourseImage() {
+		return courseImage;
+	}
+
+	public void setCourseImage(CourseImage courseImage) {
+		this.courseImage = courseImage;
 	}
 }

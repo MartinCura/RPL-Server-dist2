@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.rpl.exception.RplException;
 import com.rpl.model.*;
 
 
@@ -31,6 +32,6 @@ public interface CourseService {
 	public List<CoursePerson> getProfessors(Long id);
 	public void updateDescRulesAndCustomization(Long id, String customization, String description, String rules);
     public Map<Person,Integer> getPointsByPerson(Long courseId);
-
-
+	public void saveImage(Long courseId, CourseImage courseImage) throws RplException;
+	public void deleteFile(Long fileId);
 }

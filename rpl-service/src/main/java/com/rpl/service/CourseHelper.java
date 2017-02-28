@@ -46,4 +46,9 @@ public class CourseHelper {
 	public static ActivityInputFile getFileByFileId(Long fileId, Activity activity) {
 		return activity.getFiles().stream().filter(file -> file.getId().equals(fileId)).findFirst().get();
 	}
+
+	public static Course getCourseByImageFileId(Long fileId, Person p) {
+		return p.getCoursePersons().stream().map(cp -> cp.getCourse())
+				.filter(course -> course.getCourseImage().getId().equals(fileId)).findFirst().get();
+	}
 }
