@@ -231,10 +231,10 @@ public class CourseEndpoint {
 	@GET
 	@Path("/{id}/image")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces("image/*")
 	public Response getPersonImage(@PathParam("id")Long courseId) {
 		Course c = courseService.getCourseById(courseId);
-		return Response.status(200).entity(new CourseImagePOJO(c.getCourseImage())).build();
+		return Response.status(200).entity(c.getCourseImage().getContent()).build();
 
 	}
 	

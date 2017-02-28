@@ -72,10 +72,10 @@ public class PersonEndpoint {
 	@GET
 	@Path("/{id}/image")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces("image/*")
 	public Response getPersonImage(@PathParam("id")Long personId) {
 		Person p = personService.getPersonById(personId);
-		return Response.status(200).entity(new PersonImagePOJO(p.getPersonImage())).build();
+		return Response.status(200).entity(p.getPersonImage().getContent()).build();
 
 	}
 
