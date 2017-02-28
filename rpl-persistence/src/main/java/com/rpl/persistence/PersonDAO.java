@@ -2,13 +2,16 @@ package com.rpl.persistence;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
+import com.rpl.model.CourseImage;
 import com.rpl.model.Person;
+import com.rpl.model.PersonImage;
 
 public class PersonDAO extends ApplicationDAO {
 
@@ -61,6 +64,17 @@ public class PersonDAO extends ApplicationDAO {
 		Query query =  entityManager.createQuery("SELECT p FROM Person p WHERE p.credentials.username = :username")
 				.setParameter("username", username);
 		return (Person) query.getSingleResult();
+	}
+
+	public PersonImage findFileByPersonAndName(Long id, String fileName) {
+		try{
+			return (PersonImage) entityManager
+					.createQuery("SELECT file FROM PersonImage file WHERE file.person.id = :id")
+					.setParameter("id", id).getSingleResult();
+		} catch (NoResultException e){
+			return null;
+		}
+		
 	}
 
 }

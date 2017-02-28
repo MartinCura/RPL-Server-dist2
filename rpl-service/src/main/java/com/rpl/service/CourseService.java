@@ -2,10 +2,12 @@ package com.rpl.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.rpl.exception.RplException;
-import com.rpl.model.*;
+import com.rpl.model.Course;
+import com.rpl.model.CourseImage;
+import com.rpl.model.CoursePerson;
+import com.rpl.model.Person;
 
 
 public interface CourseService {
@@ -33,5 +35,4 @@ public interface CourseService {
 	public void updateDescRulesAndCustomization(Long id, String customization, String description, String rules);
     public Map<Person,Integer> getPointsByPerson(Long courseId);
 	public void saveImage(Long courseId, CourseImage courseImage) throws RplException;
-	public void deleteFile(Long fileId);
 }

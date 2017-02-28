@@ -164,8 +164,4 @@ public class CourseServiceImpl implements CourseService{
 		
 	}
 	
-	public void deleteFile(Long fileId){
-		CourseImage file = courseDAO.findFile(fileId);
-		courseDAO.deleteFile(file);
-	}
 }

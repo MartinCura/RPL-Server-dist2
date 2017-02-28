@@ -77,8 +77,4 @@ public class CourseDAO extends ApplicationDAO {
 		}
 		
 	}
-
-	public void deleteFile(CourseImage file) {
-		entityManager.remove(file);
-	}	
 }

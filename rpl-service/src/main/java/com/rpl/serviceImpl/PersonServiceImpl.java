@@ -12,9 +12,12 @@ import com.rpl.model.CoursePerson;
 import com.rpl.model.DatabaseState;
 import com.rpl.model.MessageCodes;
 import com.rpl.model.Person;
+import com.rpl.model.PersonImage;
 import com.rpl.persistence.CoursePersonDAO;
 import com.rpl.persistence.PersonDAO;
 import com.rpl.service.PersonService;
+import com.rpl.service.UserService;
+import com.rpl.service.util.FileUtils;
 
 @Stateless
 public class PersonServiceImpl implements PersonService {
@@ -23,6 +26,9 @@ public class PersonServiceImpl implements PersonService {
 	private PersonDAO personDAO;
 	@Inject
 	private CoursePersonDAO coursePersonDAO;
+	
+	@Inject
+	private UserService userService;
 
 	public List<Person> getPersons() {
 		return personDAO.findAll();
@@ -35,7 +41,7 @@ public class PersonServiceImpl implements PersonService {
 	public Person getPersonByUsername(String username) {
 		try {
 			return personDAO.findByUsername(username);
-		} catch (NoResultException e){
+		} catch (NoResultException e) {
 			return null;
 		}
 	}
@@ -44,12 +50,12 @@ public class PersonServiceImpl implements PersonService {
 		coursePerson.setState(DatabaseState.ENABLED);
 		try {
 			coursePersonDAO.save(coursePerson);
-		} catch (NoResultException e){
+		} catch (NoResultException e) {
 			throw RplException.of(MessageCodes.ERROR_INEXISTENT_USER, "");
-		} catch (PersistenceException e){
+		} catch (PersistenceException e) {
 			throw RplException.of(MessageCodes.ERROR_USER_ALREADY_ASSIGNED, "");
 		}
-		
+
 	}
 
 	public void updatePersonInfo(Long id, String name, String mail) {
@@ -59,4 +65,18 @@ public class PersonServiceImpl implements PersonService {
 	public CoursePerson getCoursePersonByIdAndCourse(Long personId, Long courseId) {
 		return coursePersonDAO.findByCourseAndPerson(courseId, personId);
 	}
+
+	public void saveImage(Long id, PersonImage personImage) throws RplException {
+		FileUtils.validateFile(personImage.getContent());
+		Person currentUser = userService.getCurrentUser();
+		PersonImage recoveredFile = personDAO.findFileByPersonAndName(id, personImage.getFileName());
+		if (recoveredFile != null) {
+			recoveredFile.setContent(personImage.getContent());
+			personDAO.save(recoveredFile);
+			return;
+		}
+		personImage.setPerson(currentUser);
+		personDAO.save(personImage);
+	}
+
 }

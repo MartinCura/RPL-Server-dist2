@@ -18,11 +18,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-import com.rpl.POJO.RankingPOJO;
-import com.rpl.model.*;
 import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
@@ -30,6 +27,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import com.rpl.POJO.CourseCustomizationPOJO;
 import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.MessagePOJO;
+import com.rpl.POJO.RankingPOJO;
 import com.rpl.POJO.input.ActivityInputPOJO;
 import com.rpl.POJO.input.AssignAssistantInputPOJO;
 import com.rpl.POJO.input.CourseInputPOJO;
@@ -37,11 +35,24 @@ import com.rpl.POJO.input.TopicInputPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplException;
 import com.rpl.exception.RplRoleException;
+import com.rpl.model.Activity;
+import com.rpl.model.ActivityInputFile;
+import com.rpl.model.Course;
+import com.rpl.model.CourseImage;
+import com.rpl.model.CoursePerson;
+import com.rpl.model.Language;
+import com.rpl.model.MessageCodes;
+import com.rpl.model.Person;
+import com.rpl.model.Role;
+import com.rpl.model.RoleCourse;
+import com.rpl.model.TestType;
+import com.rpl.model.Topic;
 import com.rpl.security.SecurityHelper;
 import com.rpl.service.ActivityService;
 import com.rpl.service.CourseService;
 import com.rpl.service.TopicService;
 import com.rpl.service.UserService;
+import com.rpl.service.util.FileUtils;
 import com.rpl.service.util.Utils;
 
 @Path("/courses")
@@ -192,7 +203,8 @@ public class CourseEndpoint {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadFile(@PathParam("id") Long activityId, MultipartFormDataInput input) throws IOException {
 		try {
-			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR),
+					userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -200,7 +212,10 @@ public class CourseEndpoint {
 		List<InputPart> inputParts = uploadForm.get("file");
 
 		for (InputPart inputPart : inputParts) {
-			String fileName = getFileName(inputPart.getHeaders());
+
+			String[] contentDisposition = inputPart.getHeaders().getFirst("Content-Disposition").split(";");
+
+			String fileName = FileUtils.getFileName(contentDisposition);
 			InputStream inputStream = inputPart.getBody(InputStream.class, null);
 			byte[] bytes = IOUtils.toByteArray(inputStream);
 			try {
@@ -211,7 +226,7 @@ public class CourseEndpoint {
 		}
 		return Response.status(200).build();
 	}
-	
+
 	@Secured
 	@POST
 	@Path("{id}/image")
@@ -227,7 +242,10 @@ public class CourseEndpoint {
 		List<InputPart> inputParts = uploadForm.get("file");
 
 		for (InputPart inputPart : inputParts) {
-			String fileName = getFileName(inputPart.getHeaders());
+
+			String[] contentDisposition = inputPart.getHeaders().getFirst("Content-Disposition").split(";");
+
+			String fileName = FileUtils.getFileName(contentDisposition);
 			InputStream inputStream = inputPart.getBody(InputStream.class, null);
 			byte[] bytes = IOUtils.toByteArray(inputStream);
 			try {
@@ -237,36 +255,6 @@ public class CourseEndpoint {
 			}
 		}
 		return Response.status(200).build();
-	}
-	
-	@DELETE
-	@Path("{id}/file")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteFile(@PathParam("id") Long fileId) throws IOException {
-		try {
-			SecurityHelper.checkPermissionsByFileId(fileId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		courseService.deleteFile(fileId);
-		return Response.status(200).build();
-	}
-
-	private String getFileName(MultivaluedMap<String, String> header) {
-
-		String[] contentDisposition = header.getFirst("Content-Disposition").split(";");
-
-		for (String filename : contentDisposition) {
-			if ((filename.trim().startsWith("filename"))) {
-
-				String[] name = filename.split("=");
-
-				String finalFileName = name[1].trim().replaceAll("\"", "");
-				return finalFileName;
-			}
-		}
-		return null;
 	}
 
 	@Secured
@@ -366,14 +354,13 @@ public class CourseEndpoint {
 		List<RankingPOJO> ranking = new ArrayList<RankingPOJO>();
 		Map<Person, Integer> pointsByPerson = courseService.getPointsByPerson(id);
 
-		pointsByPerson.entrySet().stream()
-				.sorted(Map.Entry.<Person, Integer>comparingByValue().reversed())
-				.forEach((entry)-> ranking.add(new RankingPOJO(entry.getKey(), entry.getValue())));
+		pointsByPerson.entrySet().stream().sorted(Map.Entry.<Person, Integer>comparingByValue().reversed())
+				.forEach((entry) -> ranking.add(new RankingPOJO(entry.getKey(), entry.getValue())));
 
 		int pos = 1;
 		for (RankingPOJO r : ranking) {
 			r.setPos(pos);
-			pos ++;
+			pos++;
 		}
 		return Response.status(200).entity(ranking).build();
 	}

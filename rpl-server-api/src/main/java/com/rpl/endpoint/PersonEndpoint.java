@@ -1,32 +1,44 @@
 package com.rpl.endpoint;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.io.IOUtils;
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+
+import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.PersonInfoPOJO;
 import com.rpl.POJO.PersonPOJO;
 import com.rpl.annotation.Secured;
+import com.rpl.exception.RplException;
 import com.rpl.model.Person;
+import com.rpl.model.PersonImage;
 import com.rpl.model.Role;
 import com.rpl.service.PersonService;
 import com.rpl.service.UserService;
+import com.rpl.service.util.FileUtils;
 
 @Secured
 @Path("/persons")
 public class PersonEndpoint {
-	
+
 	@Inject
 	private PersonService personService;
-	
+
 	@Inject
 	private UserService userService;
 
@@ -54,7 +66,31 @@ public class PersonEndpoint {
 		return Response.status(200).entity(new PersonInfoPOJO(p)).build();
 
 	}
-	
+
+	@Secured
+	@POST
+	@Path("/image")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response uploadImage(MultipartFormDataInput input) throws IOException {
+		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
+		List<InputPart> inputParts = uploadForm.get("file");
+
+		for (InputPart inputPart : inputParts) {
+			String[] contentDisposition = inputPart.getHeaders().getFirst("Content-Disposition").split(";");
+
+			String fileName = FileUtils.getFileName(contentDisposition);
+			InputStream inputStream = inputPart.getBody(InputStream.class, null);
+			byte[] bytes = IOUtils.toByteArray(inputStream);
+			try {
+				personService.saveImage(userService.getCurrentUser().getId(), new PersonImage(fileName, bytes));
+			} catch (RplException e) {
+				return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
+			}
+		}
+		return Response.status(200).build();
+	}
+
 	@PUT
 	@Path("/information")
 	@Consumes(MediaType.APPLICATION_JSON)

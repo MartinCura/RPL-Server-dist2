@@ -35,6 +35,9 @@ public class Person {
 	@OneToMany(mappedBy="person")
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<CoursePerson> coursePersons;
+	
+	@OneToOne
+	private PersonImage personImage;
 
 	public Long getId() {
 		return id;
@@ -90,6 +93,14 @@ public class Person {
 
 	public void setCoursePersons(List<CoursePerson> coursePersons) {
 		this.coursePersons = coursePersons;
+	}
+
+	public PersonImage getPersonImage() {
+		return personImage;
+	}
+
+	public void setPersonImage(PersonImage personImage) {
+		this.personImage = personImage;
 	}
 
 }
