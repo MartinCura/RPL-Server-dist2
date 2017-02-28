@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.rpl.model.*;
+import com.rpl.persistence.ActivitySubmissionDAO;
 import com.rpl.persistence.CourseDAO;
 import com.rpl.persistence.CoursePersonDAO;
 import com.rpl.persistence.PersonDAO;
@@ -26,6 +27,8 @@ public class CourseServiceImpl implements CourseService{
     private CoursePersonDAO coursePersonDAO;
     @Inject
     private PersonDAO personDAO;
+    @Inject
+    private ActivitySubmissionDAO activitySubmissionDAO;
     @Inject
     private ActionLogService actionLogService;
 
@@ -119,5 +122,17 @@ public class CourseServiceImpl implements CourseService{
     
     public void updateDescRulesAndCustomization(Long id, String customization, String description, String rules){
     	courseDAO.updateDescRulesAndCustomization(id, customization, description, rules);
+    }
+
+    public Map<Person, Integer> getPointsByPerson(Long courseId) {
+        Map<Person, Integer> pointsByPerson = new HashMap<Person, Integer>();
+        List<ActivitySubmission> submissions = activitySubmissionDAO.findSelectedByCourse(courseId);
+        for (ActivitySubmission submission : submissions) {
+            if (! pointsByPerson.containsKey(submission.getPerson())) {
+                pointsByPerson.put(submission.getPerson(), 0);
+            }
+            pointsByPerson.put(submission.getPerson(), pointsByPerson.get(submission.getPerson()) + submission.getActivity().getPoints());
+        }
+        return pointsByPerson;
     }
 }

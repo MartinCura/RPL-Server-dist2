@@ -21,6 +21,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
+import com.rpl.POJO.RankingPOJO;
+import com.rpl.model.*;
 import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
@@ -34,15 +36,6 @@ import com.rpl.POJO.input.CourseInputPOJO;
 import com.rpl.POJO.input.TopicInputPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplRoleException;
-import com.rpl.model.Activity;
-import com.rpl.model.ActivityInputFile;
-import com.rpl.model.Course;
-import com.rpl.model.Language;
-import com.rpl.model.MessageCodes;
-import com.rpl.model.Role;
-import com.rpl.model.RoleCourse;
-import com.rpl.model.TestType;
-import com.rpl.model.Topic;
 import com.rpl.security.SecurityHelper;
 import com.rpl.service.ActivityService;
 import com.rpl.service.CourseService;
@@ -319,5 +312,30 @@ public class CourseEndpoint {
 		courseService.assignAssistant(courseId, assignAssistantInputPOJO.getStudent(),
 				assignAssistantInputPOJO.getAssistant());
 		return Response.status(200).build();
+	}
+
+	@Secured
+	@GET
+	@Path("/{id}/ranking")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRanking(@PathParam("id") Long id) {
+		try {
+			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.STUDENT), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+		List<RankingPOJO> ranking = new ArrayList<RankingPOJO>();
+		Map<Person, Integer> pointsByPerson = courseService.getPointsByPerson(id);
+
+		pointsByPerson.entrySet().stream()
+				.sorted(Map.Entry.<Person, Integer>comparingByValue().reversed())
+				.forEach((entry)-> ranking.add(new RankingPOJO(entry.getKey(), entry.getValue())));
+
+		int pos = 1;
+		for (RankingPOJO r : ranking) {
+			r.setPos(pos);
+			pos ++;
+		}
+		return Response.status(200).entity(ranking).build();
 	}
 }
