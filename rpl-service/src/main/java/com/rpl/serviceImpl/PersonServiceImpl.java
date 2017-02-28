@@ -34,7 +34,11 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 	public Person getPersonByUsername(String username) {
-		return personDAO.findByUsername(username);
+		try {
+			return personDAO.findByUsername(username);
+		} catch (NoResultException e){
+			return null;
+		}
 	}
 
 	public void addCoursePerson(CoursePerson coursePerson) throws RplException {

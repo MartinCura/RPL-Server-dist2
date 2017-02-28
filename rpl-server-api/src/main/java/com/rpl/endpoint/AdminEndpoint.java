@@ -24,6 +24,7 @@ import com.rpl.annotation.Secured;
 import com.rpl.exception.RplException;
 import com.rpl.model.Course;
 import com.rpl.model.CoursePerson;
+import com.rpl.model.MessageCodes;
 import com.rpl.model.Person;
 import com.rpl.model.Role;
 import com.rpl.model.RoleCourse;
@@ -68,9 +69,8 @@ public class AdminEndpoint {
         Course course = courseService.getCourseById(id);
         Person person = personService.getPersonByUsername(coursePersonInputPOJO.getUsername());
         if (person == null){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of("User not found")).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(MessageCodes.ERROR_INEXISTENT_USER, "")).build();
         }
-
         CoursePerson coursePerson = new CoursePerson();
         coursePerson.setCourse(course);
         coursePerson.setPerson(person);
