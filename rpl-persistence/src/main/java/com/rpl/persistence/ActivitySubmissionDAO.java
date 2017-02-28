@@ -3,6 +3,7 @@ package com.rpl.persistence;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Status;
 
+import javax.persistence.Query;
 import java.util.List;
 
 public class ActivitySubmissionDAO extends ApplicationDAO{
@@ -68,5 +69,14 @@ public class ActivitySubmissionDAO extends ApplicationDAO{
 				.setParameter("assistantId", assistantId)
 				.setParameter("status", Status.SUCCESS)
 				.getResultList();
+	}
+
+	public ActivitySubmission findDefinitiveByActivityAndPerson(Long activityId, Long personId) {
+		Query query = entityManager.createQuery(
+				"SELECT s FROM ActivitySubmission s " +
+						"WHERE s.activity.id = :activityId AND s.person.id = :personId AND s.definitive = 't'")
+				.setParameter("activityId", activityId)
+				.setParameter("personId", personId);
+		return (ActivitySubmission) query.getSingleResult();
 	}
 }
