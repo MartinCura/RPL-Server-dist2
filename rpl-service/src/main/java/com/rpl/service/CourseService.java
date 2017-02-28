@@ -19,7 +19,8 @@ public interface CourseService {
     public void accept(Long courseId, Long personId);
     public void pending(Long courseId, Long personId);
     
-    public List<CoursePerson> getStudents(Long id);
+    public List<CoursePerson> getStudents(Long courseId);
+    public List<CoursePerson> getStudentsByAssistant(Long courseId, Long assistantId);
     public List<CoursePerson> getAssistants(Long id);
 	public void deleteCourseById(Long id);
 	public void updateCustomization(Long id, String customization);

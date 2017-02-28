@@ -20,7 +20,7 @@ public class ReportServiceImpl implements ReportService {
     @Inject
     private ActivitySubmissionDAO activitySubmissionDAO;
 
-    public Map<Activity, List<ActivitySubmission>> getReportByCourse(Long courseId) {
+    public Map<Activity, List<ActivitySubmission>> getReportByCourse(Long courseId, Long assistantId) {
         Map<Activity, List<ActivitySubmission>> submissionsByActivity = new HashMap<Activity, List<ActivitySubmission>>();
 
         List<Activity> activities = activityDAO.findByCourse(courseId);
@@ -28,7 +28,12 @@ public class ReportServiceImpl implements ReportService {
             submissionsByActivity.put(activity, new ArrayList<ActivitySubmission>());
         }
 
-        List<ActivitySubmission> submissions = activitySubmissionDAO.findSelectedByCourse(courseId);
+        List<ActivitySubmission> submissions;
+        if (assistantId == null) {
+            submissions = activitySubmissionDAO.findSelectedByCourse(courseId);
+        } else {
+            submissions = activitySubmissionDAO.findSelectedByCourseAndAssistant(courseId, assistantId);
+        }
         for (ActivitySubmission submission : submissions) {
             submissionsByActivity.get(submission.getActivity()).add(submission);
         }

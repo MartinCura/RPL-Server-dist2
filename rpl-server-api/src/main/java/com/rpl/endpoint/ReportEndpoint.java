@@ -14,10 +14,7 @@ import com.rpl.service.UserService;
 import com.rpl.service.util.Utils;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -38,10 +35,15 @@ public class ReportEndpoint {
 	@GET
 	@Path("/course/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getStudentsActivities(@PathParam("id") Long courseId) {
+	public Response getStudentsActivities(@PathParam("id") Long courseId, @QueryParam("assistant") Long assistantId) {
 		Course course = courseService.getCourseById(courseId);
-		List<CoursePerson> persons = courseService.getStudents(courseId);
-		Map<Activity, List<ActivitySubmission>> submissionsByActivity = reportService.getReportByCourse(courseId);
+		List<CoursePerson> persons;
+		if (assistantId != null) {
+			persons = courseService.getStudentsByAssistant(courseId, assistantId);
+		} else {
+			persons = courseService.getStudents(courseId);
+		}
+		Map<Activity, List<ActivitySubmission>> submissionsByActivity = reportService.getReportByCourse(courseId, assistantId);
 		return Response.status(200).entity(new ReportCoursePOJO(course, persons, submissionsByActivity)).build();
 	}
 

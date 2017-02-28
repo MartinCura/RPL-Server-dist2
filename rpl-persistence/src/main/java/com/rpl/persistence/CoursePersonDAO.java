@@ -69,4 +69,14 @@ public class CoursePersonDAO extends ApplicationDAO {
                 .setParameter("state", DatabaseState.ENABLED)
                 .getResultList();
     }
+
+    public List<CoursePerson> findStudentsByAssistant(Long courseId, Long assistantId) {
+        return entityManager.createQuery(
+                "SELECT cp FROM CoursePerson cp " +
+                        "WHERE cp.course.id = :courseId AND cp.assistant.id = :assistantId AND cp.state = :state")
+                .setParameter("courseId", courseId)
+                .setParameter("state", DatabaseState.ENABLED)
+                .setParameter("assistantId", assistantId)
+                .getResultList();
+    }
 }

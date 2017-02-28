@@ -9,6 +9,6 @@ import java.util.Map;
 
 public interface ReportService {
 
-    public Map<Activity, List<ActivitySubmission>> getReportByCourse(Long courseId);
+    public Map<Activity, List<ActivitySubmission>> getReportByCourse(Long courseId, Long assistantId);
 
 }

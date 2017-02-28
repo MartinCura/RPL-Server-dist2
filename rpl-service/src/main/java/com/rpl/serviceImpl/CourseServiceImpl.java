@@ -100,8 +100,12 @@ public class CourseServiceImpl implements CourseService{
     }
     
     
-    public List<CoursePerson> getStudents(Long id) {
-        return coursePersonDAO.findByCourseIdAndRole(id, RoleCourse.STUDENT);
+    public List<CoursePerson> getStudents(Long courseId) {
+        return coursePersonDAO.findByCourseIdAndRole(courseId, RoleCourse.STUDENT);
+    }
+
+    public List<CoursePerson> getStudentsByAssistant(Long courseId, Long assistantId) {
+        return coursePersonDAO.findStudentsByAssistant(courseId, assistantId);
     }
 
     public List<CoursePerson> getAssistants(Long id) {
