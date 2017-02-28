@@ -23,9 +23,9 @@ public class ReportCoursePOJO {
         }
 
         activities = new ArrayList<ReportActivityPOJO>();
-        for (Map.Entry<Activity,  List<ActivitySubmission>> entry : submissionsByActivity.entrySet()) {
-            activities.add(new ReportActivityPOJO(entry.getKey(), entry.getValue()));
-        }
+        submissionsByActivity.entrySet().stream()
+                .sorted((e1, e2) -> Long.compare(e1.getKey().getId(), e2.getKey().getId()))
+                .forEach((entry)-> activities.add(new ReportActivityPOJO(entry.getKey(), entry.getValue())));
     }
 
     public Long getCourseId() {

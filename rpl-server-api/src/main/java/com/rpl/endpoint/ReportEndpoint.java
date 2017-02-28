@@ -7,14 +7,14 @@ import com.rpl.annotation.Secured;
 import com.rpl.exception.RplRoleException;
 import com.rpl.model.*;
 import com.rpl.security.SecurityHelper;
-import com.rpl.service.ActivitySubmissionService;
-import com.rpl.service.CourseService;
-import com.rpl.service.ReportService;
-import com.rpl.service.UserService;
+import com.rpl.service.*;
 import com.rpl.service.util.Utils;
 
 import javax.inject.Inject;
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -31,19 +31,25 @@ public class ReportEndpoint {
 	private ActivitySubmissionService activitySubmissionService;
 	@Inject
 	private UserService userService;
+	@Inject
+	private PersonService personService;
 
 	@GET
 	@Path("/course/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getStudentsActivities(@PathParam("id") Long courseId, @QueryParam("assistant") Long assistantId) {
+	public Response getStudentsActivities(@PathParam("id") Long courseId) {
 		Course course = courseService.getCourseById(courseId);
+		CoursePerson person = personService.getCoursePersonByIdAndCourse(userService.getCurrentUser().getId(), courseId);
+
 		List<CoursePerson> persons;
-		if (assistantId != null) {
-			persons = courseService.getStudentsByAssistant(courseId, assistantId);
+		Map<Activity, List<ActivitySubmission>> submissionsByActivity;
+		if (person.getRole().equals(RoleCourse.ASSISTANT_PROFESSOR)) {
+			persons = courseService.getStudentsByAssistant(courseId, person.getPerson().getId());
+			submissionsByActivity = reportService.getReportByCourse(courseId, person.getPerson().getId());
 		} else {
 			persons = courseService.getStudents(courseId);
+			submissionsByActivity = reportService.getReportByCourse(courseId, null);
 		}
-		Map<Activity, List<ActivitySubmission>> submissionsByActivity = reportService.getReportByCourse(courseId, assistantId);
 		return Response.status(200).entity(new ReportCoursePOJO(course, persons, submissionsByActivity)).build();
 	}
 

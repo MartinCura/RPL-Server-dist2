@@ -13,4 +13,5 @@ public interface PersonService {
     public Person getPersonByUsername(String username);
 	public void addCoursePerson(CoursePerson coursePerson) throws RplException;
 	public void updatePersonInfo(Long id, String name, String mail);
+	public CoursePerson getCoursePersonByIdAndCourse(Long personId, Long courseId);
 }

@@ -55,4 +55,8 @@ public class PersonServiceImpl implements PersonService {
 	public void updatePersonInfo(Long id, String name, String mail) {
 		personDAO.updatePersonInfo(id, name, mail);
 	}
+
+	public CoursePerson getCoursePersonByIdAndCourse(Long personId, Long courseId) {
+		return coursePersonDAO.findByCourseAndPerson(courseId, personId);
+	}
 }
