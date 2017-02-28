@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,6 +16,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name = "activity")
@@ -45,6 +46,7 @@ public class Activity {
 	@Enumerated(EnumType.STRING)
 	private DatabaseState state;
 	@OneToMany(mappedBy = "activity")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Set<ActivityInputFile> files;
 
 	public Long getId() {

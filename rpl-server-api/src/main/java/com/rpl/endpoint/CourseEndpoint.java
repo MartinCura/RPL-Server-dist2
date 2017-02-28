@@ -208,7 +208,7 @@ public class CourseEndpoint {
 			try {
 				activityService.saveFile(activityId, new ActivityInputFile(fileName, bytes));
 			} catch (RplException e) {
-				return Response.ok(MessagePOJO.of(e.getCode(), e.getMessage())).build();
+				return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
 			}
 		}
 		return Response.status(200).build();
