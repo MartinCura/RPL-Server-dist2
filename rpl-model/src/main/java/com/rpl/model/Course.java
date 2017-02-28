@@ -41,7 +41,7 @@ public class Course {
 
 	private String customization;
 	
-	@OneToOne
+	@OneToOne(optional = true, mappedBy = "course")
 	private CourseImage courseImage;
 	
 	public String getCustomization() {

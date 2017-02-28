@@ -12,7 +12,7 @@ import java.util.Set;
 public class Person {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String name;
@@ -22,21 +22,17 @@ public class Person {
 	private Credentials credentials;
 
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(
-			name = "course_person",
-			joinColumns = @JoinColumn(name = "person_id"),
-			inverseJoinColumns = @JoinColumn(name = "course_id")
-	)
+	@JoinTable(name = "course_person", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
 	private List<Course> courses;
 
-	@OneToMany(mappedBy="person")
+	@OneToMany(mappedBy = "person")
 	private Set<ActivitySubmission> submissions;
-	
-	@OneToMany(mappedBy="person")
+
+	@OneToMany(mappedBy = "person")
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<CoursePerson> coursePersons;
-	
-	@OneToOne
+
+	@OneToOne(optional = true, mappedBy = "person")
 	private PersonImage personImage;
 
 	public Long getId() {
