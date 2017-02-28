@@ -47,7 +47,7 @@ CREATE TABLE activity_file (
 DROP TABLE IF EXISTS course_image cascade;
 CREATE TABLE course_image (
 	id serial PRIMARY KEY,
-	course_id integer REFERENCES activity,
+	course_id integer REFERENCES course,
 	fileName text NOT NULL,
 	content bytea NOT NULL
 );
@@ -55,7 +55,7 @@ CREATE TABLE course_image (
 DROP TABLE IF EXISTS person_image cascade;
 CREATE TABLE person_image (
 	id serial PRIMARY KEY,
-	person_id integer REFERENCES activity,
+	person_id integer REFERENCES person,
 	fileName text NOT NULL,
 	content bytea NOT NULL
 );
