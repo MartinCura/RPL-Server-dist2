@@ -25,7 +25,6 @@ import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import com.rpl.POJO.CourseCustomizationPOJO;
-import com.rpl.POJO.CourseImagePOJO;
 import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.RankingPOJO;

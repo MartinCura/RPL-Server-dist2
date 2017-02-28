@@ -22,7 +22,6 @@ import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import com.rpl.POJO.MessagePOJO;
-import com.rpl.POJO.PersonImagePOJO;
 import com.rpl.POJO.PersonInfoPOJO;
 import com.rpl.POJO.PersonPOJO;
 import com.rpl.annotation.Secured;
@@ -34,7 +33,6 @@ import com.rpl.service.PersonService;
 import com.rpl.service.UserService;
 import com.rpl.service.util.FileUtils;
 
-@Secured
 @Path("/persons")
 public class PersonEndpoint {
 
@@ -58,6 +56,7 @@ public class PersonEndpoint {
 
 	}
 
+	@Secured
 	@GET
 	@Path("/information")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -102,7 +101,8 @@ public class PersonEndpoint {
 		}
 		return Response.status(200).build();
 	}
-
+	
+	@Secured
 	@PUT
 	@Path("/information")
 	@Consumes(MediaType.APPLICATION_JSON)
