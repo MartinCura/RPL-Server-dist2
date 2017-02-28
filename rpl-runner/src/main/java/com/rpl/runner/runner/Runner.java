@@ -5,6 +5,7 @@ import com.rpl.runner.exception.RunnerException;
 import com.rpl.runner.exception.TimeoutException;
 import com.rpl.runner.utils.LocalFileUtils;
 
+import java.util.Base64;
 import java.util.List;
 
 public abstract class Runner {
@@ -71,7 +72,7 @@ public abstract class Runner {
             return;
         }
         for (String[] file : extraFiles) {
-            LocalFileUtils.write(Settings.EXECUTION_PATH + file[0], file[1]);
+            LocalFileUtils.write(Settings.EXECUTION_PATH + file[0], Base64.getDecoder().decode(file[1]));
         }
     }
 

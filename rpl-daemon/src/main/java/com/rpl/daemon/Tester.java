@@ -3,6 +3,7 @@ package com.rpl.daemon;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Base64;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rpl.model.*;
@@ -50,7 +51,7 @@ public class Tester {
 				"-d", data
 			};
 		for (ActivityInputFile file : activity.getFiles()) {
-			args = ArrayUtils.addElement(args, "-f", file.getFileName(), new String (file.getContent()));
+			args = ArrayUtils.addElement(args, "-f", file.getFileName(), new String (Base64.getEncoder().encode(file.getContent())));
 		}
 		return args;
 	}
