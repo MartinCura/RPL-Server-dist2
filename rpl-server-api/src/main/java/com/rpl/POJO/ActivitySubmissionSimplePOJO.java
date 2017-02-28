@@ -6,11 +6,13 @@ public class ActivitySubmissionSimplePOJO {
     private Long id;
     private String status;
     private boolean selected;
+    private boolean definitive;
 
     public ActivitySubmissionSimplePOJO(ActivitySubmission submission) {
         this.id = submission.getId();
         this.status = submission.getStatus().toString();
         this.selected = submission.isSelected();
+        this.definitive = submission.isDefinitive();
     }
 
     public Long getId() {
@@ -21,8 +23,11 @@ public class ActivitySubmissionSimplePOJO {
         return status;
     }
 
-
     public boolean isSelected() {
         return selected;
+    }
+
+    public boolean isDefinitive() {
+        return definitive;
     }
 }
