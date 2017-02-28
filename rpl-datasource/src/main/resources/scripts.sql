@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS course cascade;
+﻿DROP TABLE IF EXISTS course cascade;
 CREATE TABLE course (
 	id serial PRIMARY KEY,
 	name text NOT NULL,
@@ -48,14 +48,6 @@ DROP TABLE IF EXISTS course_image cascade;
 CREATE TABLE course_image (
 	id serial PRIMARY KEY,
 	course_id integer REFERENCES course,
-	fileName text NOT NULL,
-	content bytea NOT NULL
-);
-
-DROP TABLE IF EXISTS person_image cascade;
-CREATE TABLE person_image (
-	id serial PRIMARY KEY,
-	person_id integer REFERENCES person,
 	fileName text NOT NULL,
 	content bytea NOT NULL
 );
@@ -185,6 +177,14 @@ CREATE TABLE activity_submission (
 	execution_output text,
 	selected boolean DEFAULT FALSE,
 	definitive boolean DEFAULT FALSE
+);
+
+DROP TABLE IF EXISTS person_image cascade;
+CREATE TABLE person_image (
+	id serial PRIMARY KEY,
+	person_id integer REFERENCES person,
+	fileName text NOT NULL,
+	content bytea NOT NULL
 );
 
 insert into person (
