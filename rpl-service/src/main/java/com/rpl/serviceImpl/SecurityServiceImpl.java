@@ -96,7 +96,7 @@ public class SecurityServiceImpl implements SecurityService {
 			Person savedPerson = personDAO.save(p);
 			actionLogService.logNewUserRegistered(savedPerson);
 		} catch (PersistenceException e) {
-			throw RplException.of("Username debe ser unico", e);
+			throw RplException.of(MessageCodes.ERROR_USERNAME_ALREADY_EXISTS,"Username debe ser unico");
 		}
 		return token;
 	}
