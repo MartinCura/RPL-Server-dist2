@@ -26,7 +26,7 @@ public interface CourseService {
 	public void updateCustomization(Long id, String customization);
     public void assignAssistant(Long courseId, Long student, Long assistant);
     public List<Course> getUnregisteredCourses();
-    public Map<Long, Boolean> getCoursesInscripted();
+    public Map<Long, CoursePerson> getCoursesInscripted();
 	public void updateCourseName(Long id, String name);
 	public List<CoursePerson> getProfessors(Long id);
 	public void updateDescRulesAndCustomization(Long id, String customization, String description, String rules);

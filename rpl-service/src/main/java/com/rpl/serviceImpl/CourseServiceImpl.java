@@ -46,11 +46,12 @@ public class CourseServiceImpl implements CourseService{
         return courseDAO.findUnregisteredByPerson(person.getId());
     }
 
-    public Map<Long, Boolean> getCoursesInscripted() {
-        Map<Long, Boolean> coursesInscripted = new HashMap<Long, Boolean>();
-        List<CoursePerson> courses = coursePersonDAO.findByPerson(userService.getCurrentUser().getId());
-        for (CoursePerson cp : courses) {
-            coursesInscripted.put(cp.getCourse().getId(), cp.isAccepted());
+    public Map<Long, CoursePerson> getCoursesInscripted() {
+        List<CoursePerson> coursesPerson = coursePersonDAO.findByPerson(userService.getCurrentUser().getId());
+
+        Map<Long, CoursePerson> coursesInscripted = new HashMap<Long, CoursePerson>();
+        for (CoursePerson cp : coursesPerson) {
+            coursesInscripted.put(cp.getCourse().getId(), cp);
         }
         return coursesInscripted;
     }

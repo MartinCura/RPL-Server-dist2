@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.rpl.model.Course;
+import com.rpl.model.CoursePerson;
 import com.rpl.model.DatabaseState;
 import com.rpl.model.Topic;
 
@@ -16,6 +17,7 @@ public class CoursePOJO {
     private String rules;
     private String description;
     private String inscripted;
+    private String role;
 	private String customization;
 
     public CoursePOJO(Course course) {
@@ -26,6 +28,7 @@ public class CoursePOJO {
         this.topics = new ArrayList<TopicPOJO>();
         this.customization = course.getCustomization();
         this.inscripted = "UNREGISTERED";
+        this.role = null;
         for (Topic topic : course.getTopics()) {
             if (topic.getState().equals(DatabaseState.ENABLED)) {
                 topics.add(new TopicPOJO(topic));
@@ -66,8 +69,13 @@ public class CoursePOJO {
         return inscripted;
     }
 
-    public void setInscripted(boolean accepted) {
-        this.inscripted = accepted ? "ACCEPTED" : "PENDING";
+    public void setInscripted(CoursePerson coursePerson) {
+
+        if (coursePerson == null)
+            return;
+
+        this.inscripted = coursePerson.isAccepted() ? "ACCEPTED" : "PENDING";
+        this.role = coursePerson.getRole().toString();
     }
 
     public void markActivitiesAsSelected(Set<Long> activitiesSelected) {
@@ -110,7 +118,16 @@ public class CoursePOJO {
 		return customization;
 	}
 
-	public void setCustomization(String customization) {
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setCustomization(String customization) {
 		this.customization = customization;
 	}
 
