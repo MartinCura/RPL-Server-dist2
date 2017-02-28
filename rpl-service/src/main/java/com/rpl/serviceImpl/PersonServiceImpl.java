@@ -5,8 +5,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
-
-import org.hibernate.exception.ConstraintViolationException;
+import javax.persistence.PersistenceException;
 
 import com.rpl.exception.RplException;
 import com.rpl.model.CoursePerson;
@@ -34,7 +33,11 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 	public Person getPersonByUsername(String username) {
-		return personDAO.findByUsername(username);
+		try {
+			return personDAO.findByUsername(username);
+		} catch (NoResultException e){
+			return null;
+		}
 	}
 
 	public void addCoursePerson(CoursePerson coursePerson) throws RplException {
@@ -43,7 +46,7 @@ public class PersonServiceImpl implements PersonService {
 			coursePersonDAO.save(coursePerson);
 		} catch (NoResultException e){
 			throw RplException.of(MessageCodes.ERROR_INEXISTENT_USER, "");
-		} catch (ConstraintViolationException e){
+		} catch (PersistenceException e){
 			throw RplException.of(MessageCodes.ERROR_USER_ALREADY_ASSIGNED, "");
 		}
 		

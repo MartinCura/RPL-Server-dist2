@@ -7,10 +7,12 @@ import java.util.Set;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import com.rpl.exception.RplException;
 import com.rpl.model.Activity;
 import com.rpl.model.ActivityInputFile;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Language;
+import com.rpl.model.MessageCodes;
 import com.rpl.model.TestType;
 import com.rpl.persistence.ActivityDAO;
 import com.rpl.persistence.ActivitySubmissionDAO;
@@ -20,6 +22,9 @@ import com.rpl.service.UserService;
 
 @Stateless
 public class ActivityServiceImpl implements ActivityService {
+
+	private static final Integer FILE_KB_LIMIT = 100;
+	private static final Integer KB = 1024;
 	
 	@Inject
 	private ActivityDAO activityDAO;
@@ -76,7 +81,8 @@ public class ActivityServiceImpl implements ActivityService {
 		return activitiesId;
 	}
 
-	public void saveFile(Long activityId, ActivityInputFile file){
+	public void saveFile(Long activityId, ActivityInputFile file) throws RplException{
+		validateFile(file);
 		Activity act = activityDAO.find(activityId);
 		ActivityInputFile recoveredFile = activityDAO.findFileByActivityAndName(activityId, file.getFileName());
 		if (recoveredFile != null){
@@ -88,6 +94,16 @@ public class ActivityServiceImpl implements ActivityService {
 		activityDAO.save(file);
 	}
 	
+	private void validateFile(ActivityInputFile file) throws RplException{
+		if (toKB(file.getContent().length) > FILE_KB_LIMIT){
+			throw RplException.of(MessageCodes.ERROR_FILE_TOO_HEAVY, "");
+		}
+	}
+
+	private Integer toKB(int length) {
+		return length / KB;
+	}
+
 	public void deleteFile(Long fileId){
 		ActivityInputFile file = activityDAO.findFile(fileId);
 		activityDAO.deleteFile(file);
