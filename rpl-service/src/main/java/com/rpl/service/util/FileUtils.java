@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import com.rpl.exception.RplException;
-import com.rpl.model.ActivityInputFile;
 import com.rpl.model.MessageCodes;
 
 public class FileUtils {
