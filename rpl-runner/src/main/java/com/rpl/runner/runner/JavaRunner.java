@@ -44,6 +44,7 @@ public class JavaRunner extends Runner {
     protected void runForInput() throws RunnerException {
         String[] args = {"java", SOLUTION_OUT_FILE};
         ProcessRunner p = new ProcessRunner(args, true, "run");
+        p.setStdin(super.modeData);
         p.start();
 
         super.stdout = p.getStdout();

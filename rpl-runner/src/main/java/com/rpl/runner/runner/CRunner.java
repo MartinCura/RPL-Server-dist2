@@ -36,6 +36,7 @@ public class CRunner extends Runner {
     protected void runForInput() throws RunnerException {
         String[] args = {"./" + SOLUTION_OUT_FILE};
         ProcessRunner p1 = new ProcessRunner(args, true, "run");
+        p1.setStdin(super.modeData);
         p1.start();
 
         super.stdout = p1.getStdout();
