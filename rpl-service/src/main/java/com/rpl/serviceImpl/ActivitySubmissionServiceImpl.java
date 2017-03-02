@@ -83,11 +83,11 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 	}
 
 	@Override
-	public List<ActivitySubmission> getDefinitiveSubmissionsByActivity(Long activityId) throws RplNotAuthorizedException {
+	public List<ActivitySubmission> getDefinitiveSubmissionsByActivity(Long activityId) throws RplException {
 		try {
 			ActivitySubmission submission = activitySubmissionDAO.findDefinitiveByActivityAndPerson(activityId, userService.getCurrentUser().getId());
 		} catch (Exception e) {
-			throw new RplNotAuthorizedException();
+			throw RplException.of(MessageCodes.SERVER_ERROR, "");
 		}
 		return activitySubmissionDAO.findDefinitiveByActivity(activityId);
 	}

@@ -17,7 +17,7 @@ public interface ActivitySubmissionService {
 
     public List<ActivitySubmission> getSubmissionsByActivity(Long activityId);
 
-	public List<ActivitySubmission> getDefinitiveSubmissionsByActivity(Long activityId) throws RplNotAuthorizedException;
+	public List<ActivitySubmission> getDefinitiveSubmissionsByActivity(Long activityId) throws RplException;
 
 	public void queueSubmission(Long id) throws RplQueueException;
 

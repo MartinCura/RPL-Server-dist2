@@ -181,8 +181,8 @@ public class ActivityEndpoint {
 		List<ActivitySubmission> submissions;
 		try {
 			submissions = activitySubmissionService.getDefinitiveSubmissionsByActivity(activityId);
-		} catch (RplNotAuthorizedException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		} catch (RplException e) {
+			return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
 		}
 		List<ActivitySubmissionSolutionPOJO> submissionPOJOS = new ArrayList<ActivitySubmissionSolutionPOJO>();
 		for (ActivitySubmission submission : submissions) {
