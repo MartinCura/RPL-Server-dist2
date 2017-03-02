@@ -233,7 +233,7 @@ public class CourseEndpoint {
 	@Produces("image/*")
 	public Response getPersonImage(@PathParam("id")Long courseId) {
 		Course c = courseService.getCourseById(courseId);
-		return Response.status(200).entity(c.getCourseImage().getContent()).build();
+		return Response.status(200).entity((c.getCourseImage() != null)? c.getCourseImage().getContent() : null).build();
 
 	}
 	

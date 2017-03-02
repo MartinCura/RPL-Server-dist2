@@ -71,7 +71,8 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	private Person validateToken(String token, Person retrievedPerson) throws RplNotAuthorizedException {
-		if (retrievedPerson.getCredentials().getToken().equals(token))
+		String retrievedToken = retrievedPerson.getCredentials().getToken();
+		if (retrievedToken != null && retrievedToken.equals(token))
 			return retrievedPerson;
 		throw new RplNotAuthorizedException();
 	}
