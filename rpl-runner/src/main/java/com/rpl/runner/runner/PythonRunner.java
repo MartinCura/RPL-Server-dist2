@@ -34,7 +34,7 @@ public class PythonRunner extends Runner {
     }
 
     protected void runForInput() throws RunnerException {
-        String[] args = {"python", SOLUTION_SOURCE_FILE};
+        String[] args = {"sh", "-c", ULIMIT_COMMAND + " python " + SOLUTION_SOURCE_FILE};
         ProcessRunner p = new ProcessRunner(args, true, Runner.STAGE_RUN);
         p.setStdin(super.modeData);
         p.start();
@@ -44,7 +44,7 @@ public class PythonRunner extends Runner {
     }
 
     protected void runForTest() throws RunnerException {
-        String[] args = {"python", WRAPPER_SOURCE_FILE};
+        String[] args = {"sh", "-c", ULIMIT_COMMAND + " python " + WRAPPER_SOURCE_FILE};
         ProcessRunner p = new ProcessRunner(args, true, Runner.STAGE_RUN);
         p.start();
 

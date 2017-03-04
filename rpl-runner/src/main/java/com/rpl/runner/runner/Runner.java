@@ -12,6 +12,8 @@ public abstract class Runner {
 
     public static final String STAGE_BUILD = "build";
     public static final String STAGE_RUN = "run";
+    // -v Memory: 500 Mb; -f disk space: 10 Mb
+    public static final String ULIMIT_COMMAND = "ulimit -v 500000; ulimit -f 10000;";
 
     protected String stdout;
     protected String stderr;

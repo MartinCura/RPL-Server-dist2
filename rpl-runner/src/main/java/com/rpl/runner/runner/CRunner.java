@@ -34,7 +34,7 @@ public class CRunner extends Runner {
     }
 
     protected void runForInput() throws RunnerException {
-        String[] args = {"./" + SOLUTION_OUT_FILE};
+        String[] args = {"sh", "-c", ULIMIT_COMMAND + " ./" + SOLUTION_OUT_FILE};
         ProcessRunner p1 = new ProcessRunner(args, true, "run");
         p1.setStdin(super.modeData);
         p1.start();
@@ -44,7 +44,7 @@ public class CRunner extends Runner {
     }
 
     protected void runForTest() throws RunnerException {
-        String[] args = {"./" + TEST_OUT_FILE, "--custom-json"};
+        String[] args = {"sh", "-c", ULIMIT_COMMAND + " ./" + TEST_OUT_FILE + " --custom-json"};
         ProcessRunner p1 = new ProcessRunner(args, true, "run");
         p1.setIgnoreStderr(true);
         p1.start();
