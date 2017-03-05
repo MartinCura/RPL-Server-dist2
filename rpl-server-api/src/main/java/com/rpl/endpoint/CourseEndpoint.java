@@ -141,7 +141,7 @@ public class CourseEndpoint {
 		return Response.ok().build();
 	}
 
-	@Secured
+	@Secured(Role.ADMIN)
 	@PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
