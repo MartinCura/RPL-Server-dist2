@@ -84,7 +84,7 @@ public class CourseEndpoint {
 		Map<Long, CoursePerson> coursesInscripted = courseService.getCoursesInscripted();
 		List<CoursePOJO> coursePOJOS = new ArrayList<CoursePOJO>();
 		for (Course course : courses) {
-			CoursePOJO coursePOJO = new CoursePOJO(course);
+			CoursePOJO coursePOJO = CoursePOJO.mapWithoutTopics(course);
 			coursePOJO.setInscripted(coursesInscripted.get(course.getId()));
 			coursePOJOS.add(coursePOJO);
 		}
