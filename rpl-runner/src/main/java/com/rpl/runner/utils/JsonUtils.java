@@ -1,5 +1,6 @@
 package com.rpl.runner.utils;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rpl.model.runner.Tests;
@@ -17,6 +18,7 @@ public class JsonUtils {
 
 	public static Tests stringToObject(String json) {
 		try {
+			mapper.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
 			Tests tests = mapper.readValue(json, Tests.class);
 			return tests;
 		} catch (IOException e) {
