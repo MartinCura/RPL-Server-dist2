@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -27,6 +28,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import com.rpl.POJO.CourseCustomizationPOJO;
 import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.MessagePOJO;
+import com.rpl.POJO.RangePOJO;
 import com.rpl.POJO.RangesPOJO;
 import com.rpl.POJO.RankingPOJO;
 import com.rpl.POJO.input.ActivityInputPOJO;
@@ -388,7 +390,7 @@ public class CourseEndpoint {
 		}
 		Course c = courseService.getCourseById(courseId);
 		
-		return Response.status(200).entity(new RangesPOJO(c.getRanges())).build();
+		return Response.status(200).entity(c.getRanges().stream().map(r -> new RangePOJO(r)).collect(Collectors.toList())).build();
 	}
 	
 	@Secured
