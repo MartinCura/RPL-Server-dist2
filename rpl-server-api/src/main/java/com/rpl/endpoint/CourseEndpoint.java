@@ -146,11 +146,6 @@ public class CourseEndpoint {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateCourseById(@PathParam("id") Long id, CourseInputPOJO course) {
-		try {
-			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
 		courseService.updateCourseName(id, course.getName());
 		return Response.ok().build();
 	}
