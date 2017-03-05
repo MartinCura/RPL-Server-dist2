@@ -45,6 +45,7 @@ public class Course {
 	@OneToOne(optional = true, mappedBy = "course")
 	private CourseImage courseImage;
 	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "course", orphanRemoval = true)
 	@OrderBy(clause = "minScore ASC")
 	private List<Range> ranges;
 	
