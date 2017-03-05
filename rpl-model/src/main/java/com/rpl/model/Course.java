@@ -45,6 +45,7 @@ public class Course {
 	@OneToOne(optional = true, mappedBy = "course")
 	private CourseImage courseImage;
 	
+	@OrderBy(clause = "minScore ASC")
 	private List<Range> ranges;
 	
 	public String getCustomization() {

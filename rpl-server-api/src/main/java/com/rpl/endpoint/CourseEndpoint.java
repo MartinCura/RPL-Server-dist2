@@ -54,6 +54,7 @@ import com.rpl.service.CourseService;
 import com.rpl.service.TopicService;
 import com.rpl.service.UserService;
 import com.rpl.service.util.FileUtils;
+import com.rpl.service.util.RangeUtils;
 import com.rpl.service.util.Utils;
 
 @Path("/courses")
@@ -351,17 +352,21 @@ public class CourseEndpoint {
 	@GET
 	@Path("/{id}/ranking")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRanking(@PathParam("id") Long id) {
+	public Response getRanking(@PathParam("id") Long courseId) {
 		try {
-			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.STUDENT, RoleCourse.ASSISTANT_PROFESSOR, RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissions(courseId,
+					Utils.listOf(RoleCourse.STUDENT, RoleCourse.ASSISTANT_PROFESSOR, RoleCourse.PROFESSOR),
+					userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
 		List<RankingPOJO> ranking = new ArrayList<RankingPOJO>();
-		Map<Person, Integer> pointsByPerson = courseService.getPointsByPerson(id);
+		Course c = courseService.getCourseById(courseId);
+		Map<Person, Integer> pointsByPerson = courseService.getPointsByPerson(courseId);
 
 		pointsByPerson.entrySet().stream().sorted(Map.Entry.<Person, Integer>comparingByValue().reversed())
-				.forEach((entry) -> ranking.add(new RankingPOJO(entry.getKey(), entry.getValue())));
+				.forEach((entry) -> ranking.add(new RankingPOJO(entry.getKey(), entry.getValue(),
+						RangeUtils.calculatePersonRangeName(entry.getValue(), c.getRanges()))));
 
 		int pos = 1;
 		for (RankingPOJO r : ranking) {
@@ -397,7 +402,11 @@ public class CourseEndpoint {
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
-		//TODO
+		try{
+			courseService.updateRanges(courseId, rangesPOJO.getRanges());
+		}catch (RplException e){
+			return Response.ok(MessagePOJO.of(e.getCode(), e.getMessage())).build();
+		}
 		return Response.status(200).build();
 	}
 }

@@ -4,10 +4,10 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 
-import com.rpl.model.ActivityInputFile;
 import com.rpl.model.Course;
 import com.rpl.model.CourseImage;
 import com.rpl.model.DatabaseState;
+import com.rpl.model.Range;
 import com.rpl.model.RoleCourse;
 
 public class CourseDAO extends ApplicationDAO {
@@ -59,22 +59,28 @@ public class CourseDAO extends ApplicationDAO {
 				.createQuery(
 						"UPDATE Course set customization = :customization, description = :description, rules = :rules where id = :id")
 				.setParameter("id", id).setParameter("customization", customization)
-				.setParameter("description", description).setParameter("rules", rules)
-				.executeUpdate();
+				.setParameter("description", description).setParameter("rules", rules).executeUpdate();
 	}
-	
+
 	public CourseImage findFile(Long fileId) {
 		return entityManager.find(CourseImage.class, fileId);
 	}
 
 	public CourseImage findFileByCourseAndName(Long courseId, String fileName) {
-		try{
+		try {
 			return (CourseImage) entityManager
-					.createQuery("SELECT file FROM CourseImage file WHERE file.course.id = :courseId AND file.fileName = :fileName")
+					.createQuery(
+							"SELECT file FROM CourseImage file WHERE file.course.id = :courseId AND file.fileName = :fileName")
 					.setParameter("courseId", courseId).setParameter("fileName", fileName).getSingleResult();
-		} catch (NoResultException e){
+		} catch (NoResultException e) {
 			return null;
 		}
-		
+
+	}
+
+	public void updateCourseRanges(Long courseId, List<Range> ranges) {
+		Course c = this.find(courseId);
+		c.setRanges(ranges);
+		this.save(c);
 	}
 }

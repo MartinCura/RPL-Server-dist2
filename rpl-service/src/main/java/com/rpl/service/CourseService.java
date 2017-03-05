@@ -8,6 +8,7 @@ import com.rpl.model.Course;
 import com.rpl.model.CourseImage;
 import com.rpl.model.CoursePerson;
 import com.rpl.model.Person;
+import com.rpl.model.Range;
 
 
 public interface CourseService {
@@ -35,4 +36,5 @@ public interface CourseService {
 	public void updateDescRulesAndCustomization(Long id, String customization, String description, String rules);
     public Map<Person,Integer> getPointsByPerson(Long courseId);
 	public void saveImage(Long courseId, CourseImage courseImage) throws RplException;
+	public void updateRanges(Long courseId, List<Range> ranges) throws RplException;
 }

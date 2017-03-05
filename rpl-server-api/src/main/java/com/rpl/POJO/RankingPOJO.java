@@ -8,11 +8,12 @@ public class RankingPOJO {
     private Long personId;
     private String name;
     private String username;
-    private String nameRange;
+    private String rangeName;
     private int points;
 
-    public RankingPOJO(Person person, int points) {
+    public RankingPOJO(Person person, int points, String rangeName) {
         this.pos = pos;
+        this.rangeName = rangeName;
         this.personId = person.getId();
         this.name = person.getName();
         this.username = person.getCredentials().getUsername();
