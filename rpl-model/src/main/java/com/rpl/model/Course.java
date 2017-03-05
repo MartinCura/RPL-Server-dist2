@@ -1,5 +1,6 @@
 package com.rpl.model;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -43,6 +44,8 @@ public class Course {
 	
 	@OneToOne(optional = true, mappedBy = "course")
 	private CourseImage courseImage;
+	
+	private List<Range> ranges;
 	
 	public String getCustomization() {
 		return customization;
@@ -106,5 +109,13 @@ public class Course {
 
 	public void setCourseImage(CourseImage courseImage) {
 		this.courseImage = courseImage;
+	}
+
+	public List<Range> getRanges() {
+		return ranges;
+	}
+
+	public void setRanges(List<Range> ranges) {
+		this.ranges = ranges;
 	}
 }

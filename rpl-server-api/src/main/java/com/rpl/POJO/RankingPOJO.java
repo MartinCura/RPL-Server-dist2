@@ -8,6 +8,7 @@ public class RankingPOJO {
     private Long personId;
     private String name;
     private String username;
+    private String nameRange;
     private int points;
 
     public RankingPOJO(Person person, int points) {

@@ -27,6 +27,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import com.rpl.POJO.CourseCustomizationPOJO;
 import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.MessagePOJO;
+import com.rpl.POJO.RangesPOJO;
 import com.rpl.POJO.RankingPOJO;
 import com.rpl.POJO.input.ActivityInputPOJO;
 import com.rpl.POJO.input.AssignAssistantInputPOJO;
@@ -352,7 +353,7 @@ public class CourseEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRanking(@PathParam("id") Long id) {
 		try {
-			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.STUDENT), userService.getCurrentUser());
+			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.STUDENT, RoleCourse.ASSISTANT_PROFESSOR, RoleCourse.PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -368,5 +369,35 @@ public class CourseEndpoint {
 			pos++;
 		}
 		return Response.status(200).entity(ranking).build();
+	}
+	
+	@Secured
+	@GET
+	@Path("/{id}/range")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRangesByCourseId(@PathParam("id") Long courseId) {
+		try {
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+		Course c = courseService.getCourseById(courseId);
+		
+		return Response.status(200).entity(new RangesPOJO(c.getRanges())).build();
+	}
+	
+	@Secured
+	@PUT
+	@Path("/{id}/range")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response submitTopic(@PathParam("id") Long courseId, RangesPOJO rangesPOJO) {
+		try {
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+		//TODO
+		return Response.status(200).build();
 	}
 }

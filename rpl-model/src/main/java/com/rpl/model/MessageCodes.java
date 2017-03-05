@@ -10,6 +10,7 @@ public class MessageCodes {
 	public static final Integer ERROR_INEXISTENT_USER = 5;
 	public static final Integer ERROR_USER_ALREADY_ASSIGNED = 6;
 	public static final Integer ERROR_FILE_TOO_HEAVY = 7;
+	public static final Integer ERROR_INVALID_RANGE_NUMBER = 8;
 	
 	
 }
