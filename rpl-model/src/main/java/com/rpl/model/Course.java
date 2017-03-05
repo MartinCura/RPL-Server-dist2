@@ -16,6 +16,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.OrderBy;
 
 @Entity
@@ -45,7 +47,8 @@ public class Course {
 	@OneToOne(optional = true, mappedBy = "course")
 	private CourseImage courseImage;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "course", orphanRemoval = true)
+	@OneToMany(mappedBy = "course", orphanRemoval = true)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@OrderBy(clause = "minScore ASC")
 	private List<Range> ranges;
 	
