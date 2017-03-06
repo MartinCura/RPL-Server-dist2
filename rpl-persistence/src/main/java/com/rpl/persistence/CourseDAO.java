@@ -78,9 +78,4 @@ public class CourseDAO extends ApplicationDAO {
 
 	}
 
-	public void updateCourseRanges(Long courseId, List<Range> ranges) {
-		Course c = this.find(courseId);
-		c.setRanges(ranges);
-		this.save(c);
-	}
 }

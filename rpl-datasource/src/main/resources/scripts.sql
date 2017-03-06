@@ -10,15 +10,15 @@ CREATE TABLE course (
 
 insert into course (name, customization) values ('First course', '{cust: a customization}');
 
-﻿DROP TABLE IF EXISTS range cascade;
-CREATE TABLE range (
+﻿DROP TABLE IF EXISTS course_range cascade;
+CREATE TABLE course_range (
 	id serial PRIMARY KEY,
 	range_name text NOT NULL,
 	min_score integer NOT NULL, 
 	course_id integer REFERENCES course
 );
 
-insert into range (range_name, min_score, course_id) values ('C guru', 40, 1);
+insert into course_range (range_name, min_score, course_id) values ('C guru', 40, 1);
 
 DROP TABLE IF EXISTS topic cascade;
 CREATE TABLE topic (

@@ -46,6 +46,7 @@ import com.rpl.model.CoursePerson;
 import com.rpl.model.Language;
 import com.rpl.model.MessageCodes;
 import com.rpl.model.Person;
+import com.rpl.model.Range;
 import com.rpl.model.Role;
 import com.rpl.model.RoleCourse;
 import com.rpl.model.TestType;
@@ -398,17 +399,17 @@ public class CourseEndpoint {
 	@Path("/{id}/range")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response submitTopic(@PathParam("id") Long courseId, RangesPOJO rangesPOJO) {
+	public Response submitTopic(@PathParam("id") Long courseId, List<Range> ranges) {
 		try {
 			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
 		try{
-			courseService.updateRanges(courseId, rangesPOJO.getRanges());
+			courseService.updateRanges(courseId, ranges);
 		}catch (RplException e){
 			return Response.ok(MessagePOJO.of(e.getCode(), e.getMessage())).build();
 		}
-		return Response.status(200).build();
+		return Response.ok().build();
 	}
 }

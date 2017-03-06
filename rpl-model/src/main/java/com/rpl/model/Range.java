@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "range")
+@Table(name = "course_range")
 public class Range {
 
 	@Id
@@ -58,5 +58,5 @@ public class Range {
 	public void setCourse(Course course) {
 		this.course = course;
 	}
-
+	
 }

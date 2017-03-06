@@ -172,7 +172,13 @@ public class CourseServiceImpl implements CourseService {
 		Boolean repeatedMinScore = everyMinScoreOnRanges.stream()
 				.anyMatch(min -> Collections.frequency(everyMinScoreOnRanges, min) > 1);
 		if (repeatedMinScore) throw RplException.of(MessageCodes.ERROR_INVALID_RANGE_NUMBER, "");
-		courseDAO.updateCourseRanges(courseId, ranges);
+		Course c = courseDAO.find(courseId);
+		c.getRanges().clear();
+		for (Range range : ranges){
+			range.setCourse(c);
+			c.getRanges().add(range);
+		}
+		courseDAO.save(c);
 	}
 
 }

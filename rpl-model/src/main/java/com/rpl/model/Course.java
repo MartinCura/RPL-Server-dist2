@@ -3,6 +3,7 @@ package com.rpl.model;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -47,7 +48,7 @@ public class Course {
 	@OneToOne(optional = true, mappedBy = "course")
 	private CourseImage courseImage;
 	
-	@OneToMany(mappedBy = "course", orphanRemoval = true)
+	@OneToMany(mappedBy = "course", orphanRemoval = true, cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OrderBy(clause = "minScore ASC")
 	private List<Range> ranges;
