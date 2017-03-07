@@ -113,7 +113,7 @@ public class AdminEndpoint {
     }
 
     @GET
-    @Path("/persons({personId}/information")
+    @Path("/persons/{personId}/information")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPersonInfo(@PathParam("personId") Long personId) {
@@ -124,7 +124,7 @@ public class AdminEndpoint {
     }
 
     @PUT
-    @Path("/persons({personId}/information")
+    @Path("/persons/{personId}/information")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updatePersonInfoById(@PathParam("personId") Long personId, PersonInfoPOJO pojo) {
