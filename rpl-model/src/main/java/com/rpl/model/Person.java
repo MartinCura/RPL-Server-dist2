@@ -1,5 +1,7 @@
 package com.rpl.model;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -9,6 +11,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "person")
+@DynamicInsert
+@DynamicUpdate
 public class Person {
 
 	@Id
@@ -34,6 +38,9 @@ public class Person {
 
 	@OneToOne(optional = true, mappedBy = "person")
 	private PersonImage personImage;
+
+	@Enumerated(EnumType.STRING)
+	private DatabaseState state;
 
 	public Long getId() {
 		return id;
@@ -99,4 +106,11 @@ public class Person {
 		this.personImage = personImage;
 	}
 
+	public DatabaseState getState() {
+		return state;
+	}
+
+	public void setState(DatabaseState state) {
+		this.state = state;
+	}
 }

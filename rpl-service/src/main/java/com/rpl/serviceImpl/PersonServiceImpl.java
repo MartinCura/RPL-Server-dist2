@@ -58,6 +58,10 @@ public class PersonServiceImpl implements PersonService {
 		personDAO.updatePersonInfo(id, name, mail);
 	}
 
+	public void updatePersonInfo(Long id, String name, String mail, String role) {
+		personDAO.updatePersonInfo(id, name, mail, role);
+	}
+
 	public CoursePerson getCoursePersonByIdAndCourse(Long personId, Long courseId) {
 		return coursePersonDAO.findByCourseAndPerson(courseId, personId);
 	}
@@ -75,8 +79,8 @@ public class PersonServiceImpl implements PersonService {
 		personDAO.save(personImage);
 	}
 
-	public void updateRole(Long personId, Role role) {
-		personDAO.updateRole(personId, role);
+	public void deletePersonById(Long id) {
+		personDAO.delete(id);
 	}
 
 }

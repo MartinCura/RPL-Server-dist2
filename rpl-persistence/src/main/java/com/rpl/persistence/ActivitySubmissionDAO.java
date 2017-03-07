@@ -1,6 +1,7 @@
 package com.rpl.persistence;
 
 import com.rpl.model.ActivitySubmission;
+import com.rpl.model.DatabaseState;
 import com.rpl.model.Status;
 
 import javax.persistence.Query;
@@ -44,8 +45,9 @@ public class ActivitySubmissionDAO extends ApplicationDAO{
     public List<ActivitySubmission> findDefinitiveByActivity(Long activityId) {
 		return entityManager.createQuery(
 				"SELECT s FROM ActivitySubmission s " +
-						"WHERE s.activity.id = :activityId AND s.definitive = 't'")
+						"WHERE s.activity.id = :activityId AND s.definitive = 't' AND s.person.state = :state")
 				.setParameter("activityId", activityId)
+				.setParameter("state", DatabaseState.ENABLED)
 				.getResultList();
     }
 
@@ -53,9 +55,10 @@ public class ActivitySubmissionDAO extends ApplicationDAO{
 		return entityManager.createQuery(
 				"SELECT s FROM ActivitySubmission s " +
 						"WHERE s.activity.topic.course.id = :courseId AND " +
-						"s.status = :status AND s.selected = 't'")
+						"s.status = :status AND s.selected = 't' AND s.person.state = :state")
 				.setParameter("courseId", courseId)
 				.setParameter("status", Status.SUCCESS)
+				.setParameter("state", DatabaseState.ENABLED)
 				.getResultList();
     }
 
@@ -64,10 +67,11 @@ public class ActivitySubmissionDAO extends ApplicationDAO{
 				"SELECT s FROM ActivitySubmission s, CoursePerson cp " +
 						"WHERE s.person.id = cp.person.id AND s.activity.topic.course.id = cp.course.id AND " +
 						"cp.assistant.id = :assistantId AND s.activity.topic.course.id = :courseId AND " +
-						"s.status = :status AND s.selected = 't'")
+						"s.status = :status AND s.selected = 't' AND s.person.state = :state")
 				.setParameter("courseId", courseId)
 				.setParameter("assistantId", assistantId)
 				.setParameter("status", Status.SUCCESS)
+				.setParameter("state", DatabaseState.ENABLED)
 				.getResultList();
 	}
 

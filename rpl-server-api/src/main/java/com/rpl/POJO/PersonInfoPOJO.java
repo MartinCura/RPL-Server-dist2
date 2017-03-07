@@ -7,6 +7,7 @@ public class PersonInfoPOJO {
 	private Long id;
 	private String name;
 	private String mail;
+	private String role;
 	
 	public PersonInfoPOJO() {
 	}
@@ -15,6 +16,7 @@ public class PersonInfoPOJO {
 		this.id = p.getId();
 		this.name = p.getName();
 		this.mail = p.getMail();
+		this.role = p.getCredentials().getRole().toString();
 	}
 
 	public Long getId() {
@@ -41,4 +43,11 @@ public class PersonInfoPOJO {
 		this.mail = mail;
 	}
 
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 }

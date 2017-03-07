@@ -1,21 +1,5 @@
 package com.rpl.endpoint;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import com.rpl.POJO.input.RoleInputPOJO;
-import org.apache.commons.io.IOUtils;
-import org.jboss.resteasy.plugins.providers.multipart.InputPart;
-import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
-
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.PersonInfoPOJO;
 import com.rpl.POJO.PersonPOJO;
@@ -27,6 +11,19 @@ import com.rpl.model.Role;
 import com.rpl.service.PersonService;
 import com.rpl.service.UserService;
 import com.rpl.service.util.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+
+import javax.inject.Inject;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Path("/persons")
 public class PersonEndpoint {
@@ -105,15 +102,6 @@ public class PersonEndpoint {
 	public Response updatePersonInfoById(PersonInfoPOJO pojo) {
 		personService.updatePersonInfo(userService.getCurrentUser().getId(), pojo.getName(), pojo.getMail());
 		return Response.ok().build();
-	}
-
-	@Secured(Role.ADMIN)
-	@POST
-	@Path("/{id}/role")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateRole(@PathParam("id") Long id, RoleInputPOJO role) {
-		personService.updateRole(id, Role.valueOf(role.getRole()));
-		return Response.status(200).build();
 	}
 
 }

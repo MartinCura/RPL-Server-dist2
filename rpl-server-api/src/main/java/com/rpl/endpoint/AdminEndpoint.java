@@ -5,19 +5,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.rpl.POJO.AssistantPOJO;
-import com.rpl.POJO.CoursePOJO;
-import com.rpl.POJO.MessagePOJO;
-import com.rpl.POJO.ProfessorPOJO;
+import com.rpl.POJO.*;
 import com.rpl.POJO.input.CourseInputPOJO;
 import com.rpl.POJO.input.CoursePersonInputPOJO;
 import com.rpl.annotation.Secured;
@@ -117,4 +109,31 @@ public class AdminEndpoint {
         return Response.status(200).build();
     }
 
+    @GET
+    @Path("/persons({personId}/information")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPersonInfo(@PathParam("personId") Long personId) {
+
+        Person p = personService.getPersonById(personId);
+        return Response.status(200).entity(new PersonInfoPOJO(p)).build();
+
+    }
+
+    @PUT
+    @Path("/persons({personId}/information")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updatePersonInfoById(@PathParam("personId") Long personId, PersonInfoPOJO pojo) {
+        personService.updatePersonInfo(personId, pojo.getName(), pojo.getMail(), pojo.getRole());
+        return Response.ok().build();
+    }
+
+    @DELETE
+    @Path("/persons/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deletePersonById(@PathParam("id") Long id) {
+        personService.deletePersonById(id);
+        return Response.ok().build();
+    }
 }

@@ -164,7 +164,8 @@ CREATE TABLE person (
 	username text UNIQUE NOT NULL,
 	password text NOT NULL,
 	token text,
-	role text NOT NULL
+	role text NOT NULL,
+	state text NOT NULL DEFAULT 'ENABLED'
 );
 
 DROP TABLE IF EXISTS logged_action cascade;

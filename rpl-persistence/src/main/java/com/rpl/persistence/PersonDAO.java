@@ -9,10 +9,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
-import com.rpl.model.CourseImage;
-import com.rpl.model.Person;
-import com.rpl.model.PersonImage;
-import com.rpl.model.Role;
+import com.rpl.model.*;
 
 public class PersonDAO extends ApplicationDAO {
 
@@ -41,13 +38,19 @@ public class PersonDAO extends ApplicationDAO {
 	public List<Person> findByCourse(Long id) {
 		return entityManager
 				.createQuery(
-						"SELECT p FROM Person p, CoursePerson cp WHERE p.id = cp.person.id AND cp.course.id = :courseId")
-				.setParameter("courseId", id).getResultList();
+						"SELECT p FROM Person p, CoursePerson cp WHERE p.id = cp.person.id AND " +
+								"cp.course.id = :courseId AND p.state = :state")
+				.setParameter("courseId", id).setParameter("state", DatabaseState.ENABLED).getResultList();
 	}
 
 	public void updatePersonInfo(Long id, String name, String mail) {
 		entityManager.createQuery("UPDATE Person set mail = :mail, name = :name WHERE id = :id ").setParameter("id", id)
 				.setParameter("name", name).setParameter("mail", mail).executeUpdate();
+	}
+
+	public void updatePersonInfo(Long id, String name, String mail, String role) {
+		entityManager.createQuery("UPDATE Person set mail = :mail, name = :name, role = :role WHERE id = :id ").setParameter("id", id)
+				.setParameter("name", name).setParameter("mail", mail).setParameter("role", role).executeUpdate();
 	}
 
 	public void updatePassword(Long id, String password) {
@@ -58,12 +61,13 @@ public class PersonDAO extends ApplicationDAO {
 
 	@SuppressWarnings("unchecked")
     public List<Person> findAll() {
-		return entityManager.createQuery("SELECT p FROM Person p").getResultList();
+		return entityManager.createQuery("SELECT p FROM Person p WHERE p.state = :state")
+				.setParameter("state", DatabaseState.ENABLED).getResultList();
     }
 
 	public Person findByUsername(String username) {
-		Query query =  entityManager.createQuery("SELECT p FROM Person p WHERE p.credentials.username = :username")
-				.setParameter("username", username);
+		Query query =  entityManager.createQuery("SELECT p FROM Person p WHERE p.credentials.username = :username AND p.state = :state")
+				.setParameter("username", username).setParameter("state", DatabaseState.ENABLED);
 		return (Person) query.getSingleResult();
 	}
 
@@ -82,4 +86,10 @@ public class PersonDAO extends ApplicationDAO {
 		entityManager.createQuery("UPDATE Person p set p.credentials.role = :role WHERE id = :id ").setParameter("id", personId)
 				.setParameter("role", role).executeUpdate();
     }
+
+	public void delete(Long id) {
+		entityManager.createQuery("UPDATE Person set state = :state where id = :id").setParameter("id", id).setParameter("state", DatabaseState.DELETED).executeUpdate();
+	}
+
+
 }

@@ -17,9 +17,10 @@ public class CoursePersonDAO extends ApplicationDAO {
     public CoursePerson findByCourseAndPerson(Long courseId, Long personId) {
         Query query = entityManager.createQuery(
                 "SELECT cp FROM CoursePerson cp " +
-                        "WHERE cp.course.id = :courseId AND cp.person.id = :personId AND cp.state = :state")
+                        "WHERE cp.course.id = :courseId AND cp.person.id = :personId AND cp.state = :stateCP AND cp.person.state = :stateP")
                 .setParameter("courseId", courseId)
-                .setParameter("state", DatabaseState.ENABLED)
+                .setParameter("stateCP", DatabaseState.ENABLED)
+                .setParameter("stateP", DatabaseState.ENABLED)
                 .setParameter("personId", personId);
         return (CoursePerson) query.getSingleResult();
     }
@@ -27,9 +28,10 @@ public class CoursePersonDAO extends ApplicationDAO {
     public List<CoursePerson> findByCourseIdAndRole(Long courseId, RoleCourse role) {
         return entityManager.createQuery(
                 "SELECT cp FROM CoursePerson cp WHERE " +
-                        "cp.course.id = :courseId AND cp.role = :role AND cp.state = :state")
+                        "cp.course.id = :courseId AND cp.role = :role AND cp.state = :stateCP AND cp.person.state = :stateP")
                 .setParameter("courseId", courseId)
-                .setParameter("state", DatabaseState.ENABLED)
+                .setParameter("stateCP", DatabaseState.ENABLED)
+                .setParameter("stateP", DatabaseState.ENABLED)
                 .setParameter("role", role)
                 .getResultList();
     }
@@ -64,18 +66,21 @@ public class CoursePersonDAO extends ApplicationDAO {
     public List<CoursePerson> findByPerson(Long personId) {
         return entityManager.createQuery(
                 "SELECT cp FROM CoursePerson cp WHERE " +
-                        "cp.person.id = :personId AND cp.state = :state")
+                        "cp.person.id = :personId AND cp.state = :stateCP AND cp.person.state = :stateP")
                 .setParameter("personId", personId)
-                .setParameter("state", DatabaseState.ENABLED)
+                .setParameter("stateCP", DatabaseState.ENABLED)
+                .setParameter("stateP", DatabaseState.ENABLED)
                 .getResultList();
     }
 
     public List<CoursePerson> findStudentsByAssistant(Long courseId, Long assistantId) {
         return entityManager.createQuery(
                 "SELECT cp FROM CoursePerson cp " +
-                        "WHERE cp.course.id = :courseId AND cp.assistant.id = :assistantId AND cp.state = :state")
+                        "WHERE cp.course.id = :courseId AND cp.assistant.id = :assistantId " +
+                        "AND cp.state = :stateCP AND cp.person.state = :stateP")
                 .setParameter("courseId", courseId)
-                .setParameter("state", DatabaseState.ENABLED)
+                .setParameter("stateCP", DatabaseState.ENABLED)
+                .setParameter("stateP", DatabaseState.ENABLED)
                 .setParameter("assistantId", assistantId)
                 .getResultList();
     }
