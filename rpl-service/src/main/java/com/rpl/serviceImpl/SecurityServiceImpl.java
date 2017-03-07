@@ -10,6 +10,7 @@ import javax.persistence.PersistenceException;
 
 import com.rpl.exception.RplException;
 import com.rpl.exception.RplNotAuthorizedException;
+import com.rpl.model.DatabaseState;
 import com.rpl.model.MessageCodes;
 import com.rpl.model.Person;
 import com.rpl.persistence.PersonDAO;
@@ -61,6 +62,8 @@ public class SecurityServiceImpl implements SecurityService {
 
 	public Person authenticate(String username, String password) throws RplNotAuthorizedException {
 		Person retrievedPerson = personDAO.find(username);
+		if (retrievedPerson.getState().equals(DatabaseState.DELETED))
+			throw new RplNotAuthorizedException();
 		return validatePassword(password, retrievedPerson);
 	}
 

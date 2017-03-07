@@ -22,6 +22,7 @@ import com.rpl.model.Role;
 import com.rpl.model.RoleCourse;
 import com.rpl.service.CourseService;
 import com.rpl.service.PersonService;
+import com.rpl.service.SecurityService;
 
 @Secured(Role.ADMIN)
 @Path("/admin")
@@ -31,6 +32,8 @@ public class AdminEndpoint {
     private CourseService courseService;
     @Inject
     private PersonService personService;
+    @Inject
+    private SecurityService securityService;
 
     @GET
     @Path("/courses")
@@ -129,11 +132,24 @@ public class AdminEndpoint {
         return Response.ok().build();
     }
 
-    @DELETE
-    @Path("/persons/{id}")
+    @PUT
+    @Path("/persons/{personId}/password")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deletePersonById(@PathParam("id") Long id) {
-        personService.deletePersonById(id);
+    public Response updatePassword(@PathParam("personId") Long personId, PersonPasswordPOJO pojo) {
+
+        securityService.updatePassword(personId, pojo.getPassword());
+
+        return Response.ok().build();
+
+    }
+
+    @DELETE
+    @Path("/persons/{personId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deletePersonById(@PathParam("personId") Long personId) {
+        personService.deletePersonById(personId);
         return Response.ok().build();
     }
+
 }
