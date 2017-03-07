@@ -8,11 +8,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import com.rpl.exception.RplException;
-import com.rpl.model.CoursePerson;
-import com.rpl.model.DatabaseState;
-import com.rpl.model.MessageCodes;
-import com.rpl.model.Person;
-import com.rpl.model.PersonImage;
+import com.rpl.model.*;
 import com.rpl.persistence.CoursePersonDAO;
 import com.rpl.persistence.PersonDAO;
 import com.rpl.service.PersonService;
@@ -77,6 +73,10 @@ public class PersonServiceImpl implements PersonService {
 		}
 		personImage.setPerson(currentUser);
 		personDAO.save(personImage);
+	}
+
+	public void updateRole(Long personId, Role role) {
+		personDAO.updateRole(personId, role);
 	}
 
 }

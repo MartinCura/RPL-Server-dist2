@@ -298,43 +298,6 @@ public class CourseEndpoint {
 		return Response.status(200).build();
 	}
 
-	@Secured(Role.ADMIN)
-	@POST
-	@Path("/{courseId}/person/{personId}/leave")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response leaveCourse(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
-		courseService.leaveCourse(courseId, personId);
-		return Response.status(200).build();
-	}
-
-	@Secured
-	@POST
-	@Path("/{courseId}/person/{personId}/accept")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response acceptStudent(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
-		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		courseService.accept(courseId, personId);
-		return Response.status(200).build();
-	}
-
-	@Secured
-	@POST
-	@Path("/{courseId}/person/{personId}/pending")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response pendingStudent(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
-		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		courseService.pending(courseId, personId);
-		return Response.status(200).build();
-	}
-
 	@Secured
 	@POST
 	@Path("/{courseId}/assistant")

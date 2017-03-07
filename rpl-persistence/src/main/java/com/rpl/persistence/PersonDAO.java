@@ -12,6 +12,7 @@ import javax.persistence.criteria.Root;
 import com.rpl.model.CourseImage;
 import com.rpl.model.Person;
 import com.rpl.model.PersonImage;
+import com.rpl.model.Role;
 
 public class PersonDAO extends ApplicationDAO {
 
@@ -77,4 +78,8 @@ public class PersonDAO extends ApplicationDAO {
 		
 	}
 
+    public void updateRole(Long personId, Role role) {
+		entityManager.createQuery("UPDATE Person p set p.credentials.role = :role WHERE id = :id ").setParameter("id", personId)
+				.setParameter("role", role).executeUpdate();
+    }
 }

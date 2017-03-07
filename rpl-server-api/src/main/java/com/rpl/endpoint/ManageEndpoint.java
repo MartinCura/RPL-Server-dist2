@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -109,6 +106,32 @@ public class ManageEndpoint {
 			assistantPOJOS.add(new AssistantPOJO(assistant));
 		}
 		return Response.status(200).entity(assistantPOJOS).build();
+	}
+
+	@POST
+	@Path("/{courseId}/person/{personId}/accept")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response acceptStudent(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
+		try {
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+		courseService.accept(courseId, personId);
+		return Response.status(200).build();
+	}
+
+	@POST
+	@Path("/{courseId}/person/{personId}/leave")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response leaveCourse(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
+		try {
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+		courseService.leaveCourse(courseId, personId);
+		return Response.status(200).build();
 	}
 	
 }

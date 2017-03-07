@@ -109,4 +109,12 @@ public class AdminEndpoint {
 		return Response.status(200).entity(professorPOJOS).build();
 	}
 
+    @POST
+    @Path("/{courseId}/person/{personId}/leave")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response leaveCourse(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
+        courseService.leaveCourse(courseId, personId);
+        return Response.status(200).build();
+    }
+
 }
