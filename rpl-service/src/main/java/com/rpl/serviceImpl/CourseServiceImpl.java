@@ -156,8 +156,9 @@ public class CourseServiceImpl implements CourseService {
 	public void saveImage(Long courseId, CourseImage courseImage) throws RplException {
 		FileUtils.validateFile(courseImage.getContent());
 		Course course = courseDAO.find(courseId);
-		CourseImage recoveredFile = courseDAO.findFileByCourseAndName(courseId, courseImage.getFileName());
+		CourseImage recoveredFile = courseDAO.findFileByCourse(courseId);
 		if (recoveredFile != null) {
+			recoveredFile.setFileName(courseImage.getFileName());
 			recoveredFile.setContent(courseImage.getContent());
 			courseDAO.save(recoveredFile);
 			return;

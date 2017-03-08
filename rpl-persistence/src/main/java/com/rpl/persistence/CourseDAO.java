@@ -66,12 +66,12 @@ public class CourseDAO extends ApplicationDAO {
 		return entityManager.find(CourseImage.class, fileId);
 	}
 
-	public CourseImage findFileByCourseAndName(Long courseId, String fileName) {
+	public CourseImage findFileByCourse(Long courseId) {
 		try {
 			return (CourseImage) entityManager
 					.createQuery(
-							"SELECT file FROM CourseImage file WHERE file.course.id = :courseId AND file.fileName = :fileName")
-					.setParameter("courseId", courseId).setParameter("fileName", fileName).getSingleResult();
+							"SELECT file FROM CourseImage file WHERE file.course.id = :courseId")
+					.setParameter("courseId", courseId).getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}
