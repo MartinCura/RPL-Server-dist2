@@ -8,7 +8,7 @@ public class RangeUtils {
 
 	public static String calculatePersonRangeName(Integer points, List<Range> sortedRanges) {
 		
-		if (sortedRanges.get(0).getMinScore() > points)
+		if (sortedRanges.isEmpty() || sortedRanges.get(0).getMinScore() > points)
 			return null;
 		Range previousRange = sortedRanges.get(0);
 		for (Range r : sortedRanges) {

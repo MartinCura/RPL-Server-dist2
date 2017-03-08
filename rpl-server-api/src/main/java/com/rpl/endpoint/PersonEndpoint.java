@@ -59,14 +59,14 @@ public class PersonEndpoint {
 		return Response.status(200).entity(new PersonInfoPOJO(p)).build();
 
 	}
-	
+
 	@GET
 	@Path("/{id}/image")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces("image/*")
-	public Response getPersonImage(@PathParam("id")Long personId) {
+	public Response getPersonImage(@PathParam("id") Long personId) {
 		Person p = personService.getPersonById(personId);
-		return Response.status(200).entity(p.getPersonImage().getContent()).build();
+		return Response.status(200).entity(p.getPersonImage() != null ? p.getPersonImage().getContent() : null).build();
 
 	}
 
@@ -93,7 +93,7 @@ public class PersonEndpoint {
 		}
 		return Response.status(200).build();
 	}
-	
+
 	@Secured
 	@PUT
 	@Path("/information")
