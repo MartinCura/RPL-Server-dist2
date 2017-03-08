@@ -71,7 +71,7 @@ public class PersonDAO extends ApplicationDAO {
 		return (Person) query.getSingleResult();
 	}
 
-	public PersonImage findFileByPersonAndName(Long id, String fileName) {
+	public PersonImage findFileByPerson(Long id) {
 		try{
 			return (PersonImage) entityManager
 					.createQuery("SELECT file FROM PersonImage file WHERE file.person.id = :id")

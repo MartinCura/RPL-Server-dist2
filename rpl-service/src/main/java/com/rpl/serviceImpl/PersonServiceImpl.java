@@ -69,8 +69,9 @@ public class PersonServiceImpl implements PersonService {
 	public void saveImage(Long id, PersonImage personImage) throws RplException {
 		FileUtils.validateFile(personImage.getContent());
 		Person currentUser = userService.getCurrentUser();
-		PersonImage recoveredFile = personDAO.findFileByPersonAndName(id, personImage.getFileName());
+		PersonImage recoveredFile = personDAO.findFileByPerson(id);
 		if (recoveredFile != null) {
+			recoveredFile.setFileName(personImage.getFileName());
 			recoveredFile.setContent(personImage.getContent());
 			personDAO.save(recoveredFile);
 			return;
