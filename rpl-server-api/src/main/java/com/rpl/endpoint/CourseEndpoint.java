@@ -371,7 +371,8 @@ public class CourseEndpoint {
 		try{
 			courseService.updateRanges(courseId, ranges);
 		}catch (RplException e){
-			return Response.ok(MessagePOJO.of(e.getCode(), e.getMessage())).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(e.getCode(), e.getMessage()))
+					.build();
 		}
 		return Response.ok().build();
 	}
