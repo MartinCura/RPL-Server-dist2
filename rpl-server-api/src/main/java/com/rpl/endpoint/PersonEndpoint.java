@@ -100,7 +100,7 @@ public class PersonEndpoint {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updatePersonInfoById(PersonInfoPOJO pojo) {
-		personService.updatePersonInfo(userService.getCurrentUser().getId(), pojo.getName(), pojo.getMail());
+		personService.updatePersonInfo(userService.getCurrentUser().getId(), pojo.getName(), pojo.getMail(), pojo.getStudentId());
 		return Response.ok().build();
 	}
 

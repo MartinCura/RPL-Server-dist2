@@ -162,6 +162,7 @@ CREATE TABLE person (
 	name text NOT NULL,
 	mail text NOT NULL,
 	username text UNIQUE NOT NULL,
+	student_id integer,
 	password text NOT NULL,
 	token text,
 	role text NOT NULL,

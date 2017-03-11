@@ -54,8 +54,8 @@ public class PersonServiceImpl implements PersonService {
 
 	}
 
-	public void updatePersonInfo(Long id, String name, String mail) {
-		personDAO.updatePersonInfo(id, name, mail);
+	public void updatePersonInfo(Long id, String name, String mail, Long studentId) {
+		personDAO.updatePersonInfo(id, name, mail, studentId);
 	}
 
 	public void updatePersonInfo(Long id, String name, String mail, String role) {

@@ -21,6 +21,8 @@ public class Person {
 
 	private String name;
 	private String mail;
+	@Column(name="student_id")
+	private Long studentId;
 
 	@Embedded
 	private Credentials credentials;
@@ -112,5 +114,13 @@ public class Person {
 
 	public void setState(DatabaseState state) {
 		this.state = state;
+	}
+
+	public Long getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(Long studentId) {
+		this.studentId = studentId;
 	}
 }
