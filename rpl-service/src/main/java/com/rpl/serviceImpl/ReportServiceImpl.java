@@ -2,8 +2,10 @@ package com.rpl.serviceImpl;
 
 import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
+import com.rpl.model.Topic;
 import com.rpl.persistence.ActivityDAO;
 import com.rpl.persistence.ActivitySubmissionDAO;
+import com.rpl.persistence.TopicDAO;
 import com.rpl.service.ReportService;
 
 import javax.ejb.Stateless;
@@ -18,9 +20,11 @@ public class ReportServiceImpl implements ReportService {
     @Inject
     private ActivityDAO activityDAO;
     @Inject
+    private TopicDAO topicDAO;
+    @Inject
     private ActivitySubmissionDAO activitySubmissionDAO;
 
-    public Map<Activity, List<ActivitySubmission>> getReportByCourse(Long courseId, Long assistantId) {
+    public Map<Activity, List<ActivitySubmission>> getActivityReportByCourse(Long courseId, Long assistantId) {
         Map<Activity, List<ActivitySubmission>> submissionsByActivity = new HashMap<Activity, List<ActivitySubmission>>();
 
         List<Activity> activities = activityDAO.findByCourse(courseId);
@@ -38,5 +42,25 @@ public class ReportServiceImpl implements ReportService {
             submissionsByActivity.get(submission.getActivity()).add(submission);
         }
         return submissionsByActivity;
+    }
+
+    public Map<Topic, List<ActivitySubmission>> getTopicReportByCourse(Long courseId, Long assistantId) {
+        Map<Topic, List<ActivitySubmission>> submissionsByTopic = new HashMap<Topic, List<ActivitySubmission>>();
+
+        List<Topic> topics = topicDAO.findByCourseId(courseId);
+        for (Topic topic : topics) {
+            submissionsByTopic.put(topic, new ArrayList<ActivitySubmission>());
+        }
+
+        List<ActivitySubmission> submissions;
+        if (assistantId == null) {
+            submissions = activitySubmissionDAO.findSelectedByCourse(courseId);
+        } else {
+            submissions = activitySubmissionDAO.findSelectedByCourseAndAssistant(courseId, assistantId);
+        }
+        for (ActivitySubmission submission : submissions) {
+            submissionsByTopic.get(submission.getActivity().getTopic()).add(submission);
+        }
+        return submissionsByTopic;
     }
 }

@@ -8,13 +8,13 @@ import com.rpl.model.CoursePerson;
 
 import java.util.*;
 
-public class ReportCoursePOJO {
+public class ReportCourseActivitiesPOJO {
     private Long courseId;
     private String courseName;
     private List<String> students;
     private List<ReportActivityPOJO> activities;
 
-    public ReportCoursePOJO(Course course, List<CoursePerson> persons, Map<Activity, List<ActivitySubmission>> submissionsByActivity) {
+    public ReportCourseActivitiesPOJO(Course course, List<CoursePerson> persons, Map<Activity, List<ActivitySubmission>> submissionsByActivity) {
         this.courseId = course.getId();
         this.courseName = course.getName();
         this.students = new ArrayList<String>();
