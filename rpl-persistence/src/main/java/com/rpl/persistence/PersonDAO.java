@@ -48,9 +48,9 @@ public class PersonDAO extends ApplicationDAO {
 				.setParameter("name", name).setParameter("mail", mail).setParameter("studentId", studentId).executeUpdate();
 	}
 
-	public void updatePersonInfo(Long id, String name, String mail, String role) {
-		entityManager.createQuery("UPDATE Person set mail = :mail, name = :name, role = :role WHERE id = :id ").setParameter("id", id)
-				.setParameter("name", name).setParameter("mail", mail).setParameter("role", role).executeUpdate();
+	public void updatePersonInfo(Long id, String name, String mail, Long studentId, String role) {
+		entityManager.createQuery("UPDATE Person set mail = :mail, name = :name, role = :role, studentId = :studentId WHERE id = :id ").setParameter("id", id)
+				.setParameter("name", name).setParameter("mail", mail).setParameter("studentId", studentId).setParameter("role", role).executeUpdate();
 	}
 
 	public void updatePassword(Long id, String password) {

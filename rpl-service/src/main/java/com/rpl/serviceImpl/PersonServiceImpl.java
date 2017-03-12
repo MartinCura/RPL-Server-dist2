@@ -58,8 +58,8 @@ public class PersonServiceImpl implements PersonService {
 		personDAO.updatePersonInfo(id, name, mail, studentId);
 	}
 
-	public void updatePersonInfo(Long id, String name, String mail, String role) {
-		personDAO.updatePersonInfo(id, name, mail, role);
+	public void updatePersonInfo(Long id, String name, String mail, Long studentId, String role) {
+		personDAO.updatePersonInfo(id, name, mail, studentId, role);
 	}
 
 	public CoursePerson getCoursePersonByIdAndCourse(Long personId, Long courseId) {

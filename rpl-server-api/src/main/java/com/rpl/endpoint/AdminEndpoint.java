@@ -128,7 +128,7 @@ public class AdminEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updatePersonInfoById(@PathParam("personId") Long personId, PersonInfoPOJO pojo) {
-        personService.updatePersonInfo(personId, pojo.getName(), pojo.getMail(), pojo.getRole());
+        personService.updatePersonInfo(personId, pojo.getName(), pojo.getMail(), pojo.getStudentId(), pojo.getRole());
         return Response.ok().build();
     }
 
