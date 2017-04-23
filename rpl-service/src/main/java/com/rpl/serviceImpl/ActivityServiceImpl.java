@@ -11,6 +11,7 @@ import com.rpl.exception.RplException;
 import com.rpl.model.Activity;
 import com.rpl.model.ActivityInputFile;
 import com.rpl.model.ActivitySubmission;
+import com.rpl.model.DatabaseState;
 import com.rpl.model.Language;
 import com.rpl.model.TestType;
 import com.rpl.persistence.ActivityDAO;
@@ -37,8 +38,8 @@ public class ActivityServiceImpl implements ActivityService {
 		return activityDAO.find(id);
 	}
 
-	public List<Activity> getActivitiesByCourse(Long courseId) {
-		return activityDAO.findByCourse(courseId);
+	public List<Activity> getActivitiesByCourseEnabledAndDisabled(Long courseId) {
+		return activityDAO.findByCourseEnabledAndDisabled(courseId);
 	}
 
 	public List<Activity> getActivitiesByTopic(Long topicId) {
@@ -98,5 +99,17 @@ public class ActivityServiceImpl implements ActivityService {
 	
 	public List<ActivityInputFile> findAllFiles(Long activityId){
 		return activityDAO.findFiles(activityId);
+	}
+
+	@Override
+	public void hide(Long activityId) {
+		activityDAO.updateDatabaseState(activityId, DatabaseState.DISABLED);
+		
+	}
+
+	@Override
+	public void unhide(Long activityId) {
+		activityDAO.updateDatabaseState(activityId, DatabaseState.ENABLED);
+		
 	}
 }

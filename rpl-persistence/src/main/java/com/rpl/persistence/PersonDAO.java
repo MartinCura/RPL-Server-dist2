@@ -9,7 +9,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
-import com.rpl.model.*;
+import com.rpl.model.DatabaseState;
+import com.rpl.model.Person;
+import com.rpl.model.PersonImage;
+import com.rpl.model.Role;
 
 public class PersonDAO extends ApplicationDAO {
 

@@ -1,6 +1,7 @@
 package com.rpl.POJO;
 
 import com.rpl.model.Activity;
+import com.rpl.model.DatabaseState;
 
 public class ActivityPOJO {
     private Long id;
@@ -12,6 +13,7 @@ public class ActivityPOJO {
     private boolean success;
     private boolean definitive;
     private String topicName;
+    private boolean enabled;
 
     public ActivityPOJO(Activity activity) {
         this.id = activity.getId();
@@ -21,6 +23,7 @@ public class ActivityPOJO {
         this.template = activity.getTemplate();
         this.points = activity.getPoints();
         this.success = false;
+        this.setEnabled(DatabaseState.ENABLED.equals(activity.getState()));
         if (activity.getTopic() != null) this.topicName = activity.getTopic().getName();
     }
 
@@ -71,5 +74,13 @@ public class ActivityPOJO {
 
 	public void setTopicName(String topicName) {
 		this.topicName = topicName;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

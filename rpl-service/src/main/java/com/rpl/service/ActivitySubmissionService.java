@@ -1,11 +1,10 @@
 package com.rpl.service;
 
+import java.util.List;
+
 import com.rpl.exception.RplException;
-import com.rpl.exception.RplNotAuthorizedException;
 import com.rpl.exception.RplQueueException;
 import com.rpl.model.ActivitySubmission;
-
-import java.util.List;
 
 public interface ActivitySubmissionService {
 	

@@ -49,7 +49,7 @@ public class ManageEndpoint {
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
-		List<Activity> activities = activityService.getActivitiesByCourse(courseId);
+		List<Activity> activities = activityService.getActivitiesByCourseEnabledAndDisabled(courseId);
 		List<ActivityPOJO> activityPOJOS = new ArrayList<ActivityPOJO>();
 		for (Activity activity : activities) {
 			activityPOJOS.add(new ActivityPOJO(activity));
