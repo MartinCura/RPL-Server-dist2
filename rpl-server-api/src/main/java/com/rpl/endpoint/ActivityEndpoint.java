@@ -82,7 +82,7 @@ public class ActivityEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteActivityById(@PathParam("id") Long id) {
 		try {
-			SecurityHelper.checkPermissionsByActivityId(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissionsByActivityId(id, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -150,7 +150,7 @@ public class ActivityEndpoint {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteFile(@PathParam("id") Long fileId) throws IOException {
 		try {
-			SecurityHelper.checkPermissionsByFileId(fileId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissionsByFileId(fileId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -179,7 +179,7 @@ public class ActivityEndpoint {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response hideActivity(@PathParam("id") Long activityId) throws IOException {
 		try {
-			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -193,7 +193,7 @@ public class ActivityEndpoint {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response unhideActivity(@PathParam("id") Long activityId) throws IOException {
 		try {
-			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}

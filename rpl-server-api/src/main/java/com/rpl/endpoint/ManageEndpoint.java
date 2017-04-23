@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -13,6 +17,7 @@ import com.rpl.POJO.AssistantPOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.StudentPOJO;
 import com.rpl.POJO.TopicPOJO;
+import com.rpl.POJO.TopicWithDisabledActivitiesPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplRoleException;
 import com.rpl.model.Activity;
@@ -45,7 +50,7 @@ public class ManageEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getActivities(@PathParam("id") Long courseId) {
 		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -62,14 +67,14 @@ public class ManageEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTopics(@PathParam("id") Long courseId) {
 		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
 		List<Topic> topics = topicService.getTopicsByCourse(courseId);
-		List<TopicPOJO> topicPOJOS = new ArrayList<TopicPOJO>();
+		List<TopicWithDisabledActivitiesPOJO> topicPOJOS = new ArrayList<TopicWithDisabledActivitiesPOJO>();
 		for (Topic topic : topics) {
-			topicPOJOS.add(new TopicPOJO(topic));
+			topicPOJOS.add(new TopicWithDisabledActivitiesPOJO(topic));
 		}
 		return Response.status(200).entity(topicPOJOS).build();
 	}

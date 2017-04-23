@@ -11,7 +11,7 @@ import java.util.List;
 public class TopicPOJO {
     private Long id;
     private String name;
-    private List<ActivityPOJO> activities;
+    protected List<ActivityPOJO> activities;
 
     public TopicPOJO(Topic topic) {
         this.id = topic.getId();

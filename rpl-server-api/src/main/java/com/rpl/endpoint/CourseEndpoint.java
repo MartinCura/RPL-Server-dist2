@@ -53,6 +53,7 @@ import com.rpl.model.Topic;
 import com.rpl.security.SecurityHelper;
 import com.rpl.service.ActivityService;
 import com.rpl.service.CourseService;
+import com.rpl.service.PersonService;
 import com.rpl.service.TopicService;
 import com.rpl.service.UserService;
 import com.rpl.service.util.FileUtils;
@@ -70,6 +71,8 @@ public class CourseEndpoint {
 	private TopicService topicService;
 	@Inject
 	private UserService userService;
+	@Inject
+	private PersonService personService;
 
 	@Secured
 	@GET
@@ -108,6 +111,8 @@ public class CourseEndpoint {
 		Set<Long> activitiesSelected = activityService.getActivitiesSelectedByCourse(id);
 		Set<Long> activitiesDefinitive = activityService.getActivitiesDefinitiveByCourse(id);
 		CoursePOJO coursePOJO = new CoursePOJO(course);
+		CoursePerson cp = personService.getCoursePersonByIdAndCourse(userService.getCurrentUser().getId(), id);
+		if (cp != null) coursePOJO.setRole(cp.getRole().name());
 		coursePOJO.markActivitiesAsSelected(activitiesSelected);
 		coursePOJO.markActivitiesAsDefinitive(activitiesDefinitive);
 		return Response.status(200).entity(coursePOJO).build();
