@@ -28,9 +28,8 @@ public class SecurityHelper {
 	}
 
 	public static void checkPermissions(List<Role> allowedRoles, Person p) throws RplRoleException {
-		// TODO: MOCKED IMPL!
-		// if (!allowedRoles.contains(p.getCredentials().getRole())) throw new
-		// RplRoleException();
+		if (!allowedRoles.contains(p.getCredentials().getRole()))
+			throw new RplRoleException();
 	}
 
 	public static void checkPermissions(Long courseId, List<RoleCourse> allowedRoles, Person p)
@@ -69,7 +68,7 @@ public class SecurityHelper {
 
 	public static void checkPermissionsByImageFileId(Long fileId, List<RoleCourse> allowedRoles, Person p)
 			throws RplRoleException {
-		
+
 		Optional<Course> c = CourseHelper.getCourseByImageFileId(fileId, p);
 		if (c.isPresent()) {
 			checkPermissions(c.get().getId(), allowedRoles, p);

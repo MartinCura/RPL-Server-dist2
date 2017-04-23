@@ -11,6 +11,7 @@ public class ActivityPOJO {
     private int points;
     private boolean success;
     private boolean definitive;
+    private String topicName;
 
     public ActivityPOJO(Activity activity) {
         this.id = activity.getId();
@@ -20,6 +21,7 @@ public class ActivityPOJO {
         this.template = activity.getTemplate();
         this.points = activity.getPoints();
         this.success = false;
+        if (activity.getTopic() != null) this.topicName = activity.getTopic().getName();
     }
 
     public Long getId() {
@@ -62,4 +64,12 @@ public class ActivityPOJO {
     public void setDefinitive(boolean definitive) {
         this.definitive = definitive;
     }
+
+	public String getTopicName() {
+		return topicName;
+	}
+
+	public void setTopicName(String topicName) {
+		this.topicName = topicName;
+	}
 }

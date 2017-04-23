@@ -70,7 +70,7 @@ public class TopicEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateTopicById(@PathParam("id") Long id, TopicInputPOJO topicPOJO) {
     	try {
-			SecurityHelper.checkPermissionsByTopicId(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissionsByTopicId(id, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
