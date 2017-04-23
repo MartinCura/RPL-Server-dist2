@@ -29,7 +29,6 @@ import com.rpl.POJO.CourseCustomizationPOJO;
 import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.RangePOJO;
-import com.rpl.POJO.RangesPOJO;
 import com.rpl.POJO.RankingPOJO;
 import com.rpl.POJO.input.ActivityInputPOJO;
 import com.rpl.POJO.input.AssignAssistantInputPOJO;

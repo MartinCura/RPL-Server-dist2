@@ -47,7 +47,7 @@ public class ReportServiceImpl implements ReportService {
     public Map<Topic, List<ActivitySubmission>> getTopicReportByCourse(Long courseId, Long assistantId) {
         Map<Topic, List<ActivitySubmission>> submissionsByTopic = new HashMap<Topic, List<ActivitySubmission>>();
 
-        List<Topic> topics = topicDAO.findByCourseId(courseId);
+        List<Topic> topics = topicDAO.findByCourseIdEnabledOnly(courseId);
         for (Topic topic : topics) {
             submissionsByTopic.put(topic, new ArrayList<ActivitySubmission>());
         }

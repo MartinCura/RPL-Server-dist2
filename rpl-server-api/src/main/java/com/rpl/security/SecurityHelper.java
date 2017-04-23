@@ -28,7 +28,7 @@ public class SecurityHelper {
 	}
 
 	public static void checkPermissions(List<Role> allowedRoles, Person p) throws RplRoleException {
-		if (!allowedRoles.contains(p.getCredentials().getRole()))
+		if (!allowedRoles.contains(p.getCredentials().getRole()) && !allowedRoles.isEmpty())
 			throw new RplRoleException();
 	}
 

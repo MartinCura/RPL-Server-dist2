@@ -23,7 +23,7 @@ public class TopicServiceImpl implements TopicService{
     }
 
     public List<Topic> getTopicsByCourse(Long courseId) {
-        return topicDAO.findByCourseId(courseId);
+        return topicDAO.findByCourseIdEnabledOnly(courseId);
     }
 
     public Topic submit(Long courseId, Topic topic) {
@@ -38,5 +38,10 @@ public class TopicServiceImpl implements TopicService{
 	
 	public void update(Topic updateTopic){
 		topicDAO.update(updateTopic.getId(), updateTopic.getName());
+	}
+
+	@Override
+	public List<Topic> getEnabledAndDisabledTopicsByCourse(Long courseId) {
+		return topicDAO.findByCourseIdEnabledAndDisabled(courseId);
 	}
 }

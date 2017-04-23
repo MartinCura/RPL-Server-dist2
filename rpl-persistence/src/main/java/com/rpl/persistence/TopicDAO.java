@@ -13,9 +13,16 @@ public class TopicDAO extends ApplicationDAO {
     }
 
 	@SuppressWarnings("unchecked")
-	public List<Topic> findByCourseId(Long courseId) {
+	public List<Topic> findByCourseIdEnabledOnly(Long courseId) {
 		return entityManager.createQuery("SELECT t FROM Topic t WHERE t.course.id = :courseId AND t.state = :state")
 				.setParameter("courseId", courseId).setParameter("state", DatabaseState.ENABLED).getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Topic> findByCourseIdEnabledAndDisabled(Long courseId) {
+		return entityManager.createQuery("SELECT t FROM Topic t WHERE (t.state = :enabledState OR t.state = :disabledState) AND t.course.id = :courseId")
+				.setParameter("courseId", courseId).setParameter("enabledState", DatabaseState.ENABLED)
+				.setParameter("disabledState", DatabaseState.DISABLED).getResultList();
 	}
 
 	public void delete(Long id) {
