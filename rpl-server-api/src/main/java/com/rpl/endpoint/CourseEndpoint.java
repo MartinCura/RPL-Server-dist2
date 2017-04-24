@@ -278,7 +278,7 @@ public class CourseEndpoint {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response submitTopic(@PathParam("id") Long courseId, TopicInputPOJO topicInputPOJO) {
 		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -366,7 +366,7 @@ public class CourseEndpoint {
 	@Path("/{id}/range")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response submitTopic(@PathParam("id") Long courseId, List<Range> ranges) {
+	public Response updateRange(@PathParam("id") Long courseId, List<Range> ranges) {
 		try {
 			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {

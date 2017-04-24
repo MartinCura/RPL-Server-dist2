@@ -26,7 +26,7 @@ public class ActivityDAO extends ApplicationDAO {
 	public List<Activity> findByCourseEnabledAndDisabled(Long courseId) {
 		return entityManager
 				.createQuery(
-						"SELECT a FROM Activity a, Topic t WHERE (a.state = :enabledState OR a.state = :disabledState) AND a.topic.id = t.id AND t.course.id = :id ORDER BY a.name DESC")
+						"SELECT a FROM Activity a, Topic t WHERE (a.state = :enabledState OR a.state = :disabledState) AND a.topic.id = t.id AND t.course.id = :id ORDER BY a.name")
 				.setParameter("enabledState", DatabaseState.ENABLED)
 				.setParameter("disabledState", DatabaseState.DISABLED).setParameter("id", courseId).getResultList();
 	}
