@@ -18,7 +18,7 @@ public class CourseDAO extends ApplicationDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<Course> findAll() {
-		return entityManager.createQuery("SELECT c FROM Course c where c.state = :state")
+		return entityManager.createQuery("SELECT c FROM Course c where c.state = :state ORDER BY c.name")
 				.setParameter("state", DatabaseState.ENABLED).getResultList();
 	}
 
@@ -31,7 +31,7 @@ public class CourseDAO extends ApplicationDAO {
 	public List<Course> findByPersonRole(Long personId, RoleCourse role) {
 		return entityManager
 				.createQuery("SELECT c FROM Course c, CoursePerson cp WHERE"
-						+ " c.id = cp.course.id AND cp.person.id = :personId AND cp.role = :role AND c.state = :state")
+						+ " c.id = cp.course.id AND cp.person.id = :personId AND cp.role = :role AND c.state = :state ORDER BY c.name")
 				.setParameter("personId", personId).setParameter("role", role)
 				.setParameter("state", DatabaseState.ENABLED).getResultList();
 	}
@@ -45,7 +45,7 @@ public class CourseDAO extends ApplicationDAO {
 	public List<Course> findUnregisteredByPerson(Long personId) {
 		return entityManager
 				.createQuery("SELECT c FROM Course c WHERE"
-						+ " c.id NOT IN (SELECT cp.course.id FROM CoursePerson cp WHERE cp.person.id = :personId)")
+						+ " c.id NOT IN (SELECT cp.course.id FROM CoursePerson cp WHERE cp.person.id = :personId) ORDER BY c.name")
 				.setParameter("personId", personId).getResultList();
 	}
 

@@ -19,7 +19,7 @@ public class ActivityDAO extends ApplicationDAO {
 	public List<Activity> findByCourseEnabledOnly(Long courseId) {
 		return entityManager
 				.createQuery(
-						"SELECT a FROM Activity a, Topic t WHERE a.state = :state AND a.topic.id = t.id AND t.course.id = :id")
+						"SELECT a FROM Activity a, Topic t WHERE a.state = :state AND a.topic.id = t.id AND t.course.id = :id ORDER BY a.name")
 				.setParameter("state", DatabaseState.ENABLED).setParameter("id", courseId).getResultList();
 	}
 	
@@ -32,7 +32,7 @@ public class ActivityDAO extends ApplicationDAO {
 	}
 
 	public List<Activity> findByTopic(Long topicId) {
-		return entityManager.createQuery("SELECT a FROM Activity a WHERE a.topic.id = :id AND a.state = :state")
+		return entityManager.createQuery("SELECT a FROM Activity a WHERE a.topic.id = :id AND a.state = :state ORDER BY a.name")
 				.setParameter("id", topicId).setParameter("state", DatabaseState.ENABLED).getResultList();
 	}
 
