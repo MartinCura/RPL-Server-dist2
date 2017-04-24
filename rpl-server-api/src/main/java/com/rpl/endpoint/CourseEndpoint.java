@@ -380,4 +380,32 @@ public class CourseEndpoint {
 		}
 		return Response.ok().build();
 	}
+	
+	@POST
+	@Path("{id}/hide")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response hideCourse(@PathParam("id") Long courseId) throws IOException {
+		try {
+			SecurityHelper.checkPermissionsByActivityId(courseId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+		courseService.hide(courseId);
+		return Response.status(200).build();
+	}
+	
+	@POST
+	@Path("{id}/unhide")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response unhideCourse(@PathParam("id") Long courseId) throws IOException {
+		try {
+			SecurityHelper.checkPermissionsByActivityId(courseId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+		courseService.unhide(courseId);
+		return Response.status(200).build();
+	}
 }

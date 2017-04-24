@@ -37,4 +37,7 @@ public interface CourseService {
     public Map<Person,Integer> getPointsByPerson(Long courseId);
 	public void saveImage(Long courseId, CourseImage courseImage) throws RplException;
 	public void updateRanges(Long courseId, List<Range> ranges) throws RplException;
+	public void hide(Long courseId);
+	public void unhide(Long courseId);
+	public List<Course> getCoursesEnabledAndDisabled();
 }

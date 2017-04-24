@@ -2,6 +2,7 @@ package com.rpl.endpoint;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -9,17 +10,20 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.ActivityPOJO;
 import com.rpl.POJO.AssistantPOJO;
+import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.StudentPOJO;
 import com.rpl.POJO.TopicWithDisabledActivitiesPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplRoleException;
 import com.rpl.model.Activity;
+import com.rpl.model.Course;
 import com.rpl.model.CoursePerson;
 import com.rpl.model.MessageCodes;
 import com.rpl.model.RoleCourse;
@@ -44,6 +48,22 @@ public class ManageEndpoint {
 	@Inject
 	private UserService userService;
 
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCourses() {
+		List<Course> courses;
+		courses = courseService.getCoursesEnabledAndDisabled();
+		Map<Long, CoursePerson> coursesInscripted = courseService.getCoursesInscripted();
+		List<CoursePOJO> coursePOJOS = new ArrayList<CoursePOJO>();
+		for (Course course : courses) {
+			CoursePOJO coursePOJO = CoursePOJO.mapWithoutTopics(course);
+			coursePOJO.setInscripted(coursesInscripted.get(course.getId()));
+			coursePOJOS.add(coursePOJO);
+		}
+		return Response.status(200).entity(coursePOJOS).build();
+
+	}
+	
 	@GET
 	@Path("/{id}/activities")
 	@Produces(MediaType.APPLICATION_JSON)

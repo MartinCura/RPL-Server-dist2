@@ -22,7 +22,6 @@ import com.rpl.model.RoleCourse;
 import com.rpl.persistence.ActivitySubmissionDAO;
 import com.rpl.persistence.CourseDAO;
 import com.rpl.persistence.CoursePersonDAO;
-import com.rpl.persistence.PersonDAO;
 import com.rpl.service.ActionLogService;
 import com.rpl.service.CourseService;
 import com.rpl.service.UserService;
@@ -36,8 +35,6 @@ public class CourseServiceImpl implements CourseService {
 	private CourseDAO courseDAO;
 	@Inject
 	private CoursePersonDAO coursePersonDAO;
-	@Inject
-	private PersonDAO personDAO;
 	@Inject
 	private ActivitySubmissionDAO activitySubmissionDAO;
 	@Inject
@@ -180,6 +177,22 @@ public class CourseServiceImpl implements CourseService {
 			c.getRanges().add(range);
 		}
 		courseDAO.save(c);
+	}
+
+	@Override
+	public void hide(Long courseId) {
+		courseDAO.updateDatabaseState(courseId, DatabaseState.DISABLED);
+	}
+
+	@Override
+	public void unhide(Long courseId) {
+		courseDAO.updateDatabaseState(courseId, DatabaseState.ENABLED);
+		
+	}
+
+	@Override
+	public List<Course> getCoursesEnabledAndDisabled() {
+		return courseDAO.findAllEnabledAndDisabled();
 	}
 
 }
