@@ -16,7 +16,6 @@ import com.rpl.POJO.ActivityPOJO;
 import com.rpl.POJO.AssistantPOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.StudentPOJO;
-import com.rpl.POJO.TopicPOJO;
 import com.rpl.POJO.TopicWithDisabledActivitiesPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplRoleException;
@@ -71,7 +70,7 @@ public class ManageEndpoint {
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
-		List<Topic> topics = topicService.getTopicsByCourse(courseId);
+		List<Topic> topics = topicService.getTopicsByCourseEnabledAndDisabled(courseId);
 		List<TopicWithDisabledActivitiesPOJO> topicPOJOS = new ArrayList<TopicWithDisabledActivitiesPOJO>();
 		for (Topic topic : topics) {
 			topicPOJOS.add(new TopicWithDisabledActivitiesPOJO(topic));

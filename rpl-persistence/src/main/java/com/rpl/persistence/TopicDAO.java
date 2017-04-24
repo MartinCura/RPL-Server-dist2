@@ -26,10 +26,15 @@ public class TopicDAO extends ApplicationDAO {
 	}
 
 	public void delete(Long id) {
-		entityManager.createQuery("UPDATE Topic set state = :state where id = :id").setParameter("id", id).setParameter("state", DatabaseState.DELETED).executeUpdate();
+		updateDatabaseState(id, DatabaseState.DELETED);
 	}
 
 	public void update(Long id, String name) {
 		entityManager.createQuery("UPDATE Topic set name = :name where id = :id").setParameter("id", id).setParameter("name", name).executeUpdate();
+	}
+	
+	public void updateDatabaseState(Long topicId, DatabaseState state) {
+		entityManager.createQuery("UPDATE Topic set state = :state where id = :id").setParameter("id", topicId)
+		.setParameter("state", state).executeUpdate();
 	}
 }

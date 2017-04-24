@@ -12,4 +12,7 @@ public interface TopicService {
     public Topic submit(Long courseId, Topic topic);
 	public void deleteTopicById(Long id);
 	public void update(Topic updateTopic);
+	public List<Topic> getTopicsByCourseEnabledAndDisabled(Long courseId);
+	public void hide(Long topicId);
+	public void unhide(Long topicId);
 }
