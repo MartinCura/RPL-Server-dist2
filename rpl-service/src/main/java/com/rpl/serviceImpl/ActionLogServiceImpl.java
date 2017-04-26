@@ -1,15 +1,14 @@
 package com.rpl.serviceImpl;
 
-import java.util.Date;
-
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-
 import com.rpl.model.LoggedAction;
 import com.rpl.model.Person;
 import com.rpl.persistence.ActionLogDAO;
 import com.rpl.service.ActionLogService;
 import com.rpl.service.UserService;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import java.time.LocalDateTime;
 
 @Stateless
 public class ActionLogServiceImpl implements ActionLogService {
@@ -21,7 +20,7 @@ public class ActionLogServiceImpl implements ActionLogService {
 	private UserService userService;
 	
 	private void logAction(Person p, String description) {
-		actionLogDAO.save(new LoggedAction(p, description, new Date()));
+		actionLogDAO.save(new LoggedAction(p, description, LocalDateTime.now()));
 	}
 
 	private void logAction(String description) {

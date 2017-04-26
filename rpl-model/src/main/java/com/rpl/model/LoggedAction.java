@@ -1,5 +1,6 @@
 package com.rpl.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -24,12 +25,12 @@ public class LoggedAction {
 	@Column(name="action_description")
 	private String actionDescription;
 	@Column(name="action_date")
-	private Date actionDate;
+	private LocalDateTime actionDate;
 	
 	public LoggedAction() {
 	}
 	
-	public LoggedAction(Person person, String desc, Date date) {
+	public LoggedAction(Person person, String desc, LocalDateTime date) {
 		this.person = person;
 		this.actionDescription = desc;
 		this.actionDate = date;
@@ -53,10 +54,10 @@ public class LoggedAction {
 	public void setActionDescription(String actionDescription) {
 		this.actionDescription = actionDescription;
 	}
-	public Date getActionDate() {
+	public LocalDateTime getActionDate() {
 		return actionDate;
 	}
-	public void setActionDate(Date actionDate) {
+	public void setActionDate(LocalDateTime actionDate) {
 		this.actionDate = actionDate;
 	}
 
