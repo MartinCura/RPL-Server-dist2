@@ -2,6 +2,7 @@ package com.rpl.endpoint;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -36,13 +37,19 @@ public class AdminEndpoint {
     private SecurityService securityService;
 
     @GET
-    @Path("/courses")
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response getCourses() {
-    	List<Course> result = courseService.getCourses();
-    	List<CoursePOJO> resultPOJO = result.stream().map(c -> CoursePOJO.mapWithoutTopics(c)).collect(Collectors.toList());
-        return Response.ok(resultPOJO).build();
+        List<Course> courses;
+        courses = courseService.getCoursesEnabledAndDisabled();
+        Map<Long, CoursePerson> coursesInscripted = courseService.getCoursesInscripted();
+        List<CoursePOJO> coursePOJOS = new ArrayList<CoursePOJO>();
+        for (Course course : courses) {
+            CoursePOJO coursePOJO = CoursePOJO.mapWithoutTopics(course);
+            coursePOJO.setInscripted(coursesInscripted.get(course.getId()));
+            coursePOJOS.add(coursePOJO);
+        }
+        return Response.status(200).entity(coursePOJOS).build();
+
     }
     
     @POST

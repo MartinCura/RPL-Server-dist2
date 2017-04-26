@@ -47,22 +47,6 @@ public class ManageEndpoint {
 	private TopicService topicService;
 	@Inject
 	private UserService userService;
-
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCourses() {
-		List<Course> courses;
-		courses = courseService.getCoursesEnabledAndDisabled();
-		Map<Long, CoursePerson> coursesInscripted = courseService.getCoursesInscripted();
-		List<CoursePOJO> coursePOJOS = new ArrayList<CoursePOJO>();
-		for (Course course : courses) {
-			CoursePOJO coursePOJO = CoursePOJO.mapWithoutTopics(course);
-			coursePOJO.setInscripted(coursesInscripted.get(course.getId()));
-			coursePOJOS.add(coursePOJO);
-		}
-		return Response.status(200).entity(coursePOJOS).build();
-
-	}
 	
 	@GET
 	@Path("/{id}/activities")
