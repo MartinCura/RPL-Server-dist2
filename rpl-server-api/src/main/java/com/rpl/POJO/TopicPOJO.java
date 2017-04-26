@@ -11,11 +11,13 @@ import java.util.List;
 public class TopicPOJO {
     private Long id;
     private String name;
-    private List<ActivityPOJO> activities;
+    private boolean enabled;
+    protected List<ActivityPOJO> activities;
 
     public TopicPOJO(Topic topic) {
         this.id = topic.getId();
         this.name = topic.getName();
+        this.setEnabled(DatabaseState.ENABLED.equals(topic.getState()));
         activities = new ArrayList<ActivityPOJO>();
         for (Activity activity : topic.getActivities()) {
             if (activity.getState().equals(DatabaseState.ENABLED)) {
@@ -35,4 +37,12 @@ public class TopicPOJO {
     public List<ActivityPOJO> getActivities() {
         return activities;
     }
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 }

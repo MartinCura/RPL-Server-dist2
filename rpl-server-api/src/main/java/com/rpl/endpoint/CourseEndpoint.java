@@ -29,7 +29,6 @@ import com.rpl.POJO.CourseCustomizationPOJO;
 import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.RangePOJO;
-import com.rpl.POJO.RangesPOJO;
 import com.rpl.POJO.RankingPOJO;
 import com.rpl.POJO.input.ActivityInputPOJO;
 import com.rpl.POJO.input.AssignAssistantInputPOJO;
@@ -54,6 +53,7 @@ import com.rpl.model.Topic;
 import com.rpl.security.SecurityHelper;
 import com.rpl.service.ActivityService;
 import com.rpl.service.CourseService;
+import com.rpl.service.PersonService;
 import com.rpl.service.TopicService;
 import com.rpl.service.UserService;
 import com.rpl.service.util.FileUtils;
@@ -71,6 +71,8 @@ public class CourseEndpoint {
 	private TopicService topicService;
 	@Inject
 	private UserService userService;
+	@Inject
+	private PersonService personService;
 
 	@Secured
 	@GET
@@ -109,6 +111,8 @@ public class CourseEndpoint {
 		Set<Long> activitiesSelected = activityService.getActivitiesSelectedByCourse(id);
 		Set<Long> activitiesDefinitive = activityService.getActivitiesDefinitiveByCourse(id);
 		CoursePOJO coursePOJO = new CoursePOJO(course);
+		CoursePerson cp = personService.getCoursePersonByIdAndCourse(userService.getCurrentUser().getId(), id);
+		if (cp != null) coursePOJO.setRole(cp.getRole().name());
 		coursePOJO.markActivitiesAsSelected(activitiesSelected);
 		coursePOJO.markActivitiesAsDefinitive(activitiesDefinitive);
 		return Response.status(200).entity(coursePOJO).build();
@@ -176,7 +180,7 @@ public class CourseEndpoint {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response submitActivity(@PathParam("id") Long courseId, ActivityInputPOJO activityInputPOJO) {
 		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -203,7 +207,7 @@ public class CourseEndpoint {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadFile(@PathParam("id") Long activityId, MultipartFormDataInput input) throws IOException {
 		try {
-			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR),
+			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR),
 					userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
@@ -274,7 +278,7 @@ public class CourseEndpoint {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response submitTopic(@PathParam("id") Long courseId, TopicInputPOJO topicInputPOJO) {
 		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -362,7 +366,7 @@ public class CourseEndpoint {
 	@Path("/{id}/range")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response submitTopic(@PathParam("id") Long courseId, List<Range> ranges) {
+	public Response updateRange(@PathParam("id") Long courseId, List<Range> ranges) {
 		try {
 			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
@@ -375,5 +379,24 @@ public class CourseEndpoint {
 					.build();
 		}
 		return Response.ok().build();
+	}
+	
+	@Secured(Role.ADMIN)
+	@POST
+	@Path("{id}/hide")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response hideCourse(@PathParam("id") Long courseId) throws IOException {
+		courseService.hide(courseId);
+		return Response.status(200).build();
+	}
+	@Secured(Role.ADMIN)
+	@POST
+	@Path("{id}/unhide")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response unhideCourse(@PathParam("id") Long courseId) throws IOException {
+		courseService.unhide(courseId);
+		return Response.status(200).build();
 	}
 }

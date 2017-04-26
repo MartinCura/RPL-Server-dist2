@@ -1,11 +1,14 @@
 package com.rpl.endpoint;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -44,7 +47,7 @@ public class TopicEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTopicById(@PathParam("id") Long id) {
     	try {
-			SecurityHelper.checkPermissionsByTopicId(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissionsByTopicId(id, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -57,7 +60,7 @@ public class TopicEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteTopicById(@PathParam("id") Long id) {
     	try {
-			SecurityHelper.checkPermissionsByTopicId(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissionsByTopicId(id, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -70,7 +73,7 @@ public class TopicEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateTopicById(@PathParam("id") Long id, TopicInputPOJO topicPOJO) {
     	try {
-			SecurityHelper.checkPermissionsByTopicId(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissionsByTopicId(id, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -92,4 +95,32 @@ public class TopicEndpoint {
         }
         return Response.status(200).entity(activityPOJOS).build();
     }
+    
+    @POST
+	@Path("{id}/hide")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response hideTopic(@PathParam("id") Long topicId) throws IOException {
+		try {
+			SecurityHelper.checkPermissionsByActivityId(topicId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+		topicService.hide(topicId);
+		return Response.status(200).build();
+	}
+	
+	@POST
+	@Path("{id}/unhide")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response unhideTopic(@PathParam("id") Long topicId) throws IOException {
+		try {
+			SecurityHelper.checkPermissionsByActivityId(topicId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+		topicService.unhide(topicId);
+		return Response.status(200).build();
+	}
 }

@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.rpl.model.Course;
+import com.rpl.model.DatabaseState;
 import com.rpl.model.Topic;
 import com.rpl.persistence.CourseDAO;
 import com.rpl.persistence.TopicDAO;
@@ -23,7 +24,11 @@ public class TopicServiceImpl implements TopicService{
     }
 
     public List<Topic> getTopicsByCourse(Long courseId) {
-        return topicDAO.findByCourseId(courseId);
+        return topicDAO.findByCourseIdEnabledOnly(courseId);
+    }
+    
+    public List<Topic> getTopicsByCourseEnabledAndDisabled(Long courseId) {
+        return topicDAO.findByCourseIdEnabledAndDisabled(courseId);
     }
 
     public Topic submit(Long courseId, Topic topic) {
@@ -38,5 +43,21 @@ public class TopicServiceImpl implements TopicService{
 	
 	public void update(Topic updateTopic){
 		topicDAO.update(updateTopic.getId(), updateTopic.getName());
+	}
+
+	@Override
+	public List<Topic> getEnabledAndDisabledTopicsByCourse(Long courseId) {
+		return topicDAO.findByCourseIdEnabledAndDisabled(courseId);
+	}
+
+	@Override
+	public void hide(Long topicId) {
+		topicDAO.updateDatabaseState(topicId, DatabaseState.DISABLED);
+	}
+
+	@Override
+	public void unhide(Long topicId) {
+		topicDAO.updateDatabaseState(topicId, DatabaseState.ENABLED);
+		
 	}
 }

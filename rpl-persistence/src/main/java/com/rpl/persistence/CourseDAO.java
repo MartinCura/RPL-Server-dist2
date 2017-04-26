@@ -7,7 +7,6 @@ import javax.persistence.NoResultException;
 import com.rpl.model.Course;
 import com.rpl.model.CourseImage;
 import com.rpl.model.DatabaseState;
-import com.rpl.model.Range;
 import com.rpl.model.RoleCourse;
 
 public class CourseDAO extends ApplicationDAO {
@@ -18,20 +17,27 @@ public class CourseDAO extends ApplicationDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<Course> findAll() {
-		return entityManager.createQuery("SELECT c FROM Course c where c.state = :state")
+		return entityManager.createQuery("SELECT c FROM Course c where c.state = :state ORDER BY c.name")
 				.setParameter("state", DatabaseState.ENABLED).getResultList();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Course> findAllEnabledAndDisabled() {
+		return entityManager.createQuery("SELECT c FROM Course c where (c.state = :enabledState OR c.state = :disabledState) ORDER BY c.name")
+				.setParameter("enabledState", DatabaseState.ENABLED)
+				.setParameter("disabledState", DatabaseState.DISABLED).getResultList();
+	}
+	
 
 	public void delete(Long id) {
-		entityManager.createQuery("UPDATE Course set state = :state where id = :id").setParameter("id", id)
-				.setParameter("state", DatabaseState.DELETED).executeUpdate();
+		updateDatabaseState(id, DatabaseState.DELETED);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Course> findByPersonRole(Long personId, RoleCourse role) {
 		return entityManager
 				.createQuery("SELECT c FROM Course c, CoursePerson cp WHERE"
-						+ " c.id = cp.course.id AND cp.person.id = :personId AND cp.role = :role AND c.state = :state")
+						+ " c.id = cp.course.id AND cp.person.id = :personId AND cp.role = :role AND c.state = :state ORDER BY c.name")
 				.setParameter("personId", personId).setParameter("role", role)
 				.setParameter("state", DatabaseState.ENABLED).getResultList();
 	}
@@ -45,7 +51,7 @@ public class CourseDAO extends ApplicationDAO {
 	public List<Course> findUnregisteredByPerson(Long personId) {
 		return entityManager
 				.createQuery("SELECT c FROM Course c WHERE"
-						+ " c.id NOT IN (SELECT cp.course.id FROM CoursePerson cp WHERE cp.person.id = :personId)")
+						+ " c.id NOT IN (SELECT cp.course.id FROM CoursePerson cp WHERE cp.person.id = :personId) ORDER BY c.name")
 				.setParameter("personId", personId).getResultList();
 	}
 
@@ -78,4 +84,9 @@ public class CourseDAO extends ApplicationDAO {
 
 	}
 
+	public void updateDatabaseState(Long courseId, DatabaseState state) {
+		entityManager.createQuery("UPDATE Course set state = :state where id = :id").setParameter("id", courseId)
+		.setParameter("state", state).executeUpdate();
+	}
+	
 }

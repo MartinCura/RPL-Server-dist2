@@ -174,7 +174,7 @@ CREATE TABLE logged_action (
 	id serial PRIMARY KEY,
 	person_id integer REFERENCES person,
 	action_description text NOT NULL,
-	action_date date NOT NULL
+	action_date timestamp NOT NULL
 );
 
 	

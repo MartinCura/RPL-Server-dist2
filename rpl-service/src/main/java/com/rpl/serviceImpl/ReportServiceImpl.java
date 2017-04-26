@@ -27,7 +27,7 @@ public class ReportServiceImpl implements ReportService {
     public Map<Activity, List<ActivitySubmission>> getActivityReportByCourse(Long courseId, Long assistantId) {
         Map<Activity, List<ActivitySubmission>> submissionsByActivity = new HashMap<Activity, List<ActivitySubmission>>();
 
-        List<Activity> activities = activityDAO.findByCourse(courseId);
+        List<Activity> activities = activityDAO.findByCourseEnabledOnly(courseId);
         for (Activity activity : activities) {
             submissionsByActivity.put(activity, new ArrayList<ActivitySubmission>());
         }
@@ -47,7 +47,7 @@ public class ReportServiceImpl implements ReportService {
     public Map<Topic, List<ActivitySubmission>> getTopicReportByCourse(Long courseId, Long assistantId) {
         Map<Topic, List<ActivitySubmission>> submissionsByTopic = new HashMap<Topic, List<ActivitySubmission>>();
 
-        List<Topic> topics = topicDAO.findByCourseId(courseId);
+        List<Topic> topics = topicDAO.findByCourseIdEnabledOnly(courseId);
         for (Topic topic : topics) {
             submissionsByTopic.put(topic, new ArrayList<ActivitySubmission>());
         }

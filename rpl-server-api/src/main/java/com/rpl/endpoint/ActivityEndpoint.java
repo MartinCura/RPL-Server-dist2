@@ -28,7 +28,6 @@ import com.rpl.POJO.input.ActivityInputPOJO;
 import com.rpl.POJO.input.ActivitySubmissionInputPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplException;
-import com.rpl.exception.RplNotAuthorizedException;
 import com.rpl.exception.RplQueueException;
 import com.rpl.exception.RplRoleException;
 import com.rpl.model.Activity;
@@ -69,7 +68,7 @@ public class ActivityEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getActivityCompleteById(@PathParam("id") Long id) {
 		try {
-			SecurityHelper.checkPermissionsByActivityId(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissionsByActivityId(id, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -83,7 +82,7 @@ public class ActivityEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteActivityById(@PathParam("id") Long id) {
 		try {
-			SecurityHelper.checkPermissionsByActivityId(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissionsByActivityId(id, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -96,7 +95,7 @@ public class ActivityEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateActivityById(@PathParam("id") Long id, ActivityInputPOJO activity) {
 		try {
-			SecurityHelper.checkPermissionsByActivityId(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissionsByActivityId(id, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -151,7 +150,7 @@ public class ActivityEndpoint {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response deleteFile(@PathParam("id") Long fileId) throws IOException {
 		try {
-			SecurityHelper.checkPermissionsByFileId(fileId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissionsByFileId(fileId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
@@ -165,13 +164,41 @@ public class ActivityEndpoint {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getFiles(@PathParam("id") Long activityId) throws IOException {
 		try {
-			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
 		List<ActivityInputFile> list = activityService.findAllFiles(activityId);
 		return Response.status(200)
 				.entity(list.stream().map(f -> new ActivityInputFilePOJO(f)).collect(Collectors.toList())).build();
+	}
+	
+	@POST
+	@Path("{id}/hide")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response hideActivity(@PathParam("id") Long activityId) throws IOException {
+		try {
+			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+		activityService.hide(activityId);
+		return Response.status(200).build();
+	}
+	
+	@POST
+	@Path("{id}/unhide")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response unhideActivity(@PathParam("id") Long activityId) throws IOException {
+		try {
+			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+		activityService.unhide(activityId);
+		return Response.status(200).build();
 	}
 
 	@GET
@@ -189,6 +216,7 @@ public class ActivityEndpoint {
 			submissionPOJOS.add(new ActivitySubmissionSolutionPOJO(submission));
 		}
 		return Response.status(200).entity(submissionPOJOS).build();
-
 	}
+	
+	
 }

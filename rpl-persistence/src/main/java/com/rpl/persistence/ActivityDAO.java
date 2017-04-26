@@ -16,15 +16,23 @@ public class ActivityDAO extends ApplicationDAO {
 		return entityManager.find(Activity.class, id);
 	}
 
-	public List<Activity> findByCourse(Long courseId) {
+	public List<Activity> findByCourseEnabledOnly(Long courseId) {
 		return entityManager
 				.createQuery(
-						"SELECT a FROM Activity a, Topic t WHERE a.state = :state AND a.topic.id = t.id AND t.course.id = :id")
+						"SELECT a FROM Activity a, Topic t WHERE a.state = :state AND a.topic.id = t.id AND t.course.id = :id ORDER BY a.name")
 				.setParameter("state", DatabaseState.ENABLED).setParameter("id", courseId).getResultList();
+	}
+	
+	public List<Activity> findByCourseEnabledAndDisabled(Long courseId) {
+		return entityManager
+				.createQuery(
+						"SELECT a FROM Activity a, Topic t WHERE (a.state = :enabledState OR a.state = :disabledState) AND a.topic.id = t.id AND t.course.id = :id ORDER BY a.name")
+				.setParameter("enabledState", DatabaseState.ENABLED)
+				.setParameter("disabledState", DatabaseState.DISABLED).setParameter("id", courseId).getResultList();
 	}
 
 	public List<Activity> findByTopic(Long topicId) {
-		return entityManager.createQuery("SELECT a FROM Activity a WHERE a.topic.id = :id AND a.state = :state")
+		return entityManager.createQuery("SELECT a FROM Activity a WHERE a.topic.id = :id AND a.state = :state ORDER BY a.name")
 				.setParameter("id", topicId).setParameter("state", DatabaseState.ENABLED).getResultList();
 	}
 
@@ -42,8 +50,7 @@ public class ActivityDAO extends ApplicationDAO {
 	}
 
 	public void delete(Long id) {
-		entityManager.createQuery("UPDATE Activity set state = :state where id = :id").setParameter("id", id)
-				.setParameter("state", DatabaseState.DELETED).executeUpdate();
+		updateDatabaseState(id, DatabaseState.DELETED);
 	}
 
 	public ActivityInputFile findFile(Long fileId) {
@@ -68,5 +75,11 @@ public class ActivityDAO extends ApplicationDAO {
 	public List<ActivityInputFile> findFiles(Long activityId) {
 		return entityManager.createQuery("SELECT file FROM ActivityInputFile file WHERE file.activity.id = :id")
 				.setParameter("id", activityId).getResultList();
+	}
+
+	public void updateDatabaseState(Long activityId, DatabaseState state) {
+		entityManager.createQuery("UPDATE Activity set state = :state where id = :id").setParameter("id", activityId)
+		.setParameter("state", state).executeUpdate();
+		
 	}
 }

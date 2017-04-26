@@ -12,7 +12,7 @@ import com.rpl.model.TestType;
 public interface ActivityService {
 	
 	public Activity getActivityById(Long id);
-	public List<Activity> getActivitiesByCourse(Long courseId);
+	public List<Activity> getActivitiesByCourseEnabledAndDisabled(Long courseId);
 	public List<Activity> getActivitiesByTopic(Long topicId);
 	public void delete(Long id);
 	public void submit(Long courseId, Activity activity);
@@ -22,4 +22,6 @@ public interface ActivityService {
 	public void saveFile(Long activityId, ActivityInputFile file) throws RplException;
 	public void deleteFile(Long fileId);
 	public List<ActivityInputFile> findAllFiles(Long activityId);
+	public void hide(Long activityId);
+	public void unhide(Long activityId);
 }

@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -31,6 +32,7 @@ public class Topic {
 	@JoinColumn(name = "course_id")
 	private Course course;
 
+	@OrderBy("name ASC")
 	@OneToMany(fetch = FetchType.EAGER, mappedBy="topic")
 	private List<Activity> activities;
 	

@@ -19,6 +19,7 @@ public class CoursePOJO {
     private String inscripted;
     private String role;
 	private String customization;
+	private boolean enabled;
 
     public CoursePOJO(Course course) {
         this.id = course.getId();
@@ -29,6 +30,7 @@ public class CoursePOJO {
         this.customization = course.getCustomization();
         this.inscripted = "UNREGISTERED";
         this.role = null;
+        this.setEnabled(DatabaseState.ENABLED.equals(course.getState()));
         for (Topic topic : course.getTopics()) {
             if (topic.getState().equals(DatabaseState.ENABLED)) {
                 topics.add(new TopicPOJO(topic));
@@ -145,5 +147,13 @@ public class CoursePOJO {
 
 	public void setInscripted(String inscripted) {
 		this.inscripted = inscripted;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }
