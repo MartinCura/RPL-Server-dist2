@@ -37,6 +37,7 @@ public class AdminEndpoint {
     private SecurityService securityService;
 
     @GET
+    @Path("/courses")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCourses() {
         List<Course> courses;
