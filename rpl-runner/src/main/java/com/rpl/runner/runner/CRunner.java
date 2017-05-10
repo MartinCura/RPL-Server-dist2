@@ -22,13 +22,13 @@ public class CRunner extends Runner {
     }
 
     protected void buildForInput() throws RunnerException {
-        String[] args = {"gcc", SOLUTION_SOURCE_FILE, "-o", SOLUTION_OUT_FILE};
+        String[] args = {"gcc", SOLUTION_SOURCE_FILE, "-o", SOLUTION_OUT_FILE, "-Wall", "-lm"};
         ProcessRunner p1 = new ProcessRunner(args, false, "build");
         p1.start();
     }
 
     protected void buildForTest() throws RunnerException {
-        String[] args = {"gcc", TEST_SOURCE_FILE, "-o", TEST_OUT_FILE, "-lcriterion"};
+        String[] args = {"gcc", TEST_SOURCE_FILE, "-o", TEST_OUT_FILE, "-lcriterion", "-Wall", "-lm"};
         ProcessRunner p1 = new ProcessRunner(args, false, "build");
         p1.start();
     }
