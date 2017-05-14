@@ -7,6 +7,7 @@ import java.util.List;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.DatabaseState;
 import com.rpl.model.Topic;
+import com.rpl.service.util.Utils;
 
 public class ReportTopicPOJO {
 	private Long topicId;
@@ -22,7 +23,7 @@ public class ReportTopicPOJO {
 		this.points = new ArrayList<Integer>(Collections.nCopies(students.size(), 0));
 
 		for (ActivitySubmission submission : activitySubmissions) {
-			int pos = students.indexOf(submission.getPerson().getName());
+			int pos = students.indexOf(Utils.getCompleteName(submission.getPerson()));
 			points.set(pos, points.get(pos) + submission.getActivity().getPoints());
 		}
 	}

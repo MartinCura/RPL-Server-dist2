@@ -2,6 +2,7 @@ package com.rpl.POJO;
 
 
 import com.rpl.model.*;
+import com.rpl.service.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +20,7 @@ public class ReportCourseTopicsPOJO {
         this.courseName = course.getName();
         this.students = new ArrayList<String>();
         for (CoursePerson p : persons) {
-            students.add(p.getPerson().getName());
+        	students.add(Utils.getCompleteName(p.getPerson()));
         }
 
         this.topics = new ArrayList<ReportTopicPOJO>();

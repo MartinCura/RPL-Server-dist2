@@ -5,6 +5,7 @@ import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Course;
 import com.rpl.model.CoursePerson;
+import com.rpl.service.util.Utils;
 
 import java.util.*;
 
@@ -19,7 +20,7 @@ public class ReportCourseActivitiesPOJO {
         this.courseName = course.getName();
         this.students = new ArrayList<String>();
         for (CoursePerson p : persons) {
-            students.add(p.getPerson().getName());
+        	students.add(Utils.getCompleteName(p.getPerson()));
         }
 
         activities = new ArrayList<ReportActivityPOJO>();
