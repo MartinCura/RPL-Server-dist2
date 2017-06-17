@@ -3,8 +3,10 @@ package com.rpl.serviceImpl;
 import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Topic;
+import com.rpl.model.reports.Report1;
 import com.rpl.persistence.ActivityDAO;
 import com.rpl.persistence.ActivitySubmissionDAO;
+import com.rpl.persistence.ReportDAO;
 import com.rpl.persistence.TopicDAO;
 import com.rpl.service.ReportService;
 
@@ -23,6 +25,8 @@ public class ReportServiceImpl implements ReportService {
     private TopicDAO topicDAO;
     @Inject
     private ActivitySubmissionDAO activitySubmissionDAO;
+    @Inject
+    private ReportDAO reportDAO;
 
     public Map<Activity, List<ActivitySubmission>> getActivityReportByCourse(Long courseId, Long assistantId) {
         Map<Activity, List<ActivitySubmission>> submissionsByActivity = new HashMap<Activity, List<ActivitySubmission>>();
@@ -62,5 +66,13 @@ public class ReportServiceImpl implements ReportService {
             submissionsByTopic.get(submission.getActivity().getTopic()).add(submission);
         }
         return submissionsByTopic;
+    }
+
+    @Override
+    public List<Report1> getReport1(Long personId, Long topicId) {
+        if (topicId == null) {
+            return reportDAO.getReport1(personId);
+        }
+        return reportDAO.getReport1(personId, topicId);
     }
 }

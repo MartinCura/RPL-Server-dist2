@@ -7,15 +7,13 @@ import com.rpl.POJO.ReportCourseTopicsPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplRoleException;
 import com.rpl.model.*;
+import com.rpl.model.reports.Report1;
 import com.rpl.security.SecurityHelper;
 import com.rpl.service.*;
 import com.rpl.service.util.Utils;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
@@ -92,4 +90,18 @@ public class ReportEndpoint {
 
 		return Response.status(200).entity(new ReportCourseTopicsPOJO(course, students, topics, submissionsByTopic)).build();
 	}
+
+	@GET
+	@Path("/1/{personId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	/**
+	 * Por alumno, por actividad cantidad de submissions hasta que se marcó como definitiva y si fue resuelta.
+	 * Se debe seleccionar un alumno, y opcionalmente, la categoría.
+	 */
+	public Response getReport1(@PathParam("personId") Long personId, @QueryParam("topicId") Long topicId) {
+		List<Report1> report = reportService.getReport1(personId, topicId);
+
+		return Response.status(200).entity(report).build();
+	}
+
 }
