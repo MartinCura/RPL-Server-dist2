@@ -94,14 +94,14 @@ public class ReportEndpoint {
 	}
 
 	@GET
-	@Path("/1/{personId}")
+	@Path("/1/{courseId}/{personId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	/**
 	 * Por alumno, por actividad cantidad de submissions hasta que se marcó como definitiva y si fue resuelta.
 	 * Se debe seleccionar un alumno, y opcionalmente, la categoría.
 	 */
-	public Response getReport1(@PathParam("personId") Long personId, @QueryParam("topicId") Long topicId) {
-		List<Report1> report = reportService.getReport1(personId, topicId);
+	public Response getReport1(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId, @QueryParam("topicId") Long topicId) {
+		List<Report1> report = reportService.getReport1(courseId, personId, topicId);
 
 		return Response.status(200).entity(report).build();
 	}

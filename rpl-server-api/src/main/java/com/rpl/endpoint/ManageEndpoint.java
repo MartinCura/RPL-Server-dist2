@@ -29,10 +29,7 @@ import com.rpl.model.MessageCodes;
 import com.rpl.model.RoleCourse;
 import com.rpl.model.Topic;
 import com.rpl.security.SecurityHelper;
-import com.rpl.service.ActivityService;
-import com.rpl.service.CourseService;
-import com.rpl.service.TopicService;
-import com.rpl.service.UserService;
+import com.rpl.service.*;
 import com.rpl.service.util.Utils;
 
 @Secured
@@ -47,6 +44,8 @@ public class ManageEndpoint {
 	private TopicService topicService;
 	@Inject
 	private UserService userService;
+	@Inject
+	private PersonService personService;
 	
 	@GET
 	@Path("/{id}/activities")
@@ -87,11 +86,19 @@ public class ManageEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getStudents(@PathParam("id") Long id) {
 		try {
-			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
-		List<CoursePerson> students = courseService.getStudents(id);
+
+		CoursePerson person = personService.getCoursePersonByIdAndCourse(userService.getCurrentUser().getId(), id);
+
+		List<CoursePerson> students;
+		if (person.getRole().equals(RoleCourse.ASSISTANT_PROFESSOR)) {
+			students = courseService.getStudentsByAssistant(id, person.getPerson().getId());
+		} else {
+			students = courseService.getStudents(id);
+		}
 		List<StudentPOJO> studentPOJOS = new ArrayList<StudentPOJO>();
 		for (CoursePerson student : students) {
 			studentPOJOS.add(new StudentPOJO(student));

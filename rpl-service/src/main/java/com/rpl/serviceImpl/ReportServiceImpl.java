@@ -71,11 +71,11 @@ public class ReportServiceImpl implements ReportService {
         return submissionsByTopic;
     }
 
-    public List<Report1> getReport1(Long personId, Long topicId) {
+    public List<Report1> getReport1(Long courseId, Long personId, Long topicId) {
         if (topicId == null) {
-            return reportDAO.getReport1(personId);
+            return reportDAO.getReport1ByCourse(personId, courseId);
         }
-        return reportDAO.getReport1(personId, topicId);
+        return reportDAO.getReport1ByTopic(personId, topicId);
     }
 
     public List<Report2> getReport2(Long topicId) {
