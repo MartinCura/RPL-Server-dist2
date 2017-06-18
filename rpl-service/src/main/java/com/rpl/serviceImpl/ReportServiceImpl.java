@@ -4,6 +4,9 @@ import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Topic;
 import com.rpl.model.reports.Report1;
+import com.rpl.model.reports.Report2;
+import com.rpl.model.reports.Report5;
+import com.rpl.model.reports.Report6;
 import com.rpl.persistence.ActivityDAO;
 import com.rpl.persistence.ActivitySubmissionDAO;
 import com.rpl.persistence.ReportDAO;
@@ -68,11 +71,22 @@ public class ReportServiceImpl implements ReportService {
         return submissionsByTopic;
     }
 
-    @Override
     public List<Report1> getReport1(Long personId, Long topicId) {
         if (topicId == null) {
             return reportDAO.getReport1(personId);
         }
         return reportDAO.getReport1(personId, topicId);
+    }
+
+    public List<Report2> getReport2(Long topicId) {
+        return reportDAO.getReport2(topicId);
+    }
+
+    public List<Report5> getReport5(Long topicId) {
+        return reportDAO.getReport5(topicId);
+    }
+
+    public List<Report6> getReport6(Long topicId, Long personId) {
+        return reportDAO.getReport6(topicId, personId);
     }
 }

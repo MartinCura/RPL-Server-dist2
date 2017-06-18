@@ -8,6 +8,9 @@ import com.rpl.annotation.Secured;
 import com.rpl.exception.RplRoleException;
 import com.rpl.model.*;
 import com.rpl.model.reports.Report1;
+import com.rpl.model.reports.Report2;
+import com.rpl.model.reports.Report5;
+import com.rpl.model.reports.Report6;
 import com.rpl.security.SecurityHelper;
 import com.rpl.service.*;
 import com.rpl.service.util.Utils;
@@ -16,7 +19,6 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -100,6 +102,43 @@ public class ReportEndpoint {
 	 */
 	public Response getReport1(@PathParam("personId") Long personId, @QueryParam("topicId") Long topicId) {
 		List<Report1> report = reportService.getReport1(personId, topicId);
+
+		return Response.status(200).entity(report).build();
+	}
+
+	@GET
+	@Path("/2/{topicId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	/**
+	 * Promedio por actividad, es decir, cuántas submissions realizó cada alumno hasta llegar a la solución definitiva promediadas.
+	 * Si no hubo solución definitiva, no se tomar en cuenta. Se debe elegir la categoría de las actividades a mostrar
+	 */
+	public Response getReport2(@PathParam("topicId") Long topicId) {
+		List<Report2> report = reportService.getReport2(topicId);
+
+		return Response.status(200).entity(report).build();
+	}
+
+	@GET
+	@Path("/5/{topicId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	/**
+	 * Listado de alumnos con porcentaje mínimo definible de completado en cierta categoría. Muestra alumno y porcentaje.
+	 */
+	public Response getReport5(@PathParam("topicId") Long topicId) {
+		List<Report5> report = reportService.getReport5(topicId);
+
+		return Response.status(200).entity(report).build();
+	}
+
+	@GET
+	@Path("/6/{topicId}/{personId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	/**
+	 * Por categoría y alumno, eje X: Actividades ordenadas por la dificultad (puntaje definido); eje Y: Cantidad de intentos
+	 */
+	public Response getReport6(@PathParam("topicId") Long topicId, @PathParam("personId") Long personId) {
+		List<Report6> report = reportService.getReport6(topicId, personId);
 
 		return Response.status(200).entity(report).build();
 	}
