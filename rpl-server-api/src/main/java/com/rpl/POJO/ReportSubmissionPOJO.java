@@ -1,6 +1,7 @@
 package com.rpl.POJO;
 
 import com.rpl.model.ActivitySubmission;
+import com.rpl.service.util.Utils;
 
 public class ReportSubmissionPOJO {
     private Long submissionId;
@@ -8,7 +9,7 @@ public class ReportSubmissionPOJO {
 
     public ReportSubmissionPOJO(ActivitySubmission submission) {
         this.submissionId = submission.getId();
-        this.personName = submission.getPerson().getName();
+        this.personName = Utils.getCompleteName(submission.getPerson());
     }
 
     public Long getSubmissionId() {
