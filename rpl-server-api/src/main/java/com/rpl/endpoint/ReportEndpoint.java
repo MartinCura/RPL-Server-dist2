@@ -7,10 +7,7 @@ import com.rpl.POJO.ReportCourseTopicsPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplRoleException;
 import com.rpl.model.*;
-import com.rpl.model.reports.Report1;
-import com.rpl.model.reports.Report2;
-import com.rpl.model.reports.Report5;
-import com.rpl.model.reports.Report6;
+import com.rpl.model.reports.*;
 import com.rpl.security.SecurityHelper;
 import com.rpl.service.*;
 import com.rpl.service.util.Utils;
@@ -120,6 +117,18 @@ public class ReportEndpoint {
 	}
 
 	@GET
+	@Path("/3/{topicId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	/**
+	 * Muestra las actividades de la categoría seleccionada y si fue o no resuelta por cada alumno (cada fila es un alumno)
+	 */
+	public Response getReport3(@PathParam("topicId") Long topicId) {
+		List<Report3> report = reportService.getReport3(topicId);
+
+		return Response.status(200).entity(report).build();
+	}
+
+	@GET
 	@Path("/5/{topicId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	/**
@@ -143,4 +152,12 @@ public class ReportEndpoint {
 		return Response.status(200).entity(report).build();
 	}
 
+	@GET
+	@Path("/ranking/{courseId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getReportRanking(@PathParam("courseId") Long courseId, @QueryParam("date") String date) {
+		List<ReportRanking> report = reportService.getReportRanking(courseId, date);
+
+		return Response.status(200).entity(report).build();
+	}
 }

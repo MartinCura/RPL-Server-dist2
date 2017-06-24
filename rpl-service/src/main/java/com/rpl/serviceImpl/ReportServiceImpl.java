@@ -3,10 +3,7 @@ package com.rpl.serviceImpl;
 import com.rpl.model.Activity;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.Topic;
-import com.rpl.model.reports.Report1;
-import com.rpl.model.reports.Report2;
-import com.rpl.model.reports.Report5;
-import com.rpl.model.reports.Report6;
+import com.rpl.model.reports.*;
 import com.rpl.persistence.ActivityDAO;
 import com.rpl.persistence.ActivitySubmissionDAO;
 import com.rpl.persistence.ReportDAO;
@@ -15,10 +12,12 @@ import com.rpl.service.ReportService;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.*;
 
 @Stateless
 public class ReportServiceImpl implements ReportService {
@@ -82,11 +81,29 @@ public class ReportServiceImpl implements ReportService {
         return reportDAO.getReport2(topicId);
     }
 
+    public List<Report3> getReport3(Long topicId) {
+        return reportDAO.getReport3(topicId);
+    }
+
     public List<Report5> getReport5(Long topicId) {
         return reportDAO.getReport5(topicId);
     }
 
     public List<Report6> getReport6(Long topicId, Long personId) {
         return reportDAO.getReport6(topicId, personId);
+    }
+
+    public List<ReportRanking> getReportRanking(Long courseId, String dateStr) {
+        Date date;
+        if (dateStr != null) {
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
+            } catch (ParseException e) {
+                date = new Date();
+            }
+        } else {
+            date = new Date();
+        }
+        return reportDAO.getReportRanking(courseId, date);
     }
 }

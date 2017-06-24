@@ -2,6 +2,7 @@ package com.rpl.persistence;
 
 import com.rpl.model.reports.*;
 
+import java.util.Date;
 import java.util.List;
 
 public class ReportDAO extends ApplicationDAO {
@@ -41,6 +42,15 @@ public class ReportDAO extends ApplicationDAO {
 
 	}
 
+	public List<Report3> getReport3(Long topicId) {
+		return entityManager.createNativeQuery("SELECT p.id as \"studentId\", p.name as \"studentName\", " +
+				"array_agg((select id from activity_submission where activity_id = a.id and person_id = p.id and selected = 't'))\\:\\:text as result " +
+				"FROM activity a, person p " +
+				"WHERE a.topic_id = :topicId GROUP BY p.id ORDER BY p.name", "report3")
+				.setParameter("topicId", topicId)
+				.getResultList();
+	}
+
 	public List<Report5> getReport5(Long topicId) {
 		return entityManager.createNativeQuery("SELECT p.id as \"studentId\", p.name as \"studentName\", " +
 				"round(sum(a.points) / (SELECT SUM(points) FROM activity WHERE topic_id= :topicId)\\:\\:numeric, 2) as percentage " +
@@ -60,4 +70,12 @@ public class ReportDAO extends ApplicationDAO {
 				.getResultList();
 	}
 
+	public List<ReportRanking> getReportRanking(Long courseId, Date date) {
+		return entityManager.createNativeQuery("SELECT p.name as \"studentName\", sum(a.points) as points " +
+				"FROM activity_submission s, activity a, topic t, person p " +
+				"WHERE s.activity_id = a.id AND a.topic_id = t.id AND t.course_id = :courseId AND s.person_id = p.id AND s.selected = 't' " +
+				"AND s.submission_date <= :date GROUP BY p.id ORDER BY points desc;", "reportranking")
+				.setParameter("courseId", courseId).setParameter("date", date)
+				.getResultList();
+	}
 }
