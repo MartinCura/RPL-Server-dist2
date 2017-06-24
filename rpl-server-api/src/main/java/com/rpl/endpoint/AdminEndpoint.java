@@ -19,6 +19,7 @@ import com.rpl.model.Course;
 import com.rpl.model.CoursePerson;
 import com.rpl.model.MessageCodes;
 import com.rpl.model.Person;
+import com.rpl.model.PersonImage;
 import com.rpl.model.Role;
 import com.rpl.model.RoleCourse;
 import com.rpl.service.CourseService;
@@ -136,7 +137,11 @@ public class AdminEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updatePersonInfoById(@PathParam("personId") Long personId, PersonInfoPOJO pojo) {
-        personService.updatePersonInfo(personId, pojo.getName(), pojo.getMail(), pojo.getStudentId(), pojo.getRole());
+    	try {
+			personService.updatePersonInfo(personId, pojo.getName(), pojo.getMail(), pojo.getStudentId(), pojo.getRole());
+		} catch (RplException e) {
+			return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
+		}
         return Response.ok().build();
     }
 

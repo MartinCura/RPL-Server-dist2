@@ -5,6 +5,7 @@ import com.rpl.POJO.PersonInfoPOJO;
 import com.rpl.POJO.PersonPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplException;
+import com.rpl.model.MessageCodes;
 import com.rpl.model.Person;
 import com.rpl.model.PersonImage;
 import com.rpl.model.Role;
@@ -12,10 +13,12 @@ import com.rpl.service.PersonService;
 import com.rpl.service.UserService;
 import com.rpl.service.util.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.hibernate.exception.ConstraintViolationException;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import javax.inject.Inject;
+import javax.persistence.PersistenceException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -100,7 +103,11 @@ public class PersonEndpoint {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updatePersonInfoById(PersonInfoPOJO pojo) {
-		personService.updatePersonInfo(userService.getCurrentUser().getId(), pojo.getName(), pojo.getMail(), pojo.getStudentId());
+		try {
+			personService.updatePersonInfo(userService.getCurrentUser().getId(), pojo.getName(), pojo.getMail(), pojo.getStudentId());
+		} catch (RplException e) {
+			return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
+		}
 		return Response.ok().build();
 	}
 
