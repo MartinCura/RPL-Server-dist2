@@ -12,7 +12,7 @@ public class ReportDAO extends ApplicationDAO {
 				"(SELECT id FROM activity_submission WHERE person_id = :personId AND activity_id = a.id AND selected = 't') as \"submissionId\" " +
 				"FROM activity_submission s, person p, topic t, activity a " +
 				"WHERE p.id = s.person_id AND s.activity_id = a.id AND a.topic_id = t.id AND s.person_id = :personId AND t.course_id = :courseId AND a.state = :state " +
-				"GROUP BY a.id, t.name ORDER BY a.id", "report1")
+				"GROUP BY a.id, t.name ORDER BY t.name, a.id", "report1")
 				.setParameter("courseId", courseId).setParameter("personId", personId).setParameter("state", "ENABLED")
 				.getResultList();
 
@@ -23,7 +23,7 @@ public class ReportDAO extends ApplicationDAO {
 				"(SELECT id FROM activity_submission WHERE person_id = :personId AND activity_id = a.id AND selected = 't') as \"submissionId\" " +
 				"FROM activity_submission s, person p, topic t, activity a " +
 				"WHERE p.id = s.person_id AND s.activity_id = a.id AND a.topic_id = t.id AND s.person_id = :personId AND t.id = :topicId AND a.state = :state " +
-				"GROUP BY a.id, t.name ORDER BY a.id", "report1")
+				"GROUP BY a.id, t.name ORDER BY t.name, a.id", "report1")
 				.setParameter("topicId", topicId).setParameter("personId", personId).setParameter("state", "ENABLED")
 				.getResultList();
 
@@ -45,8 +45,10 @@ public class ReportDAO extends ApplicationDAO {
 	public List<Report3> getReport3(Long topicId) {
 		return entityManager.createNativeQuery("SELECT p.id as \"studentId\", p.name as \"studentName\", " +
 				"array_agg((select id from activity_submission where activity_id = a.id and person_id = p.id and selected = 't'))\\:\\:text as result " +
-				"FROM activity a, person p " +
-				"WHERE a.state = :state AND a.topic_id = :topicId GROUP BY p.id ORDER BY p.name", "report3")
+				"FROM activity a, topic t, person p " +
+				"WHERE a.state = :state AND a.topic_id = t.id AND t.id = :topicId " +
+				"AND exists (select 1 from course_person where person_id = p.id and course_id = t.course_id and role = 'STUDENT') " +
+				"GROUP BY p.id ORDER BY p.name", "report3")
 				.setParameter("topicId", topicId).setParameter("state", "ENABLED")
 				.getResultList();
 	}
