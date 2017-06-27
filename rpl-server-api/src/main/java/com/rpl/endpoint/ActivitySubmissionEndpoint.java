@@ -18,12 +18,14 @@ import com.rpl.POJO.MessagePOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplException;
 import com.rpl.exception.RplItemDoesNotBelongToPersonException;
+import com.rpl.exception.RplRoleException;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.MessageCodes;
 import com.rpl.model.RoleCourse;
 import com.rpl.security.SecurityHelper;
 import com.rpl.service.ActivitySubmissionService;
 import com.rpl.service.UserService;
+import com.rpl.service.util.Utils;
 
 @Secured
 @Path("/submissions")
@@ -55,6 +57,11 @@ public class ActivitySubmissionEndpoint {
 	@Path("/activity/{activityId}/person/{personId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubmissionById(@PathParam("userId") Long userId, @PathParam("activityId") Long activityId) {
+		try {
+			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 		List<ActivitySubmission> submissions = activitySubmissionService.getSubmissionsByActivity(userId, activityId);
 		List<ActivitySubmissionSimplePOJO> submissionPOJOS = new ArrayList<ActivitySubmissionSimplePOJO>();
 		for (ActivitySubmission submission : submissions) {
