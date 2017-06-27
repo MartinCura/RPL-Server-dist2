@@ -9,6 +9,7 @@
             <column name="topicName"/>
             <column name="activityName"/>
             <column name="quantityOfSubmissions" class="java.lang.Integer"/>
+            <column name="points" class="java.lang.Integer"/>
             <column name="submissionId" class="java.lang.Long"/>
         </constructor-result>
     </sql-result-set-mapping>
