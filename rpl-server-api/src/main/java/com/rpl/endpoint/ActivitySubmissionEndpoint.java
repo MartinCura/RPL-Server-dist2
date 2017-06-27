@@ -1,5 +1,8 @@
 package com.rpl.endpoint;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -10,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.ActivitySubmissionPOJO;
+import com.rpl.POJO.ActivitySubmissionSimplePOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplException;
@@ -46,6 +50,19 @@ public class ActivitySubmissionEndpoint {
 		return Response.status(200).entity(new ActivitySubmissionPOJO(submission)).build();
 
 	}
+	
+	@GET
+	@Path("/activity/{activityId}/person/{personId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getSubmissionById(@PathParam("userId") Long userId, @PathParam("activityId") Long activityId) {
+		List<ActivitySubmission> submissions = activitySubmissionService.getSubmissionsByActivity(userId, activityId);
+		List<ActivitySubmissionSimplePOJO> submissionPOJOS = new ArrayList<ActivitySubmissionSimplePOJO>();
+		for (ActivitySubmission submission : submissions) {
+			submissionPOJOS.add(new ActivitySubmissionSimplePOJO(submission));
+		}
+		return Response.status(200).entity(submissionPOJOS).build();
+
+	}	
 
 	@POST
 	@Path("/{id}/select")
