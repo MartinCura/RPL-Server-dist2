@@ -81,6 +81,10 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 	public List<ActivitySubmission> getSubmissionsByActivity(Long activityId) {
 		return activitySubmissionDAO.findByPersonAndActivity(userService.getCurrentUser().getId(), activityId);
 	}
+	
+	public List<ActivitySubmission> getSubmissionsByActivity(Long id, Long activityId) {
+		return activitySubmissionDAO.findByPersonAndActivity(id, activityId);
+	}
 
 	@Override
 	public List<ActivitySubmission> getDefinitiveSubmissionsByActivity(Long activityId) throws RplException {

@@ -1,5 +1,16 @@
 package com.rpl.endpoint;
 
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import com.rpl.POJO.ActivitySubmissionSolutionPOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.ReportCoursePOJO;
@@ -10,12 +21,6 @@ import com.rpl.model.reports.*;
 import com.rpl.security.SecurityHelper;
 import com.rpl.service.*;
 import com.rpl.service.util.Utils;
-
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.List;
 
 @Secured
 @Path("/reports")
