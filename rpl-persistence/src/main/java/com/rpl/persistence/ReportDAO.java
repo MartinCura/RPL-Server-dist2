@@ -8,24 +8,24 @@ import java.util.List;
 public class ReportDAO extends ApplicationDAO {
 
 	public List<Report1> getReport1ByCourse(Long personId, Long courseId) {
-		return entityManager.createNativeQuery("SELECT t.name as \"topicName\", a.name as \"activityName\", " +
+		return entityManager.createNativeQuery("SELECT t.name as \"topicName\", a.name as \"activityName\", a.points as points, " +
 				"(select count(*) from activity_submission where person_id = :personId and activity_id = a.id) as \"quantityOfSubmissions\", " +
 				"(SELECT id FROM activity_submission WHERE person_id = :personId AND activity_id = a.id AND selected = 't') as \"submissionId\" " +
 				"FROM activity a, topic t " +
 				"WHERE a.topic_id = t.id AND t.course_id = :courseId AND a.state = :state " +
-				"ORDER BY t.name, a.id", "report1")
+				"ORDER BY t.name, a.points asc, a.id", "report1")
 				.setParameter("courseId", courseId).setParameter("personId", personId).setParameter("state", "ENABLED")
 				.getResultList();
 
 	}
 
 	public List<Report1> getReport1ByTopic(Long personId, Long topicId) {
-		return entityManager.createNativeQuery("SELECT t.name as \"topicName\", a.name as \"activityName\", " +
-				"(select count(*) from activity_submission where person_id = 37 and activity_id = a.id) as \"quantityOfSubmissions\", " +
+		return entityManager.createNativeQuery("SELECT t.name as \"topicName\", a.name as \"activityName\", a.points as points, " +
+				"(select count(*) from activity_submission where person_id = :personId and activity_id = a.id) as \"quantityOfSubmissions\", " +
 				"(SELECT id FROM activity_submission WHERE person_id = :personId AND activity_id = a.id AND selected = 't') as \"submissionId\" " +
 				"FROM activity a, topic t " +
 				"WHERE a.topic_id = t.id AND t.id = :topicId AND a.state = :state " +
-				"ORDER BY t.name, a.id", "report1")
+				"ORDER BY t.name, a.points asc, a.id", "report1")
 				.setParameter("topicId", topicId).setParameter("personId", personId).setParameter("state", "ENABLED")
 				.getResultList();
 
