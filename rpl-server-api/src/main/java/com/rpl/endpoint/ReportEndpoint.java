@@ -5,16 +5,10 @@ import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.ReportCoursePOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplRoleException;
-import com.rpl.model.Activity;
-import com.rpl.model.ActivitySubmission;
-import com.rpl.model.MessageCodes;
-import com.rpl.model.RoleCourse;
+import com.rpl.model.*;
 import com.rpl.model.reports.*;
 import com.rpl.security.SecurityHelper;
-import com.rpl.service.ActivityService;
-import com.rpl.service.ActivitySubmissionService;
-import com.rpl.service.ReportService;
-import com.rpl.service.UserService;
+import com.rpl.service.*;
 import com.rpl.service.util.Utils;
 
 import javax.inject.Inject;
@@ -34,6 +28,10 @@ public class ReportEndpoint {
 	private ActivitySubmissionService activitySubmissionService;
 	@Inject
 	private UserService userService;
+	@Inject
+	private PersonService personService;
+	@Inject
+	private TopicService topicService;
 
 	@GET
 	@Path("/submission/{id}")
@@ -82,8 +80,16 @@ public class ReportEndpoint {
 	 * Muestra las actividades de la categoría seleccionada y si fue o no resuelta por cada alumno (cada fila es un alumno)
 	 */
 	public Response getReport3(@PathParam("topicId") Long topicId) {
+		Course course = topicService.getTopicById(topicId).getCourse();
+		CoursePerson person = personService.getCoursePersonByIdAndCourse(userService.getCurrentUser().getId(), course.getId());
+
 		List<Activity> activities = activityService.getActivitiesByTopic(topicId);
-		List<Report3> report = reportService.getReport3(topicId);
+		List<Report3> report;
+		if (person.getRole().equals(RoleCourse.ASSISTANT_PROFESSOR)) {
+			report = reportService.getReport3ByAssistant(topicId, person.getPerson().getId());
+		} else {
+			report = reportService.getReport3(topicId);
+		}
 
 		return Response.status(200).entity(new ReportCoursePOJO(activities, report)).build();
 	}
@@ -95,7 +101,15 @@ public class ReportEndpoint {
 	 * Listado de alumnos con porcentaje mínimo definible de completado en cierta categoría. Muestra alumno y porcentaje.
 	 */
 	public Response getReport5(@PathParam("topicId") Long topicId) {
-		List<Report5> report = reportService.getReport5(topicId);
+		Course course = topicService.getTopicById(topicId).getCourse();
+		CoursePerson person = personService.getCoursePersonByIdAndCourse(userService.getCurrentUser().getId(), course.getId());
+
+		List<Report5> report;
+		if (person.getRole().equals(RoleCourse.ASSISTANT_PROFESSOR)) {
+			report = reportService.getReport5ByAssistant(topicId, person.getPerson().getId());
+		} else {
+			report = reportService.getReport5(topicId);
+		}
 
 		return Response.status(200).entity(report).build();
 	}
@@ -115,9 +129,15 @@ public class ReportEndpoint {
 	@GET
 	@Path("/ranking/{courseId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getReportRanking(@PathParam("courseId") Long courseId, @QueryParam("date") String date) {
-		List<ReportRanking> report = reportService.getReportRanking(courseId, date);
+	public Response getReport7(@PathParam("courseId") Long courseId, @QueryParam("date") String date) {
+		CoursePerson person = personService.getCoursePersonByIdAndCourse(userService.getCurrentUser().getId(), courseId);
 
+		List<Report7> report;
+		if (person.getRole().equals(RoleCourse.ASSISTANT_PROFESSOR)) {
+			report = reportService.getReport7ByAssistant(courseId, date, person.getPerson().getId());
+		} else {
+			report = reportService.getReport7(courseId, date);
+		}
 		return Response.status(200).entity(report).build();
 	}
 }

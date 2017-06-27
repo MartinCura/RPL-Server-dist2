@@ -3,6 +3,7 @@ package com.rpl.serviceImpl;
 import com.rpl.model.reports.*;
 import com.rpl.persistence.ReportDAO;
 import com.rpl.service.ReportService;
+import com.rpl.service.util.Utils;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -31,25 +32,29 @@ public class ReportServiceImpl implements ReportService {
         return reportDAO.getReport3(topicId);
     }
 
+    public List<Report3> getReport3ByAssistant(Long topicId, Long assistantId) {
+        return reportDAO.getReport3ByAssistant(topicId, assistantId);
+    }
+
     public List<Report5> getReport5(Long topicId) {
         return reportDAO.getReport5(topicId);
+    }
+
+    public List<Report5> getReport5ByAssistant(Long topicId, Long assistantId) {
+        return reportDAO.getReport5ByAssistant(topicId, assistantId);
     }
 
     public List<Report6> getReport6(Long topicId, Long personId) {
         return reportDAO.getReport6(topicId, personId);
     }
 
-    public List<ReportRanking> getReportRanking(Long courseId, String dateStr) {
-        Date date;
-        if (dateStr != null) {
-            try {
-                date = new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
-            } catch (ParseException e) {
-                date = new Date();
-            }
-        } else {
-            date = new Date();
-        }
-        return reportDAO.getReportRanking(courseId, date);
+    public List<Report7> getReport7(Long courseId, String dateStr) {
+        Date date = Utils.stringToDate(dateStr);
+        return reportDAO.getReport7(courseId, date);
+    }
+
+    public List<Report7> getReport7ByAssistant(Long courseId, String dateStr, Long assistantId) {
+        Date date = Utils.stringToDate(dateStr);
+        return reportDAO.getReport7ByAssistant(courseId, date, assistantId);
     }
 }

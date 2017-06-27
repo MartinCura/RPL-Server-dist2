@@ -1,10 +1,10 @@
 package com.rpl.model.reports;
 
-public class ReportRanking {
+public class Report7 {
     private String studentName;
     private int points;
 
-    public ReportRanking(String studentName, int points) {
+    public Report7(String studentName, int points) {
         this.studentName = studentName;
         this.points = points;
     }
