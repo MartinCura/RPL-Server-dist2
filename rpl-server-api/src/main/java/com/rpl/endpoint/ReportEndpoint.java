@@ -60,8 +60,14 @@ public class ReportEndpoint {
 	 * Se debe seleccionar un alumno, y opcionalmente, la categoría.
 	 */
 	public Response getReport1(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId, @QueryParam("topicId") Long topicId) {
-		List<Report1> report = reportService.getReport1(courseId, personId, topicId);
+		try {
+			SecurityHelper.checkPermissions(courseId,
+					Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 
+		List<Report1> report = reportService.getReport1(courseId, personId, topicId);
 		return Response.status(200).entity(report).build();
 	}
 
@@ -73,8 +79,14 @@ public class ReportEndpoint {
 	 * Si no hubo solución definitiva, no se tomar en cuenta. Se debe elegir la categoría de las actividades a mostrar
 	 */
 	public Response getReport2(@PathParam("topicId") Long topicId) {
-		List<Report2> report = reportService.getReport2(topicId);
+		try {
+			SecurityHelper.checkPermissionsByTopicId(topicId,
+					Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 
+		List<Report2> report = reportService.getReport2(topicId);
 		return Response.status(200).entity(report).build();
 	}
 
@@ -85,6 +97,13 @@ public class ReportEndpoint {
 	 * Muestra las actividades de la categoría seleccionada y si fue o no resuelta por cada alumno (cada fila es un alumno)
 	 */
 	public Response getReport3(@PathParam("topicId") Long topicId) {
+		try {
+			SecurityHelper.checkPermissionsByTopicId(topicId,
+					Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+
 		Course course = topicService.getTopicById(topicId).getCourse();
 		CoursePerson person = personService.getCoursePersonByIdAndCourse(userService.getCurrentUser().getId(), course.getId());
 
@@ -106,6 +125,13 @@ public class ReportEndpoint {
 	 * Listado de alumnos con porcentaje mínimo definible de completado en cierta categoría. Muestra alumno y porcentaje.
 	 */
 	public Response getReport5(@PathParam("topicId") Long topicId) {
+		try {
+			SecurityHelper.checkPermissionsByTopicId(topicId,
+					Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+
 		Course course = topicService.getTopicById(topicId).getCourse();
 		CoursePerson person = personService.getCoursePersonByIdAndCourse(userService.getCurrentUser().getId(), course.getId());
 
@@ -126,8 +152,14 @@ public class ReportEndpoint {
 	 * Por categoría y alumno, eje X: Actividades ordenadas por la dificultad (puntaje definido); eje Y: Cantidad de intentos
 	 */
 	public Response getReport6(@PathParam("topicId") Long topicId, @PathParam("personId") Long personId) {
-		List<Report6> report = reportService.getReport6(topicId, personId);
+		try {
+			SecurityHelper.checkPermissionsByTopicId(topicId,
+					Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
 
+		List<Report6> report = reportService.getReport6(topicId, personId);
 		return Response.status(200).entity(report).build();
 	}
 
@@ -135,6 +167,13 @@ public class ReportEndpoint {
 	@Path("/ranking/{courseId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getReport7(@PathParam("courseId") Long courseId, @QueryParam("date") String date) {
+		try {
+			SecurityHelper.checkPermissions(courseId,
+					Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+
 		CoursePerson person = personService.getCoursePersonByIdAndCourse(userService.getCurrentUser().getId(), courseId);
 
 		List<Report7> report;
