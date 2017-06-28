@@ -11,6 +11,8 @@ public interface ReportService {
     public List<Report2> getReport2(Long topicId);
     public List<Report3> getReport3(Long topicId);
     public List<Report3> getReport3ByAssistant(Long topicId, Long assistantId);
+    public List<Report4> getReport4(Long courseId, String dateStr);
+    public List<Report4> getReport4ByAssistant(Long courseId, String dateStr, Long assistantId);
     public List<Report5> getReport5(Long topicId);
     public List<Report5> getReport5ByAssistant(Long topicId, Long assistantId);
     public List<Report6> getReport6(Long topicId, Long personId);

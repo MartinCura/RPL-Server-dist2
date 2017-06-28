@@ -3,6 +3,7 @@ package com.rpl.service.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -32,5 +33,12 @@ public class Utils {
             return new Date();
         }
 
+    }
+
+    public static Date addMonths (Date date, int months) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MONTH, months);
+        return cal.getTime();
     }
 }

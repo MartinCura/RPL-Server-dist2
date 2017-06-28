@@ -119,6 +119,28 @@ public class ReportEndpoint {
 	}
 
 	@GET
+	@Path("/4/{courseId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getReport4(@PathParam("courseId") Long courseId, @QueryParam("date") String date) {
+		try {
+			SecurityHelper.checkPermissions(courseId,
+					Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+
+		CoursePerson person = personService.getCoursePersonByIdAndCourse(userService.getCurrentUser().getId(), courseId);
+
+		List<Report4> report;
+		if (person.getRole().equals(RoleCourse.ASSISTANT_PROFESSOR)) {
+			report = reportService.getReport4ByAssistant(courseId, date, person.getPerson().getId());
+		} else {
+			report = reportService.getReport4(courseId, date);
+		}
+		return Response.status(200).entity(report).build();
+	}
+
+	@GET
 	@Path("/5/{topicId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	/**
