@@ -7,6 +7,7 @@
     <sql-result-set-mapping name="report1">
         <constructor-result target-class="com.rpl.model.reports.Report1">
             <column name="topicName"/>
+            <column name="activityId" class="java.lang.Long"/>
             <column name="activityName"/>
             <column name="quantityOfSubmissions" class="java.lang.Integer"/>
             <column name="points" class="java.lang.Integer"/>

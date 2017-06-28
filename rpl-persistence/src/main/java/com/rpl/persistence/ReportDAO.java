@@ -8,7 +8,7 @@ import java.util.List;
 public class ReportDAO extends ApplicationDAO {
 
 	public List<Report1> getReport1ByCourse(Long personId, Long courseId) {
-		return entityManager.createNativeQuery("SELECT t.name as \"topicName\", a.name as \"activityName\", a.points as points, " +
+		return entityManager.createNativeQuery("SELECT t.name as \"topicName\", a.id as \"activityId\", a.name as \"activityName\", a.points as points, " +
 				"(select count(*) from activity_submission where person_id = :personId and activity_id = a.id) as \"quantityOfSubmissions\", " +
 				"(SELECT id FROM activity_submission WHERE person_id = :personId AND activity_id = a.id AND selected = 't') as \"submissionId\" " +
 				"FROM activity a, topic t " +
@@ -20,7 +20,7 @@ public class ReportDAO extends ApplicationDAO {
 	}
 
 	public List<Report1> getReport1ByTopic(Long personId, Long topicId) {
-		return entityManager.createNativeQuery("SELECT t.name as \"topicName\", a.name as \"activityName\", a.points as points, " +
+		return entityManager.createNativeQuery("SELECT t.name as \"topicName\", a.id as \"activityId\", a.name as \"activityName\", a.points as points, " +
 				"(select count(*) from activity_submission where person_id = :personId and activity_id = a.id) as \"quantityOfSubmissions\", " +
 				"(SELECT id FROM activity_submission WHERE person_id = :personId AND activity_id = a.id AND selected = 't') as \"submissionId\" " +
 				"FROM activity a, topic t " +
@@ -73,7 +73,7 @@ public class ReportDAO extends ApplicationDAO {
 				"FROM activity_submission s, activity a, person p WHERE s.person_id = p.id AND s.activity_id = a.id AND s.submission_date >= :dateFrom " +
 				"AND s.submission_date <= :dateTo AND s.activity_id in " +
 				"	(select a.id from activity a, topic t where a.topic_id = t.id and a.state = :state and t.course_id = :courseId) " +
-				"GROUP BY s.submission_date, p.id ORDER BY submission_date asc, p.id) sq GROUP BY sq.submission_date", "report4")
+				"GROUP BY s.submission_date, p.id ORDER BY submission_date asc, count(*) desc, p.id) sq GROUP BY sq.submission_date", "report4")
 				.setParameter("courseId", courseId).setParameter("dateFrom", dateFrom).setParameter("dateTo", dateTo).setParameter("state", "ENABLED")
 				.getResultList();
 	}
@@ -86,7 +86,7 @@ public class ReportDAO extends ApplicationDAO {
 				"AND s.submission_date <= :dateTo AND s.activity_id in " +
 				"	(select a.id from activity a, topic t where a.topic_id = t.id and a.state = :state and t.course_id = :courseId) " +
 				"AND p.id IN (select person_id from course_person where course_id  = :courseId and role='STUDENT' and assistant_id = :assistantId)" +
-				"GROUP BY s.submission_date, p.id ORDER BY submission_date asc, p.id) sq GROUP BY sq.submission_date", "report4")
+				"GROUP BY s.submission_date, p.id ORDER BY submission_date asc, count(*) desc, p.id) sq GROUP BY sq.submission_date", "report4")
 				.setParameter("courseId", courseId).setParameter("dateFrom", dateFrom).setParameter("dateTo", dateTo).setParameter("state", "ENABLED").setParameter("assistantId", assistantId)
 				.getResultList();
 	}
