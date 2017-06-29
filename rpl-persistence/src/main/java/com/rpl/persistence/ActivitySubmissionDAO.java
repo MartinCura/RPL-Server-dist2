@@ -16,7 +16,7 @@ public class ActivitySubmissionDAO extends ApplicationDAO{
     public List<ActivitySubmission> findByPersonAndActivity(Long personId, Long activityId) {
 		return entityManager.createQuery(
 				"SELECT s FROM ActivitySubmission s " +
-						"WHERE s.person.id = :personId AND s.activity.id = :activityId")
+						"WHERE s.person.id = :personId AND s.activity.id = :activityId ORDER BY s.id")
 				.setParameter("personId", personId)
 				.setParameter("activityId", activityId)
 				.getResultList();

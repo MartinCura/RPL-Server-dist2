@@ -63,9 +63,9 @@ public class ActivitySubmissionEndpoint {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
 		List<ActivitySubmission> submissions = activitySubmissionService.getSubmissionsByActivity(personId, activityId);
-		List<ActivitySubmissionSimplePOJO> submissionPOJOS = new ArrayList<ActivitySubmissionSimplePOJO>();
+		List<ActivitySubmissionPOJO> submissionPOJOS = new ArrayList<ActivitySubmissionPOJO>();
 		for (ActivitySubmission submission : submissions) {
-			submissionPOJOS.add(new ActivitySubmissionSimplePOJO(submission));
+			submissionPOJOS.add(new ActivitySubmissionPOJO(submission));
 		}
 		return Response.status(200).entity(submissionPOJOS).build();
 
