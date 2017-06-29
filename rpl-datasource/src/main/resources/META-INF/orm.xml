@@ -7,8 +7,10 @@
     <sql-result-set-mapping name="report1">
         <constructor-result target-class="com.rpl.model.reports.Report1">
             <column name="topicName"/>
+            <column name="activityId" class="java.lang.Long"/>
             <column name="activityName"/>
             <column name="quantityOfSubmissions" class="java.lang.Integer"/>
+            <column name="points" class="java.lang.Integer"/>
             <column name="submissionId" class="java.lang.Long"/>
         </constructor-result>
     </sql-result-set-mapping>
@@ -16,6 +18,7 @@
     <sql-result-set-mapping name="report2">
         <constructor-result target-class="com.rpl.model.reports.Report2">
             <column name="activityName"/>
+            <column name="points" class="java.lang.Integer"/>
             <column name="average" class="java.lang.Float"/>
         </constructor-result>
     </sql-result-set-mapping>
@@ -25,6 +28,15 @@
             <column name="studentId" class="java.lang.Long"/>
             <column name="studentName"/>
             <column name="result"/>
+        </constructor-result>
+    </sql-result-set-mapping>
+
+    <sql-result-set-mapping name="report4">
+        <constructor-result target-class="com.rpl.model.reports.Report4">
+            <column name="date"/>
+            <column name="quantityOfSubmissions" class="java.lang.Integer"/>
+            <column name="studentNames"/>
+            <column name="studentSubmissions"/>
         </constructor-result>
     </sql-result-set-mapping>
 
@@ -44,8 +56,8 @@
         </constructor-result>
     </sql-result-set-mapping>
 
-    <sql-result-set-mapping name="reportranking">
-        <constructor-result target-class="com.rpl.model.reports.ReportRanking">
+    <sql-result-set-mapping name="report7">
+        <constructor-result target-class="com.rpl.model.reports.Report7">
             <column name="studentName"/>
             <column name="points" class="java.lang.Integer"/>
         </constructor-result>
