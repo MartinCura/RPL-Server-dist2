@@ -56,13 +56,13 @@ public class ActivitySubmissionEndpoint {
 	@GET
 	@Path("/activity/{activityId}/person/{personId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getSubmissionById(@PathParam("userId") Long userId, @PathParam("activityId") Long activityId) {
+	public Response getSubmissionById(@PathParam("personId") Long personId, @PathParam("activityId") Long activityId) {
 		try {
 			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
-		List<ActivitySubmission> submissions = activitySubmissionService.getSubmissionsByActivity(userId, activityId);
+		List<ActivitySubmission> submissions = activitySubmissionService.getSubmissionsByActivity(personId, activityId);
 		List<ActivitySubmissionSimplePOJO> submissionPOJOS = new ArrayList<ActivitySubmissionSimplePOJO>();
 		for (ActivitySubmission submission : submissions) {
 			submissionPOJOS.add(new ActivitySubmissionSimplePOJO(submission));
