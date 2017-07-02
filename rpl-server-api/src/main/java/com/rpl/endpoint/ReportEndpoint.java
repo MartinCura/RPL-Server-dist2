@@ -121,7 +121,7 @@ public class ReportEndpoint {
 	@GET
 	@Path("/4/{courseId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getReport4(@PathParam("courseId") Long courseId, @QueryParam("date") String date) {
+	public Response getReport4(@PathParam("courseId") Long courseId) {
 		try {
 			SecurityHelper.checkPermissions(courseId,
 					Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
@@ -133,9 +133,9 @@ public class ReportEndpoint {
 
 		List<Report4> report;
 		if (person.getRole().equals(RoleCourse.ASSISTANT_PROFESSOR)) {
-			report = reportService.getReport4ByAssistant(courseId, date, person.getPerson().getId());
+			report = reportService.getReport4ByAssistant(courseId, person.getPerson().getId());
 		} else {
-			report = reportService.getReport4(courseId, date);
+			report = reportService.getReport4(courseId);
 		}
 		return Response.status(200).entity(report).build();
 	}

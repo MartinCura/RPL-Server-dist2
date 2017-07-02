@@ -66,28 +66,26 @@ public class ReportDAO extends ApplicationDAO {
 				.getResultList();
 	}
 
-	public List<Report4> getReport4(Long courseId, Date dateFrom, Date dateTo) {
+	public List<Report4> getReport4(Long courseId) {
 		return entityManager.createNativeQuery("SELECT sq.submission_date\\:\\:text as date, sum(sq.count) as \"quantityOfSubmissions\", " +
 				"array_agg(sq.name)\\:\\:text as \"studentNames\", array_agg(sq.count)\\:\\:text as \"studentSubmissions\" " +
 				"FROM (SELECT s.submission_date, p.name, count(*) " +
-				"FROM activity_submission s, activity a, person p WHERE s.person_id = p.id AND s.activity_id = a.id AND s.submission_date >= :dateFrom " +
-				"AND s.submission_date <= :dateTo AND s.activity_id in " +
+				"FROM activity_submission s, activity a, person p WHERE s.person_id = p.id AND s.activity_id = a.id AND s.activity_id in " +
 				"	(select a.id from activity a, topic t where a.topic_id = t.id and a.state = :state and t.course_id = :courseId) " +
 				"GROUP BY s.submission_date, p.id ORDER BY submission_date asc, count(*) desc, p.id) sq GROUP BY sq.submission_date", "report4")
-				.setParameter("courseId", courseId).setParameter("dateFrom", dateFrom).setParameter("dateTo", dateTo).setParameter("state", "ENABLED")
+				.setParameter("courseId", courseId).setParameter("state", "ENABLED")
 				.getResultList();
 	}
 
-	public List<Report4> getReport4ByAssistant(Long courseId, Date dateFrom, Date dateTo, Long assistantId) {
+	public List<Report4> getReport4ByAssistant(Long courseId, Long assistantId) {
 		return entityManager.createNativeQuery("SELECT sq.submission_date\\:\\:text as date, sum(sq.count) as \"quantityOfSubmissions\", " +
 				"array_agg(sq.name)\\:\\:text as \"studentNames\", array_agg(sq.count)\\:\\:text as \"studentSubmissions\" " +
 				"FROM (SELECT s.submission_date, p.name, count(*) " +
-				"FROM activity_submission s, activity a, person p WHERE s.person_id = p.id AND s.activity_id = a.id AND s.submission_date >= :dateFrom " +
-				"AND s.submission_date <= :dateTo AND s.activity_id in " +
+				"FROM activity_submission s, activity a, person p WHERE s.person_id = p.id AND s.activity_id = a.id AND s.activity_id in " +
 				"	(select a.id from activity a, topic t where a.topic_id = t.id and a.state = :state and t.course_id = :courseId) " +
 				"AND p.id IN (select person_id from course_person where course_id  = :courseId and role='STUDENT' and assistant_id = :assistantId)" +
 				"GROUP BY s.submission_date, p.id ORDER BY submission_date asc, count(*) desc, p.id) sq GROUP BY sq.submission_date", "report4")
-				.setParameter("courseId", courseId).setParameter("dateFrom", dateFrom).setParameter("dateTo", dateTo).setParameter("state", "ENABLED").setParameter("assistantId", assistantId)
+				.setParameter("courseId", courseId).setParameter("state", "ENABLED").setParameter("assistantId", assistantId)
 				.getResultList();
 	}
 

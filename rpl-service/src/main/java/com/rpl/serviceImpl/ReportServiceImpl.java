@@ -35,16 +35,12 @@ public class ReportServiceImpl implements ReportService {
         return reportDAO.getReport3ByAssistant(topicId, assistantId);
     }
 
-    public List<Report4> getReport4(Long courseId, String dateStr) {
-        Date dateFrom = Utils.stringToDate(dateStr);
-        Date dateTo = Utils.addMonths(dateFrom, CALENDAR_TIME);
-        return reportDAO.getReport4(courseId, dateFrom, dateTo);
+    public List<Report4> getReport4(Long courseId) {
+        return reportDAO.getReport4(courseId);
     }
 
-    public List<Report4> getReport4ByAssistant(Long courseId, String dateStr, Long assistantId) {
-        Date dateFrom = Utils.stringToDate(dateStr);
-        Date dateTo = Utils.addMonths(dateFrom, CALENDAR_TIME);
-        return reportDAO.getReport4ByAssistant(courseId, dateFrom, dateTo, assistantId);
+    public List<Report4> getReport4ByAssistant(Long courseId, Long assistantId) {
+        return reportDAO.getReport4ByAssistant(courseId, assistantId);
     }
 
     public List<Report5> getReport5(Long topicId) {
