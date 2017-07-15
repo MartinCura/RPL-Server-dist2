@@ -212,8 +212,13 @@ public class CourseServiceImpl implements CourseService {
 			for (Activity activity : topic.getActivities()) {
 				Activity newActivity = copyActivity(activity);
 				newActivity.setTopic(newTopic);
-				activityDAO.save(newActivity);
-
+				newActivity = activityDAO.save(newActivity);
+				for (ActivityInputFile file : activity.getFiles()) {
+					ActivityInputFile newFile = copyFile(file);
+					newFile.setActivity(newActivity);
+					activityDAO.save(newFile);
+				}
+				
 			}
 
 		}
@@ -224,6 +229,13 @@ public class CourseServiceImpl implements CourseService {
 		newTopic.setName(topic.getName());
 		newTopic.setState(topic.getState());
 		return newTopic;
+	}
+	
+	private ActivityInputFile copyFile(ActivityInputFile file) {
+		ActivityInputFile newFile = new ActivityInputFile();
+		newFile.setContent(file.getContent());
+		newFile.setFileName(file.getFileName());
+		return newFile;
 	}
 
 	private Activity copyActivity(Activity activity) {
