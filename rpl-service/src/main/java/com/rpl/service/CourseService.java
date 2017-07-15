@@ -40,4 +40,7 @@ public interface CourseService {
 	public void hide(Long courseId);
 	public void unhide(Long courseId);
 	public List<Course> getCoursesEnabledAndDisabled();
+    public void copyTopics(Long sourceCourseId, Long destCourseId);
+    public void copyActivities(Long sourceCourseId, Long destCourseId);
+
 }

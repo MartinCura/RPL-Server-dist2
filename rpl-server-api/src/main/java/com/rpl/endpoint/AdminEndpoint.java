@@ -165,4 +165,12 @@ public class AdminEndpoint {
         return Response.ok().build();
     }
 
+    @POST
+    @Path("/courses/copy/source/{sourceCourseId}/dest/{destCourseId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response copyActivities(@PathParam("sourceCourseId") Long sourceCourseId, @PathParam("destCourseId") Long destCourseId) {
+        courseService.copyTopics(sourceCourseId, destCourseId);
+        courseService.copyActivities(sourceCourseId, destCourseId);
+        return Response.status(200).build();
+    }
 }
