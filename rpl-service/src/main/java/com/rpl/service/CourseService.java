@@ -9,6 +9,7 @@ import com.rpl.model.CourseImage;
 import com.rpl.model.CoursePerson;
 import com.rpl.model.Person;
 import com.rpl.model.Range;
+import com.rpl.model.reports.Ranking;
 
 
 public interface CourseService {
@@ -42,5 +43,6 @@ public interface CourseService {
 	public List<Course> getCoursesEnabledAndDisabled();
     public void copyTopics(Long sourceCourseId, Long destCourseId);
     public void copyActivities(Long sourceCourseId, Long destCourseId);
+	public List<Ranking> getRanking(Long courseId);
 
 }

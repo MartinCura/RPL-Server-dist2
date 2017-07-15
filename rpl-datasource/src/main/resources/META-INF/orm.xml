@@ -62,4 +62,14 @@
             <column name="points" class="java.lang.Integer"/>
         </constructor-result>
     </sql-result-set-mapping>
+    
+    <sql-result-set-mapping name="ranking">
+    <constructor-result target-class="com.rpl.model.reports.Ranking">
+    	<column name="personId" class="java.lang.Long"/>
+        <column name="name"/>
+        <column name="username"/>
+        <column name="rangeName"/>
+        <column name="points" class="java.lang.Integer"/>
+    </constructor-result>
+</sql-result-set-mapping>
 </entity-mappings>

@@ -149,4 +149,18 @@ public class ReportDAO extends ApplicationDAO {
 
 	}
 
+	public List<Ranking> getRanking(Long courseId) {
+		return entityManager.createNativeQuery("SELECT p.id as \"personId\", p.name as name, p.username as username, "
+				+ "COALESCE(sum((select sum(points) FROM activity_submission s, activity a, topic t WHERE s.activity_id = a.id AND "
+					+ "a.state = :state AND a.topic_id = t.id AND t.course_id = :courseId AND s.person_id = p.id AND s.selected = 't')), 0) as points, "
+					+ "(select range_name from course_range where course_id = :courseId and min_score < "
+						+ "(COALESCE(sum((select sum(points) FROM activity_submission s, activity a, topic t WHERE s.activity_id = a.id AND "
+						+ "a.state = :state AND a.topic_id = t.id AND t.course_id = :courseId AND s.person_id = p.id AND s.selected = 't')), 0)) "
+						+ "order by min_score desc limit 1) as \"rangeName\" "
+					+ "FROM person p, course c WHERE c.id = :courseId AND p.id IN (select person_id from course_person where course_id  = c.id and role='STUDENT') "
+					+ "GROUP BY p.id ORDER BY points desc;", "ranking")
+				.setParameter("courseId", courseId).setParameter("state", "ENABLED")
+				.getResultList();
+
+	}
 }

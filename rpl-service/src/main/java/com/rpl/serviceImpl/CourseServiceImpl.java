@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import com.rpl.exception.RplException;
 import com.rpl.model.*;
+import com.rpl.model.reports.Ranking;
 import com.rpl.persistence.*;
 import com.rpl.service.ActionLogService;
 import com.rpl.service.CourseService;
@@ -30,6 +31,8 @@ public class CourseServiceImpl implements CourseService {
 	private ActivityDAO activityDAO;
 	@Inject
 	private TopicDAO topicDAO;
+	@Inject
+	private ReportDAO reportDAO;
 
 	public List<Course> getCourses() {
 		return courseDAO.findAll();
@@ -251,6 +254,10 @@ public class CourseServiceImpl implements CourseService {
 		newActivity.setTests(activity.getTests());
 		newActivity.setState(activity.getState());
 		return newActivity;
+	}
+
+	public List<Ranking> getRanking(Long courseId) {
+		return reportDAO.getRanking(courseId);
 	}
 
 }
