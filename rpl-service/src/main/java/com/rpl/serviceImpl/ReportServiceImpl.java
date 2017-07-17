@@ -1,66 +1,67 @@
 package com.rpl.serviceImpl;
 
-import com.rpl.model.Activity;
-import com.rpl.model.ActivitySubmission;
-import com.rpl.model.Topic;
-import com.rpl.persistence.ActivityDAO;
-import com.rpl.persistence.ActivitySubmissionDAO;
-import com.rpl.persistence.TopicDAO;
+import com.rpl.model.reports.*;
+import com.rpl.persistence.ReportDAO;
 import com.rpl.service.ReportService;
+import com.rpl.service.util.Utils;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Stateless
 public class ReportServiceImpl implements ReportService {
+    private static final int CALENDAR_TIME = 6;
     @Inject
-    private ActivityDAO activityDAO;
-    @Inject
-    private TopicDAO topicDAO;
-    @Inject
-    private ActivitySubmissionDAO activitySubmissionDAO;
+    private ReportDAO reportDAO;
 
-    public Map<Activity, List<ActivitySubmission>> getActivityReportByCourse(Long courseId, Long assistantId) {
-        Map<Activity, List<ActivitySubmission>> submissionsByActivity = new HashMap<Activity, List<ActivitySubmission>>();
-
-        List<Activity> activities = activityDAO.findByCourseEnabledOnly(courseId);
-        for (Activity activity : activities) {
-            submissionsByActivity.put(activity, new ArrayList<ActivitySubmission>());
+    public List<Report1> getReport1(Long courseId, Long personId, Long topicId) {
+        if (topicId == null) {
+            return reportDAO.getReport1ByCourse(personId, courseId);
         }
-
-        List<ActivitySubmission> submissions;
-        if (assistantId == null) {
-            submissions = activitySubmissionDAO.findSelectedByCourse(courseId);
-        } else {
-            submissions = activitySubmissionDAO.findSelectedByCourseAndAssistant(courseId, assistantId);
-        }
-        for (ActivitySubmission submission : submissions) {
-            submissionsByActivity.get(submission.getActivity()).add(submission);
-        }
-        return submissionsByActivity;
+        return reportDAO.getReport1ByTopic(personId, topicId);
     }
 
-    public Map<Topic, List<ActivitySubmission>> getTopicReportByCourse(Long courseId, Long assistantId) {
-        Map<Topic, List<ActivitySubmission>> submissionsByTopic = new HashMap<Topic, List<ActivitySubmission>>();
+    public List<Report2> getReport2(Long topicId) {
+        return reportDAO.getReport2(topicId);
+    }
 
-        List<Topic> topics = topicDAO.findByCourseIdEnabledOnly(courseId);
-        for (Topic topic : topics) {
-            submissionsByTopic.put(topic, new ArrayList<ActivitySubmission>());
-        }
+    public List<Report3> getReport3(Long topicId) {
+        return reportDAO.getReport3(topicId);
+    }
 
-        List<ActivitySubmission> submissions;
-        if (assistantId == null) {
-            submissions = activitySubmissionDAO.findSelectedByCourse(courseId);
-        } else {
-            submissions = activitySubmissionDAO.findSelectedByCourseAndAssistant(courseId, assistantId);
-        }
-        for (ActivitySubmission submission : submissions) {
-            submissionsByTopic.get(submission.getActivity().getTopic()).add(submission);
-        }
-        return submissionsByTopic;
+    public List<Report3> getReport3ByAssistant(Long topicId, Long assistantId) {
+        return reportDAO.getReport3ByAssistant(topicId, assistantId);
+    }
+
+    public List<Report4> getReport4(Long courseId) {
+        return reportDAO.getReport4(courseId);
+    }
+
+    public List<Report4> getReport4ByAssistant(Long courseId, Long assistantId) {
+        return reportDAO.getReport4ByAssistant(courseId, assistantId);
+    }
+
+    public List<Report5> getReport5(Long topicId) {
+        return reportDAO.getReport5(topicId);
+    }
+
+    public List<Report5> getReport5ByAssistant(Long topicId, Long assistantId) {
+        return reportDAO.getReport5ByAssistant(topicId, assistantId);
+    }
+
+    public List<Report6> getReport6(Long topicId, Long personId) {
+        return reportDAO.getReport6(topicId, personId);
+    }
+
+    public List<Report7> getReport7(Long courseId, String dateStr) {
+        Date date = Utils.stringToDate(dateStr);
+        return reportDAO.getReport7(courseId, date);
+    }
+
+    public List<Report7> getReport7ByAssistant(Long courseId, String dateStr, Long assistantId) {
+        Date date = Utils.stringToDate(dateStr);
+        return reportDAO.getReport7ByAssistant(courseId, date, assistantId);
     }
 }

@@ -1,27 +1,15 @@
 package com.rpl.serviceImpl;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.rpl.exception.RplException;
-import com.rpl.model.ActivitySubmission;
-import com.rpl.model.Course;
-import com.rpl.model.CourseImage;
-import com.rpl.model.CoursePerson;
-import com.rpl.model.DatabaseState;
-import com.rpl.model.MessageCodes;
-import com.rpl.model.Person;
-import com.rpl.model.Range;
-import com.rpl.model.RoleCourse;
-import com.rpl.persistence.ActivitySubmissionDAO;
-import com.rpl.persistence.CourseDAO;
-import com.rpl.persistence.CoursePersonDAO;
+import com.rpl.model.*;
+import com.rpl.model.reports.Ranking;
+import com.rpl.persistence.*;
 import com.rpl.service.ActionLogService;
 import com.rpl.service.CourseService;
 import com.rpl.service.UserService;
@@ -39,6 +27,12 @@ public class CourseServiceImpl implements CourseService {
 	private ActivitySubmissionDAO activitySubmissionDAO;
 	@Inject
 	private ActionLogService actionLogService;
+	@Inject
+	private ActivityDAO activityDAO;
+	@Inject
+	private TopicDAO topicDAO;
+	@Inject
+	private ReportDAO reportDAO;
 
 	public List<Course> getCourses() {
 		return courseDAO.findAll();
@@ -193,6 +187,77 @@ public class CourseServiceImpl implements CourseService {
 	@Override
 	public List<Course> getCoursesEnabledAndDisabled() {
 		return courseDAO.findAllEnabledAndDisabled();
+	}
+
+	public void copyTopics(Long sourceCourseId, Long destCourseId) {
+		Course sourceCourse = courseDAO.find(sourceCourseId);
+		Course destCourse = courseDAO.find(destCourseId);
+
+		for (Topic topic : sourceCourse.getTopics()) {
+			Topic newTopic = destCourse.findTopicByName(topic.getName());
+			if (newTopic == null) {
+				newTopic = copyTopic(topic);
+				newTopic.setCourse(destCourse);
+				topicDAO.save(newTopic);
+
+			}
+
+		}
+	}
+
+	public void copyActivities(Long sourceCourseId, Long destCourseId) {
+		Course sourceCourse = courseDAO.find(sourceCourseId);
+		Course destCourse = courseDAO.find(destCourseId);
+
+		for (Topic topic : sourceCourse.getTopics()) {
+			Topic newTopic = destCourse.findTopicByName(topic.getName());
+
+			for (Activity activity : topic.getActivities()) {
+				Activity newActivity = copyActivity(activity);
+				newActivity.setTopic(newTopic);
+				newActivity = activityDAO.save(newActivity);
+				for (ActivityInputFile file : activity.getFiles()) {
+					ActivityInputFile newFile = copyFile(file);
+					newFile.setActivity(newActivity);
+					activityDAO.save(newFile);
+				}
+				
+			}
+
+		}
+	}
+
+	private Topic copyTopic(Topic topic) {
+		Topic newTopic = new Topic();
+		newTopic.setName(topic.getName());
+		newTopic.setState(topic.getState());
+		return newTopic;
+	}
+	
+	private ActivityInputFile copyFile(ActivityInputFile file) {
+		ActivityInputFile newFile = new ActivityInputFile();
+		newFile.setContent(file.getContent());
+		newFile.setFileName(file.getFileName());
+		return newFile;
+	}
+
+	private Activity copyActivity(Activity activity) {
+		Activity newActivity = new Activity();
+		newActivity.setName(activity.getName());
+		newActivity.setDescription(activity.getDescription());
+		newActivity.setLanguage(activity.getLanguage());
+		newActivity.setPoints(activity.getPoints());
+		newActivity.setTestType(activity.getTestType());
+		newActivity.setTemplate(activity.getTemplate());
+		newActivity.setInput(activity.getInput());
+		newActivity.setOutput(activity.getOutput());
+		newActivity.setTests(activity.getTests());
+		newActivity.setState(activity.getState());
+		return newActivity;
+	}
+
+	public List<Ranking> getRanking(Long courseId) {
+		return reportDAO.getRanking(courseId);
 	}
 
 }

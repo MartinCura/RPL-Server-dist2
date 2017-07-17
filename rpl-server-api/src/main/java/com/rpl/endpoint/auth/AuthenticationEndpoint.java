@@ -42,7 +42,7 @@ public class AuthenticationEndpoint {
 
 			String token = securityService.issueToken(p);
 
-			return Response.ok(TokenPOJO.of(token, p.getCredentials().getRole())).build();
+			return Response.ok(TokenPOJO.of(token, p.getCredentials().getRole(), c.getUsername())).build();
 
 		} catch (Exception e) {
 			return Response.status(Response.Status.UNAUTHORIZED).build();

@@ -8,6 +8,8 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
 
+import org.hibernate.exception.ConstraintViolationException;
+
 import com.rpl.exception.RplException;
 import com.rpl.exception.RplNotAuthorizedException;
 import com.rpl.model.DatabaseState;
@@ -100,7 +102,12 @@ public class SecurityServiceImpl implements SecurityService {
 			Person savedPerson = personDAO.save(p);
 			actionLogService.logNewUserRegistered(savedPerson);
 		} catch (PersistenceException e) {
-			throw RplException.of(MessageCodes.ERROR_USERNAME_ALREADY_EXISTS,"Username debe ser unico");
+			if (e.getCause() instanceof org.hibernate.exception.ConstraintViolationException){
+				ConstraintViolationException castedE = (ConstraintViolationException) e.getCause();
+				if (castedE.getConstraintName().contains("mail")) throw RplException.of(MessageCodes.ERROR_MAIL_ALREADY_EXISTS,"Mail debe ser unico");
+				else throw RplException.of(MessageCodes.ERROR_USERNAME_ALREADY_EXISTS,"Username debe ser unico");
+			}
+			throw  RplException.of(MessageCodes.SERVER_ERROR,"");
 		}
 		return token;
 	}

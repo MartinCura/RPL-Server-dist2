@@ -6,14 +6,16 @@ public class TokenPOJO {
 
 	private final String token;
 	private final Role role;
+	private final String username;
 
-	private TokenPOJO(String token, Role rol){
+	private TokenPOJO(String token, Role rol, String username){
 		this.token = token;
 		this.role = rol;
+		this.username = username;
 	}
 	
-	public static TokenPOJO of (String token, Role rol){
-		return new TokenPOJO(token, rol);
+	public static TokenPOJO of (String token, Role rol, String username){
+		return new TokenPOJO(token, rol, username);
 	}
 	
 	public String getToken() {
@@ -22,5 +24,9 @@ public class TokenPOJO {
 	
 	public Role getRol() {
 		return role;
+	}
+	
+	public String getUsername(){
+		return username;
 	}
 }

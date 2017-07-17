@@ -168,6 +168,7 @@ CREATE TABLE person (
 	role text NOT NULL,
 	state text NOT NULL DEFAULT 'ENABLED'
 );
+ALTER TABLE person ADD UNIQUE (mail);
 
 DROP TABLE IF EXISTS logged_action cascade;
 CREATE TABLE logged_action (
@@ -207,7 +208,7 @@ insert into person (
 	role
 	) values (
 	'rpl-student',
-	'rpl@rpl.com',
+	'rpl@rpl1.com',
 	'rpl-student',
 	'eyJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6InJwbCJ9.DWprsOtybwN-ol3yNidm6FzkfpYoO0pmVO1ya54wXxhf7Ovku8q8c-CCu2SuvSiVs_Sv2cuD3C4ZuEP5n2RUvw',
 	'USER'
@@ -221,7 +222,7 @@ insert into person (
 	role
 	) values (
 	'rpl-assistant',
-	'rpl@rpl.com',
+	'rpl@rpl2.com',
 	'rpl-assistant',
 	'eyJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6InJwbCJ9.DWprsOtybwN-ol3yNidm6FzkfpYoO0pmVO1ya54wXxhf7Ovku8q8c-CCu2SuvSiVs_Sv2cuD3C4ZuEP5n2RUvw',
 	'USER'
@@ -235,7 +236,7 @@ insert into person (
 	role
 	) values (
 	'rpl-professor',
-	'rpl@rpl.com',
+	'rpl@rpl3.com',
 	'rpl-professor',
 	'eyJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6InJwbCJ9.DWprsOtybwN-ol3yNidm6FzkfpYoO0pmVO1ya54wXxhf7Ovku8q8c-CCu2SuvSiVs_Sv2cuD3C4ZuEP5n2RUvw',
 	'USER'

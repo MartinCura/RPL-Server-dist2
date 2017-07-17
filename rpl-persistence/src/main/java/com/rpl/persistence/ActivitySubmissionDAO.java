@@ -16,7 +16,7 @@ public class ActivitySubmissionDAO extends ApplicationDAO{
     public List<ActivitySubmission> findByPersonAndActivity(Long personId, Long activityId) {
 		return entityManager.createQuery(
 				"SELECT s FROM ActivitySubmission s " +
-						"WHERE s.person.id = :personId AND s.activity.id = :activityId")
+						"WHERE s.person.id = :personId AND s.activity.id = :activityId ORDER BY s.id")
 				.setParameter("personId", personId)
 				.setParameter("activityId", activityId)
 				.getResultList();
@@ -54,11 +54,12 @@ public class ActivitySubmissionDAO extends ApplicationDAO{
     public List<ActivitySubmission> findSelectedByCourse(Long courseId) {
 		return entityManager.createQuery(
 				"SELECT s FROM ActivitySubmission s " +
-						"WHERE s.activity.topic.course.id = :courseId AND " +
-						"s.status = :status AND s.selected = 't' AND s.person.state = :state")
+						"WHERE s.activity.topic.course.id = :courseId AND s.activity.state = :activityState AND " +
+						"s.status = :status AND s.selected = 't' AND s.person.state = :personState")
 				.setParameter("courseId", courseId)
 				.setParameter("status", Status.SUCCESS)
-				.setParameter("state", DatabaseState.ENABLED)
+				.setParameter("activityState", DatabaseState.ENABLED)
+				.setParameter("personState", DatabaseState.ENABLED)
 				.getResultList();
     }
 
@@ -67,11 +68,12 @@ public class ActivitySubmissionDAO extends ApplicationDAO{
 				"SELECT s FROM ActivitySubmission s, CoursePerson cp " +
 						"WHERE s.person.id = cp.person.id AND s.activity.topic.course.id = cp.course.id AND " +
 						"cp.assistant.id = :assistantId AND s.activity.topic.course.id = :courseId AND " +
-						"s.status = :status AND s.selected = 't' AND s.person.state = :state")
+						"s.activity.state = :activityState AND s.status = :status AND s.selected = 't' AND s.person.state = :personState")
 				.setParameter("courseId", courseId)
 				.setParameter("assistantId", assistantId)
 				.setParameter("status", Status.SUCCESS)
-				.setParameter("state", DatabaseState.ENABLED)
+				.setParameter("activityState", DatabaseState.ENABLED)
+				.setParameter("personState", DatabaseState.ENABLED)
 				.getResultList();
 	}
 

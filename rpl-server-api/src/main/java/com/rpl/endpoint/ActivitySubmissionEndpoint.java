@@ -1,5 +1,8 @@
 package com.rpl.endpoint;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -10,16 +13,19 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.ActivitySubmissionPOJO;
+import com.rpl.POJO.ActivitySubmissionSimplePOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplException;
 import com.rpl.exception.RplItemDoesNotBelongToPersonException;
+import com.rpl.exception.RplRoleException;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.MessageCodes;
 import com.rpl.model.RoleCourse;
 import com.rpl.security.SecurityHelper;
 import com.rpl.service.ActivitySubmissionService;
 import com.rpl.service.UserService;
+import com.rpl.service.util.Utils;
 
 @Secured
 @Path("/submissions")
@@ -46,6 +52,24 @@ public class ActivitySubmissionEndpoint {
 		return Response.status(200).entity(new ActivitySubmissionPOJO(submission)).build();
 
 	}
+	
+	@GET
+	@Path("/activity/{activityId}/person/{personId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getSubmissionById(@PathParam("personId") Long personId, @PathParam("activityId") Long activityId) {
+		try {
+			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+		} catch (RplRoleException e) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+		}
+		List<ActivitySubmission> submissions = activitySubmissionService.getSubmissionsByActivity(personId, activityId);
+		List<ActivitySubmissionPOJO> submissionPOJOS = new ArrayList<ActivitySubmissionPOJO>();
+		for (ActivitySubmission submission : submissions) {
+			submissionPOJOS.add(new ActivitySubmissionPOJO(submission));
+		}
+		return Response.status(200).entity(submissionPOJOS).build();
+
+	}	
 
 	@POST
 	@Path("/{id}/select")

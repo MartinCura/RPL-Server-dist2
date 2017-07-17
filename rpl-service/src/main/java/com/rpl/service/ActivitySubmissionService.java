@@ -15,6 +15,8 @@ public interface ActivitySubmissionService {
 	public void markAsSelected(Long submissionId) throws RplException;
 
     public List<ActivitySubmission> getSubmissionsByActivity(Long activityId);
+    
+	public List<ActivitySubmission> getSubmissionsByActivity(Long id, Long activityId);
 
 	public List<ActivitySubmission> getDefinitiveSubmissionsByActivity(Long activityId) throws RplException;
 

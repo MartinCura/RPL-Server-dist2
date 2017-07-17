@@ -29,7 +29,6 @@ import com.rpl.POJO.CourseCustomizationPOJO;
 import com.rpl.POJO.CoursePOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.RangePOJO;
-import com.rpl.POJO.RankingPOJO;
 import com.rpl.POJO.input.ActivityInputPOJO;
 import com.rpl.POJO.input.AssignAssistantInputPOJO;
 import com.rpl.POJO.input.CourseInputPOJO;
@@ -44,12 +43,12 @@ import com.rpl.model.CourseImage;
 import com.rpl.model.CoursePerson;
 import com.rpl.model.Language;
 import com.rpl.model.MessageCodes;
-import com.rpl.model.Person;
 import com.rpl.model.Range;
 import com.rpl.model.Role;
 import com.rpl.model.RoleCourse;
 import com.rpl.model.TestType;
 import com.rpl.model.Topic;
+import com.rpl.model.reports.Ranking;
 import com.rpl.security.SecurityHelper;
 import com.rpl.service.ActivityService;
 import com.rpl.service.CourseService;
@@ -57,7 +56,6 @@ import com.rpl.service.PersonService;
 import com.rpl.service.TopicService;
 import com.rpl.service.UserService;
 import com.rpl.service.util.FileUtils;
-import com.rpl.service.util.RangeUtils;
 import com.rpl.service.util.Utils;
 
 @Path("/courses")
@@ -330,19 +328,7 @@ public class CourseEndpoint {
 		} catch (RplRoleException e) {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
-		List<RankingPOJO> ranking = new ArrayList<RankingPOJO>();
-		Course c = courseService.getCourseById(courseId);
-		Map<Person, Integer> pointsByPerson = courseService.getPointsByPerson(courseId);
-
-		pointsByPerson.entrySet().stream().sorted(Map.Entry.<Person, Integer>comparingByValue().reversed())
-				.forEach((entry) -> ranking.add(new RankingPOJO(entry.getKey(), entry.getValue(),
-						RangeUtils.calculatePersonRangeName(entry.getValue(), c.getRanges()))));
-
-		int pos = 1;
-		for (RankingPOJO r : ranking) {
-			r.setPos(pos);
-			pos++;
-		}
+		List<Ranking> ranking = courseService.getRanking(courseId);
 		return Response.status(200).entity(ranking).build();
 	}
 	

@@ -124,4 +124,8 @@ public class Course {
 	public void setRanges(List<Range> ranges) {
 		this.ranges = ranges;
 	}
+
+	public Topic findTopicByName(String name) {
+		return topics.stream().filter(t -> t.getName().equals(name) && ! t.getState().equals(DatabaseState.DELETED)).findFirst().orElse(null);
+	}
 }

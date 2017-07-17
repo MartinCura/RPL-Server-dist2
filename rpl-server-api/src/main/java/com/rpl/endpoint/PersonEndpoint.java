@@ -1,5 +1,26 @@
 package com.rpl.endpoint;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.apache.commons.io.IOUtils;
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.POJO.PersonInfoPOJO;
 import com.rpl.POJO.PersonPOJO;
@@ -11,19 +32,6 @@ import com.rpl.model.Role;
 import com.rpl.service.PersonService;
 import com.rpl.service.UserService;
 import com.rpl.service.util.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.jboss.resteasy.plugins.providers.multipart.InputPart;
-import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
-
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @Path("/persons")
 public class PersonEndpoint {
@@ -100,7 +108,11 @@ public class PersonEndpoint {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updatePersonInfoById(PersonInfoPOJO pojo) {
-		personService.updatePersonInfo(userService.getCurrentUser().getId(), pojo.getName(), pojo.getMail(), pojo.getStudentId());
+		try {
+			personService.updatePersonInfo(userService.getCurrentUser().getId(), pojo.getName(), pojo.getMail(), pojo.getStudentId());
+		} catch (RplException e) {
+			return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
+		}
 		return Response.ok().build();
 	}
 
