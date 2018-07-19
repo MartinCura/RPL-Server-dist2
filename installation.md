@@ -4,12 +4,12 @@
 
 ### Java
 ```
-apt-get install -y software-properties-common
-add-apt-repository -y ppa:webupd8team/java
-echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
-echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections
-apt-get update -y
-apt-get install -y oracle-java8-installer
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository -y ppa:webupd8team/java
+sudo echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+sudo echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
+sudo apt-get update -y
+sudo apt-get install -y oracle-java8-installer
 ```
 ### Rabbitmq
 ```
