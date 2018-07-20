@@ -28,6 +28,8 @@ sudo -u postgres psql
 create user rpl with password 'rpl';
 create database rpldb;
 grant all privileges on database rpldb to rpl;
+editar sudo vi /etc/postgresql/10/main/pg_hba.conf 
+sacar peer y poner md5 en local 
 ```
 ### Docker
 ```
