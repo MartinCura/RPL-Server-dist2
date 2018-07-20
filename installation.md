@@ -18,8 +18,8 @@ sudo wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo a
 sudo apt-get update
 sudo apt-get install rabbitmq-server
 
-rabbitmqctl add_user rpl rpl
-rabbitmqctl set_permissions -p / rpl ".*" ".*" ".*"
+sudo rabbitmqctl add_user rpl rpl
+sudo rabbitmqctl set_permissions -p / rpl ".*" ".*" ".*"
 ```
 ### Postgres
 ```
