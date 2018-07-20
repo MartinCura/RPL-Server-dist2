@@ -13,8 +13,8 @@ sudo apt-get install -y oracle-java8-installer
 ```
 ### Rabbitmq
 ```
-echo 'deb http://www.rabbitmq.com/debian/ testing main' | tee /etc/apt/sources.list.d/rabbitmq.list
-wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | apt-key add -
+sudo echo 'deb http://www.rabbitmq.com/debian/ testing main' | sudo tee /etc/apt/sources.list.d/rabbitmq.list
+sudo wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add -
 apt-get update
 apt-get install rabbitmq-server
 
