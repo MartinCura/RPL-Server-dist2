@@ -33,7 +33,8 @@ grant all privileges on database rpldb to rpl;
 # cambia peer por md5 abajo de donde dice 
 # "local" is for Unix domain socket connections only
 
-sudo service postgresql restart # reiniciar el servicio -> ```
+sudo service postgresql restart # reiniciar el servicio -> 
+```
 
 ### Docker
 ```
