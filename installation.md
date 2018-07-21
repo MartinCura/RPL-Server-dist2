@@ -29,9 +29,12 @@ create user rpl with password 'rpl';
 create database rpldb;
 grant all privileges on database rpldb to rpl;
 \q
-editar sudo vi /etc/postgresql/10/main/pg_hba.conf 
-sacar peer y poner md5 en local 
-```
+#editar sudo vi /etc/postgresql/10/main/pg_hba.conf 
+# cambia peer por md5 abajo de donde dice 
+# "local" is for Unix domain socket connections only
+
+sudo service postgresql restart # reiniciar el servicio -> ```
+
 ### Docker
 ```
 sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
