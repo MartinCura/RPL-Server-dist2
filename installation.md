@@ -62,5 +62,8 @@ sudo java -jar rpl-daemon-0.0.1.jar
 wget http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.tar.gz
 tar -xvzf wildfly-10.1.0.Final.tar.gz
 ./wildfly-10.1.0.Final/bin/add-user.sh
+   seleccionar opcion a)
+   sin grupo
+   slaves -> no
 ./wildfly-10.1.0.Final/bin/standalone.sh -b=0.0.0.0 -bmanagement=0.0.0.0
 ```
