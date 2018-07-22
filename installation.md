@@ -29,11 +29,23 @@ create user rpl with password 'rpl';
 create database rpldb;
 grant all privileges on database rpldb to rpl;
 \q
-#editar sudo vi /etc/postgresql/10/main/pg_hba.conf 
-# cambia peer por md5 abajo de donde dice 
-# "local" is for Unix domain socket connections only
+```
+El nombre de base de datos y las credenciales de usuario descriptas
+son las default de la aplicación. Si se quiere utilizar otros, será nece-
+sario cambiarlo en la configuración de la aplicación, en el archivo RPL-
+Server/rpl-datasource/src/main/resources/META-INF/persistence.xml.
 
-sudo service postgresql restart # reiniciar el servicio -> 
+Para lograr loguearse es necesario editar la configuracion de postgresql. Ir al directorio de instalacion de postgre (generalmente /etc/postgresql/${VERSION}) al cual llamaremos POSTGRE_HOME.
+```
+sudo vim ${POSTGRE_HOME}/main/pg_hba.conf
+```
+
+Cambiar peer por md5 abajo de donde dice 
+"local" is for Unix domain socket connections only
+
+Luego reiniciar Postgres con:
+```
+sudo service postgresql restart 
 ```
 
 ### Docker
