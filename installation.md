@@ -131,6 +131,7 @@ mvn clean install -PwebApp
 
 Luego entrar a la solapa 'Deployments'. Boton 'Add'. Check a 'Upload a new deployment'. Boton 'Next'. Choose file para seleccionar el war de backend que se encuentra en {RPL_SERVER_REPO}/rpl-server-api/target/rpl-server-api.war. Luego 'Finish'.
 
+Considerar que falta desplegar el frontend.
 
 Una vez terminado el despliegue ya se puede empezar a utilizar la aplicación
 desde la URL HOST:PORT/web-app.
