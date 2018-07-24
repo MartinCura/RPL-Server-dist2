@@ -118,6 +118,12 @@ or for a Remoting connection for server to server EJB
 calls.
 yes/no? yes
 ```
+
+Borrar en `{WILDFLY_HOME}/standalone/configuration/standalone.xml`:
+```
+<default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:jboss/datasources/ExampleDS" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>
+```
+
 Por las dudas al finalizar, reiniciar el servidor.
 
 ## Despliegue del empaquetado en Wildfly
