@@ -1,9 +1,9 @@
 #!/bin/bash
 # Setup del RPL-Server
 
-BASEDIR="~"
+BASEDIR="/home/rpl"
 
-echo 'export LC_ALL="en_US.UTF-8"' >> ~/.profile
+echo 'export LC_ALL="en_US.UTF-8"' >> /home/rpl/.profile
 cd $BASEDIR/repo
 
 # Java
