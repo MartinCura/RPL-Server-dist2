@@ -1,4 +1,4 @@
-﻿DROP TABLE IF EXISTS course cascade;
+DROP TABLE IF EXISTS course cascade;
 CREATE TABLE course (
 	id serial PRIMARY KEY,
 	name text NOT NULL,
@@ -10,11 +10,11 @@ CREATE TABLE course (
 
 insert into course (name, customization) values ('First course', '{cust: a customization}');
 
-﻿DROP TABLE IF EXISTS course_range cascade;
+DROP TABLE IF EXISTS course_range cascade;
 CREATE TABLE course_range (
 	id serial PRIMARY KEY,
 	range_name text NOT NULL,
-	min_score integer NOT NULL, 
+	min_score integer NOT NULL,
 	course_id integer REFERENCES course
 );
 
@@ -32,11 +32,11 @@ insert into topic (name, course_id) values ('this is a topic', 1);
 
 DROP TABLE IF EXISTS activity cascade;
 CREATE TABLE activity (
-	id serial PRIMARY KEY, 
+	id serial PRIMARY KEY,
 	name text NOT NULL,
 	description text,
-	language text NOT NULL, 
-	points integer NOT NULL, 
+	language text NOT NULL,
+	points integer NOT NULL,
 	topic_id integer REFERENCES topic,
 	test_type text NOT NULL,
 	template text,
@@ -85,7 +85,7 @@ int main() {
 
 }'
 	);
-	
+
 insert into activity (
 	name,
 	language,
@@ -178,7 +178,7 @@ CREATE TABLE logged_action (
 	action_date timestamp NOT NULL
 );
 
-	
+
 DROP TABLE IF EXISTS activity_submission cascade;
 CREATE TABLE activity_submission (
 	id serial PRIMARY KEY,
@@ -241,7 +241,7 @@ insert into person (
 	'eyJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6InJwbCJ9.DWprsOtybwN-ol3yNidm6FzkfpYoO0pmVO1ya54wXxhf7Ovku8q8c-CCu2SuvSiVs_Sv2cuD3C4ZuEP5n2RUvw',
 	'USER'
 	);
-	
+
 insert into person (
 	name,
 	mail,

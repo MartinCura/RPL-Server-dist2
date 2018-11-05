@@ -7,4 +7,9 @@ target/
 .classpath
 .settings/
 dependency-reduced-pom.xml
+.vagrant
+jm-result*
+jmeter*
+*.log
+wildfly/
 
