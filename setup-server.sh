@@ -1,5 +1,5 @@
 #!/bin/bash
-# Setup del RPL-Server
+# Setup del RPL-Server. RUN WITH SUDO
 
 BASEDIR="/home/rpl"
 
@@ -48,7 +48,7 @@ mkdir wildfly/
 cd wildfly/
 wget -nv http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.tar.gz
 tar -xzf wildfly-10.1.0.Final.tar.gz
-cd $BASEDIR
+cd $BASEDIR/repo
 
 # Generación del esquema de base de datos
 PGPASSWORD='rpl' psql -d rpldb -U rpl < $BASEDIR/repo/rpl-datasource/src/main/resources/scripts.sql
@@ -58,7 +58,8 @@ mvn -q clean install
 sudo docker build -t rpl rpl-runner
 # Creación de usuario para desplegar
 #$BASEDIR/wildfly/wildfly-10.1.0.Final/bin/add-user.sh < $BASEDIR/repo/rpl-datasource/src/main/resources/user-wf-input.txt
-$BASEDIR/wildfly/wildfly-10.1.0.Final/bin/add-user.sh "rpl" "rplMM!"  ### NO ES LO MISMO QUE CORRERLO MANUALMENTE
+$BASEDIR/wildfly/wildfly-10.1.0.Final/bin/add-user.sh "rpl" "rplMM!"
+### Línea anterior NO ES LO MISMO QUE CORRERLO MANUALMENTE. Ver línea en installation.md
 sed -i 's~<default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:jboss/datasources/ExampleDS" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>~~' $BASEDIR/wildfly/wildfly-10.1.0.Final/standalone/configuration/standalone.xml
 
 # Compilar aplicación web
