@@ -4,12 +4,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.ConsumerCancelledException;
-import com.rabbitmq.client.QueueingConsumer;
-import com.rabbitmq.client.ShutdownSignalException;
+import com.rabbitmq.client.*;
 import com.rpl.model.QueueMessage;
 import com.rpl.service.QueueService;
 
@@ -26,6 +21,7 @@ public class QueueServiceImpl implements QueueService {
 	public QueueServiceImpl() throws IOException, TimeoutException {
 		connection = createConnection();
 		channel = createChannel(connection);
+		channel.basicQos(1);
 		//close(channel, connection);	// TODO: Cuándo cerrar?
 	}
 
@@ -56,7 +52,7 @@ public class QueueServiceImpl implements QueueService {
 
 	public void send(QueueMessage m) throws IOException, TimeoutException {
 		byte[] jsonMsg = new ObjectMapper().writeValueAsBytes(m);
-		channel.basicPublish("", SUBM_QUEUE_NAME, null, jsonMsg);
+		channel.basicPublish("", SUBM_QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, jsonMsg);
 		System.out.println("[Send] message: " + m.getMsg());
 	}
 
@@ -71,9 +67,9 @@ public class QueueServiceImpl implements QueueService {
 
 	private QueueingConsumer.Delivery getDeliveryFromChannel(Channel channel)
 			throws IOException, InterruptedException {
-		QueueingConsumer consumer = new QueueingConsumer(channel);
-		channel.basicConsume(SUBM_QUEUE_NAME, true, consumer);
-		QueueingConsumer.Delivery delivery = consumer.nextDelivery();
+		QueueingConsumer consumer = new QueueingConsumer(channel);	// TODO: Podría no crearse cada vez
+		channel.basicConsume(SUBM_QUEUE_NAME, true, consumer);	// TODO: change autoAck and ack manually
+		QueueingConsumer.Delivery delivery = consumer.nextDelivery(); // Solo consume el primer delivery!
 		return delivery;
 	}
 
