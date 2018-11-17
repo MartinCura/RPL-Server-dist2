@@ -14,3 +14,5 @@ java.util.NoSuchElementException
 	at com.rpl.daemon.Daemon.main(Daemon.java:30)
 
 * Recomendar el cambio de contraseña, o pedir el input de una
+* Hay problemas en los pom.xml (mirar build de maven)
+
