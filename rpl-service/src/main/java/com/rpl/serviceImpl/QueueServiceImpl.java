@@ -18,18 +18,15 @@ public class QueueServiceImpl implements QueueService {
 	private static final String QUEUE_HOST = "localhost";	// TODO
 	private static final String QUEUE_USER = "rpl";
 	private static final String QUEUE_PASSWD = "rpl";
-	private static final String SUBM_QUEUE_NAME = "rpl";
+	private static final String SUBM_QUEUE_NAME = "rpl-subm";
 
-	//private Connection connection;
-	//private Channel channel;
+	private Connection connection;
+	private Channel channel;
 
 	public QueueServiceImpl() throws IOException, TimeoutException {
-		///System.out.println("CREO COLA AMIGUITOOOOOOOOOOOOOOOOOOOOOOOOOO\n\n\n");//
-		//this.connection = createConnection();
-		//this.channel = createChannel(connection);
-		Connection connection = createConnection();
-		Channel channel = createChannel(connection);
-		close(channel, connection);
+		connection = createConnection();
+		channel = createChannel(connection);
+		//close(channel, connection);	// TODO: Cuándo cerrar?
 	}
 
 	private Connection createConnection() throws IOException, TimeoutException {
@@ -58,27 +55,17 @@ public class QueueServiceImpl implements QueueService {
 	}
 
 	public void send(QueueMessage m) throws IOException, TimeoutException {
-		Connection connection = createConnection();
-		Channel channel = createChannel(connection);
-
 		byte[] jsonMsg = new ObjectMapper().writeValueAsBytes(m);
-		//this.channel.basicPublish("", SUBM_QUEUE_NAME, null, jsonMsg);
 		channel.basicPublish("", SUBM_QUEUE_NAME, null, jsonMsg);
 		System.out.println("[Send] message: " + m.getMsg());
-
-		close(channel, connection);
 	}
 
 	public QueueMessage receive()
 			throws IOException, ShutdownSignalException, ConsumerCancelledException, InterruptedException, TimeoutException {
-		Connection connection = createConnection();
-		Channel channel = createChannel(connection);
-		//QueueingConsumer.Delivery delivery = getDeliveryFromChannel(this.channel);
 		QueueingConsumer.Delivery delivery = getDeliveryFromChannel(channel);
 
 		QueueMessage queueMessage = new ObjectMapper().readValue(delivery.getBody(), QueueMessage.class);
 		System.out.println("[Receive] message: " + queueMessage.getMsg());
-		// close(channel, connection); TODO: CUÁNDO LLAMAR?
 		return queueMessage;
 	}
 
@@ -91,8 +78,8 @@ public class QueueServiceImpl implements QueueService {
 	}
 
 	//private void close() throws IOException, TimeoutException {
-	//	this.channel.close();
-	//	this.connection.close();
+	//	channel.close();
+	//	connection.close();
 	//}
 
 	private void close(Channel channel, Connection connection) throws IOException, TimeoutException {

@@ -15,4 +15,4 @@ java.util.NoSuchElementException
 
 * Recomendar el cambio de contraseña, o pedir el input de una
 * Hay problemas en los pom.xml (mirar build de maven)
-
+* Ver los problemas que tira maven y wildfly

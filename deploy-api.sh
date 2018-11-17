@@ -1,6 +1,7 @@
 #!/bin/bash
 # sudo!
 
+BASEDIR="$HOME"
 cd $BASEDIR/repo
 mvn clean install
 sudo docker build -t rpl rpl-runner
