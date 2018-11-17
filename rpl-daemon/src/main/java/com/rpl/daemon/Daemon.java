@@ -9,18 +9,27 @@ import com.rpl.persistence.ResultDAO;
 import com.rpl.service.QueueService;
 import com.rpl.serviceImpl.QueueServiceImpl;
 
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+
 public class Daemon {
 	
 	public static void main( String[] args ){
 		
 		ApplicationDAO.setBeanTransactionManagement();
-        
-		QueueService qs = new QueueServiceImpl();
+
+		QueueService qs;
+		try {
+			qs = new QueueServiceImpl();
+		} catch (TimeoutException | IOException e) {	// TODO: Emprolijar
+			e.printStackTrace();
+			return;
+		}
 		ActivitySubmissionDAO activitySubmissionDAO = new ActivitySubmissionDAO();
 		ResultDAO resultDAO = new ResultDAO();
 		Tester tester = new Tester();
 		boolean running = true;
-    	
+
 		while (running) {
 			try {
 				QueueMessage message = qs.receive();
@@ -35,7 +44,7 @@ public class Daemon {
 				result = resultDAO.save(result);
 				submission.setResult(result);
 				activitySubmissionDAO.save(submission);
-				
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

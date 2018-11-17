@@ -1,9 +1,9 @@
 #!/bin/bash
 # Setup del RPL-Server. RUN WITH SUDO
 
-BASEDIR="/home/rpl"
+BASEDIR="$HOME"
 
-echo 'export LC_ALL="en_US.UTF-8"' >> /home/rpl/.profile
+echo 'export LC_ALL="en_US.UTF-8"' >> "$HOME"/.profile
 cd $BASEDIR/repo
 
 # Java
@@ -21,6 +21,7 @@ sudo wget -nv -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | su
 sudo apt-get update -q
 sudo apt-get install -y -qq rabbitmq-server
 sudo rabbitmqctl add_user rpl rpl
+sudo rabbitmqctl set_user_tags rpl administrator
 sudo rabbitmqctl set_permissions -p / rpl ".*" ".*" ".*"
 
 # PostgreSQL
@@ -71,3 +72,6 @@ mvn -q package -PstandaloneApp
 
 # DEPLOY
 cp $BASEDIR/repo/rpl-server-api/target/rpl-server-api.war $BASEDIR/wildfly/wildfly-10.1.0.Final/standalone/deployments/
+
+# RabbitMQ management - runs on port 15672
+sudo rabbitmq-plugins enable rabbitmq_management

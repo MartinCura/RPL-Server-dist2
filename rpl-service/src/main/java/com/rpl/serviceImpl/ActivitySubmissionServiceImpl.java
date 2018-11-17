@@ -22,7 +22,7 @@ import java.util.concurrent.TimeoutException;
 
 @Stateless
 public class ActivitySubmissionServiceImpl implements ActivitySubmissionService {
-	
+
 	@Inject
 	private QueueService queueService;
 	@Inject
@@ -34,7 +34,7 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 	@Inject
 	private ActionLogService actionLogService;
 
-	private boolean hasDefinitiveSubmsission(Long personId, Long activityId) {
+	private boolean hasDefinitiveSubmission(Long personId, Long activityId) {
 		try {
 			activitySubmissionDAO.findDefinitiveByActivityAndPerson(activityId, personId);
 		} catch (Exception e) {
@@ -42,14 +42,14 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		}
 		return true;
 	}
-	
+
 	public ActivitySubmission getSubmissionById(Long id) {
 		return activitySubmissionDAO.find(id);
 	}
 
 	public ActivitySubmission submit(Long activityId, ActivitySubmission submission) throws RplException {
 
-		if (hasDefinitiveSubmsission(userService.getCurrentUser().getId(), activityId)) {
+		if (hasDefinitiveSubmission(userService.getCurrentUser().getId(), activityId)) {
 			throw RplException.of(MessageCodes.SERVER_ERROR, "");
 		}
 
@@ -61,7 +61,7 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		submission = activitySubmissionDAO.save(submission);
 		actionLogService.logActivitySubmission(submission.getId());
 		return submission;
-		
+
 	}
 
 	public void markAsSelected(Long submissionId) throws RplException{
@@ -69,7 +69,7 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		if (! submission.getStatus().equals(Status.SUCCESS)) {
 			throw RplException.of(MessageCodes.SERVER_ERROR, "");
 		}
-		if (hasDefinitiveSubmsission(submission.getPerson().getId(), submission.getActivity().getId())) {
+		if (hasDefinitiveSubmission(submission.getPerson().getId(), submission.getActivity().getId())) {
 			throw RplException.of(MessageCodes.SERVER_ERROR, "");
 		}
 		submission.setSelected(true);
@@ -81,7 +81,7 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 	public List<ActivitySubmission> getSubmissionsByActivity(Long activityId) {
 		return activitySubmissionDAO.findByPersonAndActivity(userService.getCurrentUser().getId(), activityId);
 	}
-	
+
 	public List<ActivitySubmission> getSubmissionsByActivity(Long id, Long activityId) {
 		return activitySubmissionDAO.findByPersonAndActivity(id, activityId);
 	}
@@ -116,7 +116,7 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		if (! submission.getStatus().equals(Status.SUCCESS)) {
 			throw RplException.of(MessageCodes.SERVER_ERROR, "");
 		}
-		if (hasDefinitiveSubmsission(submission.getPerson().getId(), submission.getActivity().getId())) {
+		if (hasDefinitiveSubmission(submission.getPerson().getId(), submission.getActivity().getId())) {
 			throw RplException.of(MessageCodes.SERVER_ERROR, "");
 		}
 		submission.setSelected(true);
