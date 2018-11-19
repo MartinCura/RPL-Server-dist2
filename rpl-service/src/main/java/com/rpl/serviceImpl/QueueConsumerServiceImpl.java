@@ -10,7 +10,7 @@ import java.util.concurrent.TimeoutException;
 
 public class QueueConsumerServiceImpl implements QueueConsumerService {
 
-	private static final String QUEUE_HOST = "localhost";	// TODO
+	private static final String QUEUE_HOST = "localhost";	// ToDo
 	private static final String QUEUE_USER = "rpl";
 	private static final String QUEUE_PASSWD = "rpl";
 	private static final String SUBM_QUEUE_NAME = "rpl-subm";
@@ -23,11 +23,10 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 	public QueueConsumerServiceImpl() throws IOException, TimeoutException {
 		connection = createConnection();
 		channel = createChannel(connection);
-		///channel.basicQos(1);///
 		consumer = new QueueingConsumer(channel);
 		boolean autoAck = false;
 		channel.basicConsume(SUBM_QUEUE_NAME, autoAck, consumer);
-		//close(channel, connection);	// TODO: Cuándo cerrar?
+		// ToDo: Cuándo cerrar? [close(channel, connection);]
 	}
 
 	private Connection createConnection() throws IOException, TimeoutException {
@@ -38,10 +37,7 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 
 	private Channel createChannel(Connection connection) throws IOException {
 		Channel new_channel = connection.createChannel();
-		// channel.exchangeDeclare(SUBM_QUEUE_NAME, "direct", true);
 		new_channel.queueDeclare(SUBM_QUEUE_NAME, true, false, false, null);
-		//channel.queueDeclare(SUBM_QUEUE_NAME, false, false, false, null);
-		// channel.queueBind(SUBM_QUEUE_NAME, SUBM_QUEUE_NAME, routingKey);
 		int prefetchCount = 1;
 		new_channel.basicQos(prefetchCount);
 		return new_channel;
@@ -75,8 +71,6 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 
 	private QueueingConsumer.Delivery getDeliveryFromChannel(Channel channel)
 			throws IOException, InterruptedException {
-		//QueueingConsumer consumer = new QueueingConsumer(channel);	// TODO: Podría no crearse cada vez
-		//channel.basicConsume(SUBM_QUEUE_NAME, true, consumer);	// TODO: change autoAck and ack manually
 		QueueingConsumer.Delivery delivery = consumer.nextDelivery(); // Solo consume el primer delivery!
 		return delivery;
 	}
@@ -87,11 +81,6 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 			lastDelivery = null;
 		}
 	}
-
-	//private void close() throws IOException, TimeoutException {
-	//	channel.close();
-	//	connection.close();
-	//}
 
 	private void close(Channel channel, Connection connection) throws IOException, TimeoutException {
 		channel.close();

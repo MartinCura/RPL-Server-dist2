@@ -21,7 +21,7 @@ public class Daemon {
 		QueueConsumerService qs;
 		try {
 			qs = new QueueConsumerServiceImpl();
-		} catch (TimeoutException | IOException e) {	// TODO: Emprolijar
+		} catch (TimeoutException | IOException e) {	// ToDo: Emprolijar
 			e.printStackTrace();
 			return;
 		}
