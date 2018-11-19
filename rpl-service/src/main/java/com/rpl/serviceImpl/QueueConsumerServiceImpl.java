@@ -18,13 +18,15 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 	private Connection connection;
 	private Channel channel;
 	private QueueingConsumer consumer;
+	private QueueingConsumer.Delivery lastDelivery;
 
 	public QueueConsumerServiceImpl() throws IOException, TimeoutException {
 		connection = createConnection();
 		channel = createChannel(connection);
-		channel.basicQos(1);///
+		///channel.basicQos(1);///
 		consumer = new QueueingConsumer(channel);
-		channel.basicConsume(SUBM_QUEUE_NAME, true, consumer);	// TODO: change autoAck and ack manually
+		boolean autoAck = false;
+		channel.basicConsume(SUBM_QUEUE_NAME, autoAck, consumer);
 		//close(channel, connection);	// TODO: Cuándo cerrar?
 	}
 
@@ -67,6 +69,7 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 
 		QueueMessage queueMessage = new ObjectMapper().readValue(delivery.getBody(), QueueMessage.class);
 		System.out.println("[Receive] message: " + queueMessage.getMsg());
+		lastDelivery = delivery;
 		return queueMessage;
 	}
 
@@ -76,6 +79,13 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 		//channel.basicConsume(SUBM_QUEUE_NAME, true, consumer);	// TODO: change autoAck and ack manually
 		QueueingConsumer.Delivery delivery = consumer.nextDelivery(); // Solo consume el primer delivery!
 		return delivery;
+	}
+
+	public void confirmReceive() throws IOException {
+		if (lastDelivery != null) {
+			channel.basicAck(lastDelivery.getEnvelope().getDeliveryTag(), false);
+			lastDelivery = null;
+		}
 	}
 
 	//private void close() throws IOException, TimeoutException {

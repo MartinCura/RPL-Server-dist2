@@ -44,6 +44,7 @@ public class Daemon {
 				result = resultDAO.save(result);
 				submission.setResult(result);
 				activitySubmissionDAO.save(submission);
+				qs.confirmReceive();
 
 			} catch (Exception e) {
 				e.printStackTrace();

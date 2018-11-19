@@ -13,4 +13,6 @@ public interface QueueConsumerService {
 	
 	public QueueMessage receive() throws IOException, ShutdownSignalException, ConsumerCancelledException, InterruptedException, TimeoutException;
 
+	public void confirmReceive() throws IOException;
+
 }
