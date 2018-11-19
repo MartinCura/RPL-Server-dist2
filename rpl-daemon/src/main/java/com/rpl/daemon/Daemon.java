@@ -6,8 +6,8 @@ import com.rpl.model.runner.Result;
 import com.rpl.persistence.ActivitySubmissionDAO;
 import com.rpl.persistence.ApplicationDAO;
 import com.rpl.persistence.ResultDAO;
-import com.rpl.service.QueueService;
-import com.rpl.serviceImpl.QueueServiceImpl;
+import com.rpl.service.QueueConsumerService;
+import com.rpl.serviceImpl.QueueConsumerServiceImpl;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -18,9 +18,9 @@ public class Daemon {
 		
 		ApplicationDAO.setBeanTransactionManagement();
 
-		QueueService qs;
+		QueueConsumerService qs;
 		try {
-			qs = new QueueServiceImpl();
+			qs = new QueueConsumerServiceImpl();
 		} catch (TimeoutException | IOException e) {	// TODO: Emprolijar
 			e.printStackTrace();
 			return;
