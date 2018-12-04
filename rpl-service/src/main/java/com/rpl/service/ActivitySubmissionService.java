@@ -20,7 +20,10 @@ public interface ActivitySubmissionService {
 
 	public List<ActivitySubmission> getDefinitiveSubmissionsByActivity(Long activityId) throws RplException;
 
-	public void queueSubmission(Long id) throws RplQueueException;
+	//public void queueSubmission(Long id) throws RplQueueException;
+	public void queueSubmission(ActivitySubmission submission) throws RplQueueException;
+
+	//public void queueSubmissionWithResult(ActivitySubmission submission) throws RplQueueException;
 
     public void markAsDefinitive(Long submissionId) throws RplException;
 

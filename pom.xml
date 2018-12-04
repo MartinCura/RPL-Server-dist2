@@ -92,5 +92,6 @@
 		<module>rpl-persistence</module>
 		<module>rpl-daemon</module>
 		<module>rpl-runner</module>
-	</modules>
+        <module>rpl-results-monitor</module>
+    </modules>
 </project>

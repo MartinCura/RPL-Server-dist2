@@ -51,7 +51,7 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 	}
 
 	private String getQueueHost() {
-		String host = null; //= System.getenv(QUEUE_HOST_ENV_VAR);
+		String host = System.getenv(QUEUE_HOST_ENV_VAR);
 		if (host == null) {
 			host = QUEUE_HOST; // default
 			Properties prop = new Properties();

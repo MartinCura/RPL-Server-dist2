@@ -32,6 +32,11 @@ public class QueueServiceImpl implements QueueService {
 		//close(channel, connection);	// TODO: Cuándo cerrar?
 	}
 
+	public QueueServiceImpl(String queue_name) throws IOException, TimeoutException {
+		connection = createConnection();
+		channel = createChannel(connection, queue_name);
+	}
+
 	private Connection createConnection() throws IOException, TimeoutException {
 		ConnectionFactory factory = createFactory();
 		Connection new_connection = factory.newConnection();
@@ -49,8 +54,14 @@ public class QueueServiceImpl implements QueueService {
 		return new_channel;
 	}
 
+	private Channel createChannel(Connection connection, String queue_name) throws IOException {
+		Channel new_channel = connection.createChannel();
+		new_channel.queueDeclare(queue_name, true, false, false, null); // TODO: revisar parámetros
+		return new_channel;
+	}
+
 	private String getQueueHost() {
-		String host = null; //= System.getenv(QUEUE_HOST_ENV_VAR);
+		String host = System.getenv(QUEUE_HOST_ENV_VAR);
 		if (host == null) {
 			host = QUEUE_HOST; // default
 			Properties prop = new Properties();

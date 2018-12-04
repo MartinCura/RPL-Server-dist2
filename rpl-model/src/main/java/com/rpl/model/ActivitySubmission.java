@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rpl.model.runner.Result;
 
 @Entity
@@ -14,6 +15,7 @@ public class ActivitySubmission {
 	private Long id;
 	@Column(name="submission_date")
 	private Date submissionDate;
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "person_id")
 	private Person person;

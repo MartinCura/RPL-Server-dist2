@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -28,10 +29,12 @@ public class Topic {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "course_id")
 	private Course course;
 
+	@JsonIgnore
 	@OrderBy("name ASC")
 	@OneToMany(fetch = FetchType.EAGER, mappedBy="topic")
 	private List<Activity> activities;

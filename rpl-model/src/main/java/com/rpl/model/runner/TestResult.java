@@ -1,5 +1,7 @@
 package com.rpl.model.runner;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +14,7 @@ public class TestResult {
 	private String name;
 	private boolean success;
 	private String description;
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "tests_id")
 	private Tests test;
