@@ -6,6 +6,7 @@ target/
 .project
 .classpath
 .settings/
+*.env
 dependency-reduced-pom.xml
 .vagrant
 jm-result*

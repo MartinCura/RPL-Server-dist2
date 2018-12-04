@@ -10,7 +10,8 @@ import java.util.concurrent.TimeoutException;
 
 public class QueueConsumerServiceImpl implements QueueConsumerService {
 
-	private static final String QUEUE_HOST = "localhost";	// ToDo
+	private static final String QUEUE_HOST_ENV_VAR = "RPL_MASTER_HOST";
+	private static final String QUEUE_HOST = "localhost";
 	private static final String QUEUE_USER = "rpl";
 	private static final String QUEUE_PASSWD = "rpl";
 	private static final String SUBM_QUEUE_NAME = "rpl-subm";
@@ -43,9 +44,18 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 		return new_channel;
 	}
 
+	private String getQueueHost() {
+		String host = System.getenv(QUEUE_HOST_ENV_VAR);
+		if (host == null) {
+			host = QUEUE_HOST;
+		}
+		System.out.println("WILL CONNECT TO " + host);
+		return host;
+	}
+
 	private ConnectionFactory createFactory() {
 		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost(QUEUE_HOST);
+		factory.setHost(getQueueHost());
 		factory.setUsername(QUEUE_USER);
 		factory.setPassword(QUEUE_PASSWD);
 		return factory;
