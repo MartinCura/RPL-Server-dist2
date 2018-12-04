@@ -1,6 +1,11 @@
 package com.rpl.serviceImpl;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.FileSystems;
+import java.util.Properties;
 import java.util.concurrent.TimeoutException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +15,7 @@ import com.rpl.service.QueueService;
 
 public class QueueServiceImpl implements QueueService {
 
+	private static final String CONFIG_FILENAME = "rpl.config";
 	private static final String QUEUE_HOST_ENV_VAR = "RPL_MASTER_HOST";
 	private static final String QUEUE_HOST = "localhost";
 	private static final String QUEUE_USER = "rpl";
@@ -44,10 +50,24 @@ public class QueueServiceImpl implements QueueService {
 	}
 
 	private String getQueueHost() {
-		String host = System.getenv(QUEUE_HOST_ENV_VAR);
+		String host = null; //= System.getenv(QUEUE_HOST_ENV_VAR);
 		if (host == null) {
-			host = QUEUE_HOST;
+			host = QUEUE_HOST; // default
+			Properties prop = new Properties();
+			InputStream is;
+			try {
+				is = new FileInputStream(CONFIG_FILENAME);
+				try {
+					prop.load(is);
+					host = prop.getProperty("master.host");
+				} catch (IOException ex) {
+					System.out.println("Error al leer archivo de configuración");
+				}
+			} catch (FileNotFoundException ex) {
+				System.out.println("Archivo de configuración no encontrado");
+			}
 		}
+		System.out.println(FileSystems.getDefault().getPath(CONFIG_FILENAME));//
 		System.out.println("WILL CONNECT TO " + host);
 		return host;
 	}
