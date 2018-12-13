@@ -29,12 +29,12 @@ public class Topic {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	///JsonIgnore
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "course_id")
 	private Course course;
 
-	///JsonIgnore
+	@JsonIgnore
 	@OrderBy("name ASC")
 	@OneToMany(fetch = FetchType.EAGER, mappedBy="topic")
 	private List<Activity> activities;
