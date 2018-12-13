@@ -20,7 +20,7 @@ public class Monitor {
 
         QueueConsumerService qs;
         try {
-            qs = new QueueConsumerServiceImpl();
+            qs = new QueueConsumerServiceImpl("rpl_res");
         } catch (TimeoutException | IOException e) {
             e.printStackTrace();
             return;
@@ -37,6 +37,7 @@ public class Monitor {
 
                 try {
                     ActivitySubmission submission = JsonUtils.jsonToObject(submissionString, ActivitySubmission.class);
+                    //= activitySubmissionDAO.find(Long.valueOf(submissionId));//Alguna razón para agarrarlo?
                     if (submission == null) {
                         System.out.println("Error al decodificar una submission desde JSON");
                         continue;

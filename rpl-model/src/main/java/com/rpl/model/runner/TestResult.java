@@ -14,7 +14,7 @@ public class TestResult {
 	private String name;
 	private boolean success;
 	private String description;
-	@JsonIgnore
+	///JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "tests_id")
 	private Tests test;

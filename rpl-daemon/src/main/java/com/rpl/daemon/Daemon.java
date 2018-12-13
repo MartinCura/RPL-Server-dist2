@@ -23,6 +23,9 @@ public class Daemon {
 		
 		ApplicationDAO.setBeanTransactionManagement();
 
+		if (System.getenv("HOME") != null)
+			System.out.println(System.getenv("HOME"));
+
 		QueueConsumerService qs_subm;
 		QueueService qs_res;
 		try {
@@ -42,6 +45,8 @@ public class Daemon {
 				QueueMessage message = qs_subm.receive();
 				//String submissionId = message.getMsg();//QUI
 				String submissionString = message.getMsg();
+				System.out.println("submissionString:");//
+				System.out.println(submissionString);//
 				activitySubmissionDAO.clear();
 				//ActivitySubmission submission = activitySubmissionDAO.find(Long.valueOf(submissionId));//QUI
 				try {
@@ -61,13 +66,13 @@ public class Daemon {
 					submission.setResult(result);
 					//activitySubmissionDAO.save(submission);
 
-					// Send to monitor for persistence
 					try {
+						// Send to monitor for persistence
 						QueueMessage qm = new QueueMessage(JsonUtils.objectToJson(submission));
 						qs_res.send(qm);
 
 						qs_subm.confirmReceive();
-						// ToDo: Devolver que no pudo ser procesado en caso de errores?
+						// ToDo: Ack negativo de que no pudo ser procesado en caso de errores?
 					} catch (JsonProcessingException e) {
 						e.printStackTrace();
 					}

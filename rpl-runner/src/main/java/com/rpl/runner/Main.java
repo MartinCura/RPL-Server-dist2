@@ -37,11 +37,7 @@ public class Main {
             Runner runner = null;
             try {
                 runner = (Runner) Class.forName(map.get(argumentParser.getLanguage())).newInstance();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
 
@@ -69,6 +65,7 @@ public class Main {
                 status.setResult(ResultStatus.STATUS_OK);
 
                 if (mode.equals(Runner.TestMode.TEST)) {
+                    System.out.println(runner.getStdout());//
                     Tests tests = JsonUtils.stringToObject(runner.getStdout());
                     result.setTests(tests);
                 } else if (mode.equals(Runner.TestMode.INPUT)) {

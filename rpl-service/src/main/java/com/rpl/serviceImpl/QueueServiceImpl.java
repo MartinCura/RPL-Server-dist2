@@ -24,6 +24,7 @@ public class QueueServiceImpl implements QueueService {
 
 	private Connection connection;
 	private Channel channel;
+	private String queue_name = SUBM_QUEUE_NAME;
 
 	public QueueServiceImpl() throws IOException, TimeoutException {
 		connection = createConnection();
@@ -33,8 +34,9 @@ public class QueueServiceImpl implements QueueService {
 	}
 
 	public QueueServiceImpl(String queue_name) throws IOException, TimeoutException {
+		this.queue_name = queue_name;
 		connection = createConnection();
-		channel = createChannel(connection, queue_name);
+		channel = createChannel(connection);
 	}
 
 	private Connection createConnection() throws IOException, TimeoutException {
@@ -46,17 +48,11 @@ public class QueueServiceImpl implements QueueService {
 	private Channel createChannel(Connection connection) throws IOException {
 		Channel new_channel = connection.createChannel();
 		// channel.exchangeDeclare(SUBM_QUEUE_NAME, "direct", true);
-		new_channel.queueDeclare(SUBM_QUEUE_NAME, true, false, false, null);
+		new_channel.queueDeclare(this.queue_name, true, false, false, null);
 		//channel.queueDeclare(SUBM_QUEUE_NAME, false, false, false, null);
 		// channel.queueBind(SUBM_QUEUE_NAME, SUBM_QUEUE_NAME, routingKey);
 		int prefetchCount = 1;
 		new_channel.basicQos(prefetchCount);
-		return new_channel;
-	}
-
-	private Channel createChannel(Connection connection, String queue_name) throws IOException {
-		Channel new_channel = connection.createChannel();
-		new_channel.queueDeclare(queue_name, true, false, false, null); // TODO: revisar parámetros
 		return new_channel;
 	}
 
@@ -93,7 +89,7 @@ public class QueueServiceImpl implements QueueService {
 
 	public void send(QueueMessage m) throws IOException, TimeoutException {
 		byte[] jsonMsg = new ObjectMapper().writeValueAsBytes(m);
-		channel.basicPublish("", SUBM_QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, jsonMsg);
+		channel.basicPublish("", this.queue_name, MessageProperties.PERSISTENT_TEXT_PLAIN, jsonMsg);
 		System.out.println("[Send] message: " + m.getMsg());
 	}
 
@@ -109,7 +105,7 @@ public class QueueServiceImpl implements QueueService {
 	private QueueingConsumer.Delivery getDeliveryFromChannel(Channel channel)
 			throws IOException, InterruptedException {
 		QueueingConsumer consumer = new QueueingConsumer(channel);	// TODO: Podría no crearse cada vez
-		channel.basicConsume(SUBM_QUEUE_NAME, true, consumer);	// TODO: change autoAck and ack manually
+		channel.basicConsume(this.queue_name, true, consumer);	// TODO: change autoAck and ack manually
 		QueueingConsumer.Delivery delivery = consumer.nextDelivery(); // Solo consume el primer delivery!
 		return delivery;
 	}

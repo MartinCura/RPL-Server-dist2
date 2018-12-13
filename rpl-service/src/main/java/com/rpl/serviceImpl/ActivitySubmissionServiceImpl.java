@@ -101,6 +101,7 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		QueueMessage qm;
 		try {
 			//qm = new QueueMessage(JsonUtils.objectToJson(id));//QUI
+			System.out.println(JsonUtils.objectToJson(submission));//
 			qm = new QueueMessage(JsonUtils.objectToJson(submission));
 			queueService.send(qm);
 		} catch (JsonProcessingException e) {

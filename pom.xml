@@ -37,6 +37,15 @@
 				<hibernate.scope>compile</hibernate.scope>
 			</properties>
 		</profile>
+		<profile>
+			<id>monitor</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<hibernate.scope>compile</hibernate.scope>
+			</properties>
+		</profile>
 	</profiles>
 
 	<build>

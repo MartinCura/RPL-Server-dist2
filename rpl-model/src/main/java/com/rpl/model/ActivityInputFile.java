@@ -16,7 +16,7 @@ public class ActivityInputFile {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	@JsonIgnore
+	///JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "activity_id")
 	private Activity activity;
