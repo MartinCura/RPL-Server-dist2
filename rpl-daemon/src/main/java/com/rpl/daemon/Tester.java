@@ -5,19 +5,18 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Base64;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rpl.model.*;
 import com.rpl.model.runner.Result;
 import com.rpl.model.runner.ResultStatus;
 import com.rpl.service.util.ArrayUtils;
 import com.rpl.service.util.FileUtils;
+import com.rpl.service.util.JsonUtils;
 
 public class Tester {
-	private String TMP_DIRECTORY = "/tmp/";
-	private String TMP_EXTENSION = ".tmp";
+	private final String TMP_DIRECTORY = "/tmp/";
+	private final String TMP_EXTENSION = ".tmp";
 	
-	public Result runSubmission(ActivitySubmission submission) throws IOException, InterruptedException {
-
+	Result runSubmission(ActivitySubmission submission) throws IOException, InterruptedException {
 		String[] command = prepareCommand(submission);		
 		System.out.println(Arrays.toString(command));
 		ProcessBuilder pb = new ProcessBuilder(command);
@@ -26,10 +25,14 @@ public class Tester {
 		pb.redirectOutput(file);
 		Process process = pb.start();
 		process.waitFor();
-		String result = FileUtils.fileToString(file);
-		System.out.println(result);
-		return new ObjectMapper().readValue(result.getBytes(), Result.class);
-		
+
+		String resultString = FileUtils.fileToString(file);
+		Result result = JsonUtils.jsonToObject(resultString, Result.class);
+		result.setIds(submission.getId());
+        if (result.getTests() != null) {
+            result.getTests().fixTestsResults();
+        }
+        return result;
 	}
 	
 	public String[] prepareCommand(ActivitySubmission submission) {
@@ -50,6 +53,7 @@ public class Tester {
 				"-s", submission.getCode(),
 				"-d", data
 			};
+
 		for (ActivityInputFile file : activity.getFiles()) {
 			args = ArrayUtils.addElement(args, "-f", file.getFileName(), new String (Base64.getEncoder().encode(file.getContent())));
 		}
@@ -57,16 +61,14 @@ public class Tester {
 	}
 	
 	public void analyzeResult(ActivitySubmission submission, Result result) {
-		
 		try {
-			
 			if (result.getStatus().getResult().equals(ResultStatus.STATUS_OK)) {
 				submission.setStatus( isExpectedOutput(submission, result) ? Status.SUCCESS : Status.FAILURE );
 			} else {
 				submission.setStatus( result.getStatus().getStage().equals("build") ? Status.BUILDING_ERROR : Status.RUNTIME_ERROR );
 			}
 			
-		} catch (Exception e) {
+		} catch (Exception e) {	// ToDo: specify
 			e.printStackTrace();
 		}
 	}
@@ -78,6 +80,4 @@ public class Tester {
 			return result.getTests().isSuccess();
 		}
 	}
-
-	
 }

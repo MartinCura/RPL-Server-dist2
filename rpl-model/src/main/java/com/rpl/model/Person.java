@@ -1,5 +1,6 @@
 package com.rpl.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.LazyCollection;
@@ -25,17 +26,21 @@ public class Person {
 	private Long studentId;
 
 	@Embedded
+	@JsonIgnore
 	private Credentials credentials;
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "course_person", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+    @JsonIgnore
 	private List<Course> courses;
 
 	@OneToMany(mappedBy = "person")
+    @JsonIgnore
 	private Set<ActivitySubmission> submissions;
 
 	@OneToMany(mappedBy = "person")
 	@LazyCollection(LazyCollectionOption.FALSE)
+    @JsonIgnore
 	private List<CoursePerson> coursePersons;
 
 	@OneToOne(optional = true, mappedBy = "person")

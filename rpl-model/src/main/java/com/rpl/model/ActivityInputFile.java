@@ -1,5 +1,7 @@
 package com.rpl.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +16,7 @@ public class ActivityInputFile {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "activity_id")
 	private Activity activity;

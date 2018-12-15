@@ -41,6 +41,9 @@ public class ActivitySubmissionEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubmissionById(@PathParam("id") Long id) {
 		ActivitySubmission submission = activitySubmissionService.getSubmissionById(id);
+		if (submission == null) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_INEXISTENT_SUBMISSION, "")).build();
+		}
 		try {
 			if (RoleCourse.STUDENT.equals(SecurityHelper.findRoleOnCourse(
 					submission.getActivity().getTopic().getCourse().getId(), userService.getCurrentUser()))) {
@@ -50,7 +53,6 @@ public class ActivitySubmissionEndpoint {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
 		return Response.status(200).entity(new ActivitySubmissionPOJO(submission)).build();
-
 	}
 	
 	@GET
@@ -68,7 +70,6 @@ public class ActivitySubmissionEndpoint {
 			submissionPOJOS.add(new ActivitySubmissionPOJO(submission));
 		}
 		return Response.status(200).entity(submissionPOJOS).build();
-
 	}	
 
 	@POST
@@ -76,6 +77,9 @@ public class ActivitySubmissionEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response markAsSelected(@PathParam("id") Long submissionId) {
 		ActivitySubmission submission = activitySubmissionService.getSubmissionById(submissionId);
+		if (submission == null) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_INEXISTENT_SUBMISSION, "")).build();
+		}
 		try {
 			if (RoleCourse.STUDENT.equals(SecurityHelper.findRoleOnCourse(
 					submission.getActivity().getTopic().getCourse().getId(), userService.getCurrentUser()))) {
@@ -98,6 +102,9 @@ public class ActivitySubmissionEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response markAsDefinitive(@PathParam("id") Long submissionId) {
 		ActivitySubmission submission = activitySubmissionService.getSubmissionById(submissionId);
+		if (submission == null) {
+			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_INEXISTENT_SUBMISSION, "")).build();
+		}
 		try {
 			if (RoleCourse.STUDENT.equals(SecurityHelper.findRoleOnCourse(
 					submission.getActivity().getTopic().getCourse().getId(), userService.getCurrentUser()))) {

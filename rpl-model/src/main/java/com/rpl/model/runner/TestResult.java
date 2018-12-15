@@ -1,5 +1,7 @@
 package com.rpl.model.runner;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +14,7 @@ public class TestResult {
 	private String name;
 	private boolean success;
 	private String description;
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@ManyToOne
 	@JoinColumn(name = "tests_id")
 	private Tests test;

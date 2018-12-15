@@ -24,6 +24,7 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 
 	private Connection connection;
 	private Channel channel;
+	private String queue_name = SUBM_QUEUE_NAME;
 	private QueueingConsumer consumer;
 	private QueueingConsumer.Delivery lastDelivery;
 
@@ -32,8 +33,17 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 		channel = createChannel(connection);
 		consumer = new QueueingConsumer(channel);
 		boolean autoAck = false;
-		channel.basicConsume(SUBM_QUEUE_NAME, autoAck, consumer);
+		channel.basicConsume(this.queue_name, autoAck, consumer);
 		// ToDo: Cuándo cerrar? [close(channel, connection);]
+	}
+
+	public QueueConsumerServiceImpl(String queue_name) throws IOException, TimeoutException {
+		this.queue_name = queue_name;
+		connection = createConnection();
+		channel = createChannel(connection);
+		consumer = new QueueingConsumer(channel);
+		boolean autoAck = false;
+		channel.basicConsume(this.queue_name, autoAck, consumer);
 	}
 
 	private Connection createConnection() throws IOException, TimeoutException {
@@ -44,14 +54,14 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 
 	private Channel createChannel(Connection connection) throws IOException {
 		Channel new_channel = connection.createChannel();
-		new_channel.queueDeclare(SUBM_QUEUE_NAME, true, false, false, null);
+		new_channel.queueDeclare(this.queue_name, true, false, false, null);
 		int prefetchCount = 1;
 		new_channel.basicQos(prefetchCount);
 		return new_channel;
 	}
 
 	private String getQueueHost() {
-		String host = null; //= System.getenv(QUEUE_HOST_ENV_VAR);
+		String host = System.getenv(QUEUE_HOST_ENV_VAR);
 		if (host == null) {
 			host = QUEUE_HOST; // default
 			Properties prop = new Properties();
@@ -68,8 +78,8 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 				System.out.println("Archivo de configuración no encontrado");
 			}
 		}
-		System.out.println(FileSystems.getDefault().getPath(CONFIG_FILENAME));//
-		System.out.println("WILL CONNECT TO " + host);
+		System.out.println("Read configuration from " + FileSystems.getDefault().getPath(CONFIG_FILENAME));
+		System.out.println("Queue will connect to host at " + host);
 		return host;
 	}
 
@@ -81,10 +91,10 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 		return factory;
 	}
 
-	///
+	/// NO SE USA
 	public void send(QueueMessage m) throws IOException, TimeoutException {
 		byte[] jsonMsg = new ObjectMapper().writeValueAsBytes(m);
-		channel.basicPublish("", SUBM_QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, jsonMsg);
+		channel.basicPublish("", this.queue_name, MessageProperties.PERSISTENT_TEXT_PLAIN, jsonMsg);
 		System.out.println("[Send] message: " + m.getMsg());
 	}
 	///

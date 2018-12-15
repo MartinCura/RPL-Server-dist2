@@ -4,12 +4,13 @@
 	<parent>
 		<groupId>rpl</groupId>
 		<artifactId>parent</artifactId>
-		<version>${rpl.version}</version>
+		<!--<version>${rpl.version}</version>-->
+		<version>0.0.1</version>
 	</parent>
 
 	<groupId>rpl</groupId>
 	<artifactId>rpl-daemon</artifactId>
-	<version>${rpl.daemon.version}</version>
+	<!--<version>${rpl.daemon.version}</version>-->
 	<packaging>jar</packaging>
 	<name>rpl-daemon</name>
 	<url>http://maven.apache.org</url>
@@ -52,9 +53,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<!--<source>1.8</source>-->
+					<!--<target>1.8</target>-->
 					<archive>
 						<manifest>
 							<mainClass>com.rpl.daemon.Daemon</mainClass>

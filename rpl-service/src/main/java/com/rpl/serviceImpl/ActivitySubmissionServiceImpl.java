@@ -96,17 +96,14 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		return activitySubmissionDAO.findDefinitiveByActivity(activityId);
 	}
 
-	public void queueSubmission(Long id)  throws RplQueueException {
+	public void queueSubmission(ActivitySubmission submission) throws RplQueueException {
 		QueueMessage qm;
 		try {
-			qm = new QueueMessage(JsonUtils.objectToJson(id));
+			qm = new QueueMessage(JsonUtils.objectToJson(submission));
 			queueService.send(qm);
 		} catch (JsonProcessingException e) {
-			// No deberia suceder nunca
 			e.printStackTrace();
-		} catch (IOException e) {
-			throw new RplQueueException(e);
-		} catch (TimeoutException e) {
+		} catch (IOException | TimeoutException e) {
 			throw new RplQueueException(e);
 		}
 	}

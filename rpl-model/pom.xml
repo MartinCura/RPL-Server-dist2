@@ -6,16 +6,23 @@
 	<parent>
 		<groupId>rpl</groupId>
 		<artifactId>parent</artifactId>
-		<version>${rpl.version}</version>
+		<!--<version>${rpl.version}</version>-->
+		<version>0.0.1</version>
 	</parent>
 	<groupId>rpl</groupId>
 	<artifactId>rpl-model</artifactId>
-	<version>${rpl.version}</version>
+	<!--<version>${rpl.daemon.version}</version>-->
 	<name>rpl-model</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.9.0.pr1</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 </project>

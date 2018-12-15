@@ -12,6 +12,6 @@ public class MessageCodes {
 	public static final Integer ERROR_FILE_TOO_HEAVY = 7;
 	public static final Integer ERROR_INVALID_RANGE_NUMBER = 8;
 	public static final Integer ERROR_MAIL_ALREADY_EXISTS = 9;
-	
+	public static final Integer ERROR_INEXISTENT_SUBMISSION = 10;
 	
 }
