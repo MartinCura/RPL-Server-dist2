@@ -15,6 +15,11 @@ import com.rpl.serviceImpl.QueueServiceImpl;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * Daemon worker: runs activity submission code sent to the specified RMQ queue, then sends the result to another queue
+ * for persistence. Note that it works with a partial copy of the ActivitySubmission, as certain fields are ignored by
+ * the JSON serializer.
+**/
 public class Daemon {
 
 	public static void main( String[] args ){
@@ -30,21 +35,19 @@ public class Daemon {
 			e.printStackTrace();
 			return;
 		}
-		ActivitySubmissionDAO activitySubmissionDAO = new ActivitySubmissionDAO();
+		///ActivitySubmissionDAO activitySubmissionDAO = new ActivitySubmissionDAO();//???
 		//ResultDAO resultDAO = new ResultDAO();
 		Tester tester = new Tester();
-		boolean running = true;
 
+		boolean running = true;
 		while (running) {
 			try {
 
 				QueueMessage message = qs_subm.receive();
-				//String submissionId = message.getMsg();//QUI
 				String submissionString = message.getMsg();
 				System.out.println("submissionString:");//
 				System.out.println(submissionString);//
-				activitySubmissionDAO.clear();
-				//ActivitySubmission submission = activitySubmissionDAO.find(Long.valueOf(submissionId));//QUI
+				///activitySubmissionDAO.clear();//???
 
                 ActivitySubmission submission = JsonUtils.jsonToObject(submissionString, ActivitySubmission.class);
                 if (submission == null) {
@@ -53,23 +56,22 @@ public class Daemon {
                 }
 
                 Result result = tester.runSubmission(submission);
-				tester.analyzeResult(submission, result);
-				result.setIds(submission.getId());
-				if (result.getTests() != null) {
-                    result.getTests().fixTestsResults();
-                }
-
-				//result = resultDAO.save(result);
-				//submission.setResult(result);
-				submission.setResult(result);
-				//activitySubmissionDAO.save(submission);
+				//tester.analyzeResult(submission, result);
+                //result.analyze(submission);
+                //result.setIds(submission.getId());
+                //if (result.getTests() != null) {
+                //    result.getTests().fixTestsResults();
+                //}
+//                submission.setResult(result);
+//                submission.analyzeResult();
 
 				try {
                     // Send to monitor for persistence
-					String resultSubmJson = JsonUtils.objectToJson(submission);
-					System.out.println("resultSubmJson:");//
-					System.out.println(resultSubmJson);//
-					QueueMessage qm = new QueueMessage(resultSubmJson);
+//					String resultSubmJson = JsonUtils.objectToJson(submission);
+                    String resultJson = JsonUtils.objectToJson(result);
+					System.out.println("resultJson:");//
+					System.out.println(resultJson);//
+					QueueMessage qm = new QueueMessage(resultJson);
 					qs_res.send(qm);
 
 					qs_subm.confirmReceive();
@@ -82,9 +84,11 @@ public class Daemon {
 					e.printStackTrace();
 				}
 
-			//} catch (Exception e) {
 			} catch (IOException | InterruptedException | TimeoutException e) {
-				e.printStackTrace(); // ToDo: better error message
+				e.printStackTrace(); // ToDo: better error message?
+            } catch (Exception e) {
+			    System.err.println("UNEXPECTED ERROR");
+			    e.printStackTrace();
 			}
 		}
 	}

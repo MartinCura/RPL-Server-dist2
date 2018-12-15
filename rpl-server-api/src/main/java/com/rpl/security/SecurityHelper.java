@@ -18,7 +18,7 @@ public class SecurityHelper {
 
 	public static RoleCourse findRoleOnCourse(Long courseId, Person p) {
 		return p.getCoursePersons().stream().filter(cp -> cp.getCourse().getId().equals(courseId))
-				.map(cp -> cp.getRole()).findFirst().orElseGet(null);
+				.map(cp -> cp.getRole()).findFirst().orElse(null);
 	}
 
 	public static void checkSubmissionBelongsToPerson(ActivitySubmission activitySubmission, Person p)

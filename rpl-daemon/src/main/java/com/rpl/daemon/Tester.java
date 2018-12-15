@@ -27,10 +27,15 @@ public class Tester {
 		Process process = pb.start();
 		process.waitFor();
 		//java.util.concurrent.TimeUnit.SECONDS.sleep(30);//
-		String result = FileUtils.fileToString(file);
+		String resultString = FileUtils.fileToString(file);
 		System.out.println("Tester result:");//
-		System.out.println(result);
-		return new ObjectMapper().readValue(result.getBytes(), Result.class);
+		System.out.println(resultString);
+		Result result = new ObjectMapper().readValue(resultString.getBytes(), Result.class);
+		result.setIds(submission.getId());
+        if (result.getTests() != null) {
+            result.getTests().fixTestsResults();
+        }
+        return result;
 	}
 	
 	public String[] prepareCommand(ActivitySubmission submission) {
@@ -59,16 +64,14 @@ public class Tester {
 	}
 	
 	public void analyzeResult(ActivitySubmission submission, Result result) {
-		
 		try {
-			
 			if (result.getStatus().getResult().equals(ResultStatus.STATUS_OK)) {
 				submission.setStatus( isExpectedOutput(submission, result) ? Status.SUCCESS : Status.FAILURE );
 			} else {
 				submission.setStatus( result.getStatus().getStage().equals("build") ? Status.BUILDING_ERROR : Status.RUNTIME_ERROR );
 			}
 			
-		} catch (Exception e) {
+		} catch (Exception e) {	// ToDo: specify
 			e.printStackTrace();
 		}
 	}
@@ -80,6 +83,4 @@ public class Tester {
 			return result.getTests().isSuccess();
 		}
 	}
-
-	
 }

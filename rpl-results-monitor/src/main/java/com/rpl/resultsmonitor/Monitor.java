@@ -27,89 +27,50 @@ public class Monitor {
             return;
         }
 
-        /*try {
-            System.out.println("1");//
-            java.util.concurrent.TimeUnit.SECONDS.sleep(5);//
-        } catch (InterruptedException e) {
-            e.printStackTrace();//
-        }*/
-
         ActivitySubmissionDAO activitySubmissionDAO = new ActivitySubmissionDAO();
         ResultDAO resultDAO = new ResultDAO();
         boolean running = true;
 
         while (running) {
             try {
-                /*try {
-                    System.out.println("2");//
-                    java.util.concurrent.TimeUnit.SECONDS.sleep(5);//
-                } catch (InterruptedException e) {
-                    e.printStackTrace();//
-                }*/
-
                 QueueMessage message = qs.receive();
-                String submissionString = message.getMsg();
-                System.out.println("submissionString:");//
-                System.out.println(submissionString);//
-                System.out.println("----------------");//
-                /*try {
-                    System.out.println("3");//
-                    java.util.concurrent.TimeUnit.SECONDS.sleep(5);//
-                } catch (InterruptedException e) {
-                    e.printStackTrace();//
-                }*/
+//                String submissionString = message.getMsg();
+                String resultString = message.getMsg();
                 activitySubmissionDAO.clear();
 
+                System.out.println("resultString:");//
+                System.out.println(resultString);//
+                System.out.println("----------------");//
+
                 try {
-                    ActivitySubmission submission = JsonUtils.jsonToObject(submissionString, ActivitySubmission.class);
-                    //= activitySubmissionDAO.find(Long.valueOf(submissionId));//Alguna razón para agarrarlo?
-                    if (submission == null) {
-                        System.out.println("Error al decodificar una submission desde JSON");
-                        continue;
-                    } else if (submission.getResult() == null) {
-                        System.out.println("Submission no tiene result");
+//                    ActivitySubmission submission = JsonUtils.jsonToObject(submissionString, ActivitySubmission.class);
+//                    Result result = submission.getResult();
+                    Result result = JsonUtils.jsonToObject(resultString, Result.class);
+                    if (result == null) {
+                        System.out.println("Error al decodificar un Result desde JSON");
                         continue;
                     }
-                    ///
-                    ActivitySubmission submission2 = activitySubmissionDAO.find(submission.getId());//
-                    System.out.println("submission2:");//
-                    System.out.println(JsonUtils.objectToJson(submission2));//
-                    System.out.println("------------");//
-                    ///
-                    Result result = submission.getResult();
+                    ActivitySubmission submission = activitySubmissionDAO.find(result.getId());
+                    // ToDo: check?
 
-                    /*try {
-                        System.out.println("4");//
-                        //java.util.concurrent.TimeUnit.SECONDS.sleep(5);//
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();//
-                    }*/
-
-                    System.out.println();
+                    ///
+                    System.out.println("submissionString:");//
+                    System.out.println(JsonUtils.objectToJson(submission));//
+                    System.out.println("----------------");//
+                    ///
                     result = resultDAO.save(result);
-                    submission.setResult(result);
-                    activitySubmissionDAO.save(submission);
 
-                    /*try {
-                        System.out.println("5");//
-                        //java.util.concurrent.TimeUnit.SECONDS.sleep(5);//
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();//
-                    }*/
+                    submission.setResult(result);
+                    submission.analyzeResult();
+                    activitySubmissionDAO.save(submission);
 
                     qs.confirmReceive();
                 } catch (JsonGenerationException | JsonMappingException e) {
-                    System.out.println("Error al decodificar Json como ActivitySubmission");
-                    System.out.println("submissionString:");//
-                    System.out.println(submissionString);
+                    System.out.println("Error al decodificar Json como Result");
+                    System.out.println("resultString:");//
+                    System.out.println(resultString);
                     e.printStackTrace();
                 }
-                /*try {
-                    System.out.println("6");//
-                    java.util.concurrent.TimeUnit.SECONDS.sleep(5);//
-                } catch (InterruptedException e) {
-                    e.printStackTrace();//
-                }*/
             } catch (Exception e) {
                 e.printStackTrace();
             }

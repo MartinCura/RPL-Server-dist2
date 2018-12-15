@@ -50,7 +50,6 @@ public class ActivitySubmissionEndpoint {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
 		return Response.status(200).entity(new ActivitySubmissionPOJO(submission)).build();
-
 	}
 	
 	@GET
@@ -68,7 +67,6 @@ public class ActivitySubmissionEndpoint {
 			submissionPOJOS.add(new ActivitySubmissionPOJO(submission));
 		}
 		return Response.status(200).entity(submissionPOJOS).build();
-
 	}	
 
 	@POST

@@ -1,5 +1,9 @@
 package com.rpl.model.runner;
 
+import com.rpl.model.ActivitySubmission;
+import com.rpl.model.Status;
+import com.rpl.model.TestType;
+
 import javax.persistence.*;
 
 @Entity

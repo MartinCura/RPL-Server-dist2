@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rpl.model.runner.Result;
+import com.rpl.model.runner.ResultStatus;
 
 @Entity
 @Table(name="activity_submission")
@@ -15,7 +16,6 @@ public class ActivitySubmission {
 	private Long id;
 	@Column(name="submission_date")
 	private Date submissionDate;
-	//;//@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "person_id")
 	private Person person;
@@ -101,5 +101,26 @@ public class ActivitySubmission {
 
 	public void setDefinitive(boolean definitive) {
 		this.definitive = definitive;
+	}
+
+	public void analyzeResult() {
+		try {
+			if (this.result.getStatus().getResult().equals(ResultStatus.STATUS_OK)) {
+				this.setStatus( isExpectedOutput(this.result) ? Status.SUCCESS : Status.FAILURE );
+			} else {
+				this.setStatus( this.result.getStatus().getStage().equals("build") ?
+						Status.BUILDING_ERROR : Status.RUNTIME_ERROR );
+			}
+		} catch (Exception e) {	// ToDo: specify
+			e.printStackTrace();
+		}
+	}
+
+	private boolean isExpectedOutput(Result result) {
+		if (this.getActivity().getTestType().equals(TestType.INPUT)) {
+			return result.getStdout().trim().equals(this.getActivity().getOutput());
+		} else {
+			return result.getTests().isSuccess();
+		}
 	}
 }
