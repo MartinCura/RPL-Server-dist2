@@ -65,7 +65,6 @@ public class Main {
                 status.setResult(ResultStatus.STATUS_OK);
 
                 if (mode.equals(Runner.TestMode.TEST)) {
-                    System.out.println(runner.getStdout());//
                     Tests tests = JsonUtils.stringToObject(runner.getStdout());
                     result.setTests(tests);
                 } else if (mode.equals(Runner.TestMode.INPUT)) {

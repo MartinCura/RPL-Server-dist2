@@ -23,22 +23,14 @@ public class Tester {
 		ProcessBuilder pb = new ProcessBuilder(command);
 		File file = new File(TMP_DIRECTORY + submission.getId() + TMP_EXTENSION);
 
-		//
-		System.out.println(TMP_DIRECTORY + submission.getId() + TMP_EXTENSION);
-		try {
-			System.out.println("Command:");//
-			System.out.println(command);
-		} catch (Exception e) {}
-		//
-
 		pb.redirectOutput(file);
 		Process process = pb.start();
 		process.waitFor();
 		//java.util.concurrent.TimeUnit.SECONDS.sleep(30);//
 		String result = FileUtils.fileToString(file);
+		System.out.println("Tester result:");//
 		System.out.println(result);
 		return new ObjectMapper().readValue(result.getBytes(), Result.class);
-		
 	}
 	
 	public String[] prepareCommand(ActivitySubmission submission) {
@@ -59,8 +51,7 @@ public class Tester {
 				"-s", submission.getCode(),
 				"-d", data
 			};
-		System.out.println("Pre args");//
-		System.out.println(args);//
+
 		for (ActivityInputFile file : activity.getFiles()) {
 			args = ArrayUtils.addElement(args, "-f", file.getFileName(), new String (Base64.getEncoder().encode(file.getContent())));
 		}

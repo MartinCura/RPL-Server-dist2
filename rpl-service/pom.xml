@@ -6,11 +6,12 @@
 	<parent>
 		<groupId>rpl</groupId>
 		<artifactId>parent</artifactId>
-		<version>${rpl.version}</version>
+		<!--<version>${rpl.version}</version>-->
+		<version>0.0.1</version>
 	</parent>
 	<groupId>rpl</groupId>
 	<artifactId>rpl-service</artifactId>
-	<version>${rpl.version}</version>
+	<!--<version>${rpl.version}</version>-->
 	<name>rpl-service</name>
 	<url>http://maven.apache.org</url>
 	<properties>

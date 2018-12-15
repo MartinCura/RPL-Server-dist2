@@ -1,5 +1,7 @@
 package com.rpl.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +18,7 @@ public class PersonImage {
 	private Long id;
 	@OneToOne
 	@JoinColumn(name = "person_id")
+	@JsonIgnore
 	private Person person;
 	private String fileName;
 	private byte[] content;

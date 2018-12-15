@@ -6,11 +6,12 @@
 	<parent>
 		<groupId>rpl</groupId>
 		<artifactId>parent</artifactId>
-		<version>${rpl.version}</version>
+        <!--<version>${rpl.version}</version>-->
+        <version>0.0.1</version>
 	</parent>
     <groupId>rpl</groupId>
     <artifactId>rpl-runner</artifactId>
-    <version>${rpl.version}</version>
+    <!--<version>${rpl.version}</version>-->
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -6,11 +6,12 @@
 	<parent>
 		<groupId>rpl</groupId>
 		<artifactId>parent</artifactId>
-		<version>${rpl.version}</version>
+		<!--<version>${rpl.version}</version>-->
+		<version>0.0.1</version>
 	</parent>
 	<groupId>rpl</groupId>
 	<artifactId>rpl-server-api</artifactId>
-	<version>${rpl.version}</version>
+	<!--<version>${rpl.version}</version>-->
 	<name>rpl-server-api</name>
 	<packaging>war</packaging>
 	<build>
@@ -19,8 +20,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<resteasy.version>3.0.19.Final</resteasy.version>
-
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>rpl</groupId>

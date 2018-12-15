@@ -15,7 +15,7 @@ public class ActivitySubmission {
 	private Long id;
 	@Column(name="submission_date")
 	private Date submissionDate;
-	@JsonIgnore
+	//;//@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "person_id")
 	private Person person;

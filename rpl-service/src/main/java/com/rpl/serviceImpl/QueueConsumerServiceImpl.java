@@ -42,8 +42,7 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 		connection = createConnection();
 		channel = createChannel(connection);
 		consumer = new QueueingConsumer(channel);
-		//boolean autoAck = false;
-		boolean autoAck = true;
+		boolean autoAck = false;
 		channel.basicConsume(this.queue_name, autoAck, consumer);
 	}
 
