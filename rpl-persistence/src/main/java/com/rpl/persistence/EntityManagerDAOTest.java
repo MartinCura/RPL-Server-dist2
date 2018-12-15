@@ -7,6 +7,5 @@ public class EntityManagerDAOTest extends ApplicationDAO{
 	public DBTest find(int id) {
 		return this.entityManager.find(DBTest.class, id);
 	}
-	
-	
+
 }

@@ -37,7 +37,7 @@ public class ApplicationDAO {
 		return result;
 	}
 	
-	public CriteriaBuilder getCriteriaBuilder() {
+	CriteriaBuilder getCriteriaBuilder() {
 		return entityManager.getCriteriaBuilder();
 	}
 

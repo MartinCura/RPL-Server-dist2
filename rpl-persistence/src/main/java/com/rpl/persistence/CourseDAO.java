@@ -15,57 +15,62 @@ public class CourseDAO extends ApplicationDAO {
 		return entityManager.find(Course.class, id);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Course> findAll() {
-		return entityManager.createQuery("SELECT c FROM Course c where c.state = :state ORDER BY c.name")
-				.setParameter("state", DatabaseState.ENABLED).getResultList();
+		return entityManager.createQuery("SELECT c FROM Course c where c.state = :state ORDER BY c.name", Course.class)
+				.setParameter("state", DatabaseState.ENABLED)
+				.getResultList();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<Course> findAllEnabledAndDisabled() {
-		return entityManager.createQuery("SELECT c FROM Course c where (c.state = :enabledState OR c.state = :disabledState) ORDER BY c.name")
+		return entityManager.createQuery("SELECT c FROM Course c where (c.state = :enabledState OR c.state = :disabledState) ORDER BY c.name", Course.class)
 				.setParameter("enabledState", DatabaseState.ENABLED)
-				.setParameter("disabledState", DatabaseState.DISABLED).getResultList();
+				.setParameter("disabledState", DatabaseState.DISABLED)
+				.getResultList();
 	}
-	
 
 	public void delete(Long id) {
 		updateDatabaseState(id, DatabaseState.DELETED);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Course> findByPersonRole(Long personId, RoleCourse role) {
 		return entityManager
 				.createQuery("SELECT c FROM Course c, CoursePerson cp WHERE"
-						+ " c.id = cp.course.id AND cp.person.id = :personId AND cp.role = :role AND c.state = :state ORDER BY c.name")
+						+ " c.id = cp.course.id AND cp.person.id = :personId AND cp.role = :role AND c.state = :state ORDER BY c.name", Course.class)
 				.setParameter("personId", personId).setParameter("role", role)
-				.setParameter("state", DatabaseState.ENABLED).getResultList();
+				.setParameter("state", DatabaseState.ENABLED)
+				.getResultList();
 	}
 
 	public void updateCustomization(Long id, String customization) {
 		entityManager.createQuery("UPDATE Course set customization = :customization where id = :id")
-				.setParameter("id", id).setParameter("customization", customization).executeUpdate();
+				.setParameter("id", id)
+				.setParameter("customization", customization)
+				.executeUpdate();
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Course> findUnregisteredByPerson(Long personId) {
 		return entityManager
 				.createQuery("SELECT c FROM Course c WHERE"
-						+ " c.id NOT IN (SELECT cp.course.id FROM CoursePerson cp WHERE cp.person.id = :personId) ORDER BY c.name")
-				.setParameter("personId", personId).getResultList();
+						+ " c.id NOT IN (SELECT cp.course.id FROM CoursePerson cp WHERE cp.person.id = :personId) ORDER BY c.name", Course.class)
+				.setParameter("personId", personId)
+				.getResultList();
 	}
 
 	public void updateCourseName(Long id, String name) {
 		entityManager.createQuery("UPDATE Course set name = :name where id = :id").setParameter("id", id)
-				.setParameter("name", name).executeUpdate();
+				.setParameter("name", name)
+				.executeUpdate();
 	}
 
 	public void updateDescRulesAndCustomization(Long id, String customization, String description, String rules) {
 		entityManager
 				.createQuery(
 						"UPDATE Course set customization = :customization, description = :description, rules = :rules where id = :id")
-				.setParameter("id", id).setParameter("customization", customization)
-				.setParameter("description", description).setParameter("rules", rules).executeUpdate();
+				.setParameter("id", id)
+				.setParameter("customization", customization)
+				.setParameter("description", description)
+				.setParameter("rules", rules)
+				.executeUpdate();
 	}
 
 	public CourseImage findFile(Long fileId) {
@@ -74,19 +79,20 @@ public class CourseDAO extends ApplicationDAO {
 
 	public CourseImage findFileByCourse(Long courseId) {
 		try {
-			return (CourseImage) entityManager
-					.createQuery(
-							"SELECT file FROM CourseImage file WHERE file.course.id = :courseId")
+			return entityManager
+					.createQuery("SELECT file FROM CourseImage file WHERE file.course.id = :courseId", CourseImage.class)
 					.setParameter("courseId", courseId).getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}
-
 	}
 
 	public void updateDatabaseState(Long courseId, DatabaseState state) {
-		entityManager.createQuery("UPDATE Course set state = :state where id = :id").setParameter("id", courseId)
-		.setParameter("state", state).executeUpdate();
+		entityManager
+				.createQuery("UPDATE Course set state = :state where id = :id")
+				.setParameter("id", courseId)
+				.setParameter("state", state)
+				.executeUpdate();
 	}
 	
 }

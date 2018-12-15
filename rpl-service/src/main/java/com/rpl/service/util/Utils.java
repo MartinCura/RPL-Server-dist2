@@ -2,20 +2,15 @@ package com.rpl.service.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
-import com.rpl.model.CoursePerson;
 import com.rpl.model.Person;
 
 public class Utils {
 
+    @SafeVarargs
     public static <T> List<T> listOf(T... elements){
-    	ArrayList<T> result = new ArrayList<>();
-    		for(T element : elements) result.add(element);
-    	return result;
+        return new ArrayList<>(Arrays.asList(elements));
     }
     
     public static String getCompleteName(Person p) {
