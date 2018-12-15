@@ -78,8 +78,8 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 				System.out.println("Archivo de configuración no encontrado");
 			}
 		}
-		System.out.println(FileSystems.getDefault().getPath(CONFIG_FILENAME));//
-		System.out.println("WILL CONNECT TO " + host);
+		System.out.println("Read configuration from " + FileSystems.getDefault().getPath(CONFIG_FILENAME));
+		System.out.println("Queue will connect to host at " + host);
 		return host;
 	}
 

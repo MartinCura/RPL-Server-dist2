@@ -15,7 +15,7 @@ public class ActivitySubmission {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	@Column(name="submission_date")
-	private Date submissionDate;
+	private Date submissionDate;	// ToDo BUG: seems like submissionDate is not stored appropiately
 	@ManyToOne
 	@JoinColumn(name = "person_id")
 	private Person person;

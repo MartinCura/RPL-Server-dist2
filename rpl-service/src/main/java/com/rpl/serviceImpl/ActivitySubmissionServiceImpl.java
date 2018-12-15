@@ -96,37 +96,17 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		return activitySubmissionDAO.findDefinitiveByActivity(activityId);
 	}
 
-	//public void queueSubmission(Long id)  throws RplQueueException {//QUI
 	public void queueSubmission(ActivitySubmission submission) throws RplQueueException {
 		QueueMessage qm;
 		try {
-			//qm = new QueueMessage(JsonUtils.objectToJson(id));//QUI
-			System.out.println(JsonUtils.objectToJson(submission));//
 			qm = new QueueMessage(JsonUtils.objectToJson(submission));
 			queueService.send(qm);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			throw new RplQueueException(e);
-		} catch (TimeoutException e) {
+		} catch (IOException | TimeoutException e) {
 			throw new RplQueueException(e);
 		}
 	}
-
-//	public void queueSubmissionWithResult(ActivitySubmission submission) throws RplQueueException {
-//		queuemessage qm;
-//		try {
-//			//qm = new queuemessage(jsonutils.objecttojson(id));//qui
-//			qm = new queuemessage(jsonutils.objecttojson(submission));
-//			queueservice.send(qm);
-//		} catch (jsonprocessingexception e) {
-//			e.printstacktrace();
-//		} catch (ioexception e) {
-//			throw new rplqueueexception(e);
-//		} catch (timeoutexception e) {
-//			throw new rplqueueexception(e);
-//		}
-//	}
 
 	public void markAsDefinitive(Long submissionId) throws RplException {
 		ActivitySubmission submission = activitySubmissionDAO.find(submissionId);
