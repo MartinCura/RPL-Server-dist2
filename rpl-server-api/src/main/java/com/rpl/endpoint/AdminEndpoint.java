@@ -80,37 +80,37 @@ public class AdminEndpoint {
         coursePerson.setRole(RoleCourse.valueOf(coursePersonInputPOJO.getRole()));
         coursePerson.setAccepted(true);
         try {
-			personService.addCoursePerson(coursePerson);
-		} catch (RplException e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(e.getCode(), e.getMsg())).build();
-		}
+            personService.addCoursePerson(coursePerson);
+        } catch (RplException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(e.getCode(), e.getMsg())).build();
+        }
         return Response.status(200).build();
     }
     
     
-	@GET
-	@Path("/{id}/assistants")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAssistantsAdmin(@PathParam("id") Long id) {
-		List<CoursePerson> assistants = courseService.getAssistants(id);
-		List<AssistantPOJO> assistantPOJOS = new ArrayList<>();
-		for (CoursePerson assistant : assistants) {
-			assistantPOJOS.add(new AssistantPOJO(assistant));
-		}
-		return Response.status(200).entity(assistantPOJOS).build();
-	}
-	
-	@GET
-	@Path("/{id}/professors")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getProfessors(@PathParam("id") Long id) {
-		List<CoursePerson> professors = courseService.getProfessors(id);
+    @GET
+    @Path("/{id}/assistants")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAssistantsAdmin(@PathParam("id") Long id) {
+        List<CoursePerson> assistants = courseService.getAssistants(id);
+        List<AssistantPOJO> assistantPOJOS = new ArrayList<>();
+        for (CoursePerson assistant : assistants) {
+            assistantPOJOS.add(new AssistantPOJO(assistant));
+        }
+        return Response.status(200).entity(assistantPOJOS).build();
+    }
 
-		List<ProfessorPOJO> professorPOJOS = professors.stream().map(ProfessorPOJO::new)
-				.collect(Collectors.toList());
+    @GET
+    @Path("/{id}/professors")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProfessors(@PathParam("id") Long id) {
+        List<CoursePerson> professors = courseService.getProfessors(id);
 
-		return Response.status(200).entity(professorPOJOS).build();
-	}
+        List<ProfessorPOJO> professorPOJOS = professors.stream().map(ProfessorPOJO::new)
+                .collect(Collectors.toList());
+
+        return Response.status(200).entity(professorPOJOS).build();
+    }
 
     @POST
     @Path("/{courseId}/person/{personId}/leave")
@@ -136,11 +136,11 @@ public class AdminEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updatePersonInfoById(@PathParam("personId") Long personId, PersonInfoPOJO pojo) {
-    	try {
-			personService.updatePersonInfo(personId, pojo.getName(), pojo.getMail(), pojo.getStudentId(), pojo.getRole());
-		} catch (RplException e) {
-			return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
-		}
+        try {
+            personService.updatePersonInfo(personId, pojo.getName(), pojo.getMail(), pojo.getStudentId(), pojo.getRole());
+        } catch (RplException e) {
+            return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
+        }
         return Response.ok().build();
     }
 

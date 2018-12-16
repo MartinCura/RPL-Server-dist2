@@ -31,76 +31,76 @@ import com.rpl.service.UserService;
 @Priority(Priorities.AUTHENTICATION)
 public class SecurityInterceptor implements ContainerRequestFilter {
 
-	@Context
-	private ResourceInfo resourceInfo;
+    @Context
+    private ResourceInfo resourceInfo;
 
-	@Inject
-	private SecurityService securityService;
-	
-	@Inject
-	private UserService userService;
+    @Inject
+    private SecurityService securityService;
 
-	@Override
-	public void filter(ContainerRequestContext requestContext) {
-		try {
-			Person p = checkAuth(requestContext);
-			checkRoles(requestContext, p);
-			userService.setCurrentUser(p);
-		} catch (ForbiddenException e) {
-			requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
-		} catch (Exception e) {	// ToDo: specify
-			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
-		}
-	}
+    @Inject
+    private UserService userService;
 
-	private Person checkAuth(ContainerRequestContext requestContext) throws NotAuthorizedException {
-		// Get the HTTP Authorization header from the request
-		String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+    @Override
+    public void filter(ContainerRequestContext requestContext) {
+        try {
+            Person p = checkAuth(requestContext);
+            checkRoles(requestContext, p);
+            userService.setCurrentUser(p);
+        } catch (ForbiddenException e) {
+            requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
+        } catch (Exception e) {	// ToDo: specify
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+        }
+    }
 
-		// Check if the HTTP Authorization header is present and formatted
-		// correctly
-		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-			throw new NotAuthorizedException("Authorization header must be provided");
-		}
+    private Person checkAuth(ContainerRequestContext requestContext) throws NotAuthorizedException {
+        // Get the HTTP Authorization header from the request
+        String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 
-		// Extract the token from the HTTP Authorization header
-		String token = authorizationHeader.substring("Bearer".length()).trim();
+        // Check if the HTTP Authorization header is present and formatted
+        // correctly
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            throw new NotAuthorizedException("Authorization header must be provided");
+        }
 
-		// Validate the token
-		try {
-			return securityService.validateToken(token);
-		} catch (RplNotAuthorizedException e) {
-			throw new NotAuthorizedException("Failed to authorize");
-		}
+        // Extract the token from the HTTP Authorization header
+        String token = authorizationHeader.substring("Bearer".length()).trim();
 
-	}
+        // Validate the token
+        try {
+            return securityService.validateToken(token);
+        } catch (RplNotAuthorizedException e) {
+            throw new NotAuthorizedException("Failed to authorize");
+        }
 
-	private void checkRoles(ContainerRequestContext requestContext, Person p) throws ForbiddenException {
-		List<Role> classRoles = extractRoles(resourceInfo.getResourceClass());
-		List<Role> methodRoles = extractRoles(resourceInfo.getResourceMethod());
-		try {
-			if (methodRoles.isEmpty())
-				SecurityHelper.checkPermissions(classRoles, p);
-			else
-				SecurityHelper.checkPermissions(methodRoles, p);
-		} catch (RplRoleException e) {
-			throw new ForbiddenException();
-		}
+    }
 
-	}
+    private void checkRoles(ContainerRequestContext requestContext, Person p) throws ForbiddenException {
+        List<Role> classRoles = extractRoles(resourceInfo.getResourceClass());
+        List<Role> methodRoles = extractRoles(resourceInfo.getResourceMethod());
+        try {
+            if (methodRoles.isEmpty())
+                SecurityHelper.checkPermissions(classRoles, p);
+            else
+                SecurityHelper.checkPermissions(methodRoles, p);
+        } catch (RplRoleException e) {
+            throw new ForbiddenException();
+        }
 
-	private List<Role> extractRoles(AnnotatedElement annotatedElement) {
-		if (annotatedElement == null) {
-			return new ArrayList<>();
-		} else {
-			Secured secured = annotatedElement.getAnnotation(Secured.class);
-			if (secured == null) {
-				return new ArrayList<>();
-			} else {
-				Role[] allowedRoles = secured.value();
-				return Arrays.asList(allowedRoles);
-			}
-		}
-	}
+    }
+
+    private List<Role> extractRoles(AnnotatedElement annotatedElement) {
+        if (annotatedElement == null) {
+            return new ArrayList<>();
+        } else {
+            Secured secured = annotatedElement.getAnnotation(Secured.class);
+            if (secured == null) {
+                return new ArrayList<>();
+            } else {
+                Role[] allowedRoles = secured.value();
+                return Arrays.asList(allowedRoles);
+            }
+        }
+    }
 
 }

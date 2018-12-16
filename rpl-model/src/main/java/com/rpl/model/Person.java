@@ -16,116 +16,116 @@ import java.util.Set;
 @DynamicUpdate
 public class Person {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private String name;
-	private String mail;
-	@Column(name="student_id")
-	private Long studentId;
+    private String name;
+    private String mail;
+    @Column(name="student_id")
+    private Long studentId;
 
-	@Embedded
-	@JsonIgnore
-	private Credentials credentials;
-
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "course_person", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+    @Embedded
     @JsonIgnore
-	private List<Course> courses;
+    private Credentials credentials;
 
-	@OneToMany(mappedBy = "person")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "course_person", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
     @JsonIgnore
-	private Set<ActivitySubmission> submissions;
+    private List<Course> courses;
 
-	@OneToMany(mappedBy = "person")
-	@LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "person")
     @JsonIgnore
-	private List<CoursePerson> coursePersons;
+    private Set<ActivitySubmission> submissions;
 
-	@OneToOne(optional = true, mappedBy = "person")
-	private PersonImage personImage;
+    @OneToMany(mappedBy = "person")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonIgnore
+    private List<CoursePerson> coursePersons;
 
-	@Enumerated(EnumType.STRING)
-	private DatabaseState state;
+    @OneToOne(optional = true, mappedBy = "person")
+    private PersonImage personImage;
 
-	public Long getId() {
-		return id;
-	}
+    @Enumerated(EnumType.STRING)
+    private DatabaseState state;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getMail() {
-		return mail;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
+    public String getMail() {
+        return mail;
+    }
 
-	public Credentials getCredentials() {
-		return credentials;
-	}
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
 
-	public void setCredentials(Credentials credentials) {
-		this.credentials = credentials;
-	}
+    public Credentials getCredentials() {
+        return credentials;
+    }
 
-	public List<Course> getCourses() {
-		return courses;
-	}
+    public void setCredentials(Credentials credentials) {
+        this.credentials = credentials;
+    }
 
-	public void setCourses(List<Course> courses) {
-		this.courses = courses;
-	}
+    public List<Course> getCourses() {
+        return courses;
+    }
 
-	public Set<ActivitySubmission> getSubmissions() {
-		return submissions;
-	}
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
 
-	public void setSubmissions(Set<ActivitySubmission> submissions) {
-		this.submissions = submissions;
-	}
+    public Set<ActivitySubmission> getSubmissions() {
+        return submissions;
+    }
 
-	public List<CoursePerson> getCoursePersons() {
-		return coursePersons;
-	}
+    public void setSubmissions(Set<ActivitySubmission> submissions) {
+        this.submissions = submissions;
+    }
 
-	public void setCoursePersons(List<CoursePerson> coursePersons) {
-		this.coursePersons = coursePersons;
-	}
+    public List<CoursePerson> getCoursePersons() {
+        return coursePersons;
+    }
 
-	public PersonImage getPersonImage() {
-		return personImage;
-	}
+    public void setCoursePersons(List<CoursePerson> coursePersons) {
+        this.coursePersons = coursePersons;
+    }
 
-	public void setPersonImage(PersonImage personImage) {
-		this.personImage = personImage;
-	}
+    public PersonImage getPersonImage() {
+        return personImage;
+    }
 
-	public DatabaseState getState() {
-		return state;
-	}
+    public void setPersonImage(PersonImage personImage) {
+        this.personImage = personImage;
+    }
 
-	public void setState(DatabaseState state) {
-		this.state = state;
-	}
+    public DatabaseState getState() {
+        return state;
+    }
 
-	public Long getStudentId() {
-		return studentId;
-	}
+    public void setState(DatabaseState state) {
+        this.state = state;
+    }
 
-	public void setStudentId(Long studentId) {
-		this.studentId = studentId;
-	}
+    public Long getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
+    }
 }

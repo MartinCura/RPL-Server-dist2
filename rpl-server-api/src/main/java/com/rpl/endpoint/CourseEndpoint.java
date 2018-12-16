@@ -61,328 +61,328 @@ import com.rpl.service.util.Utils;
 @Path("/courses")
 public class CourseEndpoint {
 
-	@Inject
-	private ActivityService activityService;
-	@Inject
-	private CourseService courseService;
-	@Inject
-	private TopicService topicService;
-	@Inject
-	private UserService userService;
-	@Inject
-	private PersonService personService;
+    @Inject
+    private ActivityService activityService;
+    @Inject
+    private CourseService courseService;
+    @Inject
+    private TopicService topicService;
+    @Inject
+    private UserService userService;
+    @Inject
+    private PersonService personService;
 
-	@Secured
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCourses(@QueryParam("role") String role) {
-		List<Course> courses;
-		if (role == null) {
-			courses = courseService.getCourses();
-		} else {
-			courses = courseService.getCoursesByRole(role);
-		}
-		Map<Long, CoursePerson> coursesInscripted = courseService.getCoursesInscripted();
-		List<CoursePOJO> coursePOJOS = new ArrayList<>();
-		for (Course course : courses) {
-			CoursePOJO coursePOJO = CoursePOJO.mapWithoutTopics(course);
-			coursePOJO.setInscripted(coursesInscripted.get(course.getId()));
-			coursePOJOS.add(coursePOJO);
-		}
-		return Response.status(200).entity(coursePOJOS).build();
+    @Secured
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCourses(@QueryParam("role") String role) {
+        List<Course> courses;
+        if (role == null) {
+            courses = courseService.getCourses();
+        } else {
+            courses = courseService.getCoursesByRole(role);
+        }
+        Map<Long, CoursePerson> coursesInscripted = courseService.getCoursesInscripted();
+        List<CoursePOJO> coursePOJOS = new ArrayList<>();
+        for (Course course : courses) {
+            CoursePOJO coursePOJO = CoursePOJO.mapWithoutTopics(course);
+            coursePOJO.setInscripted(coursesInscripted.get(course.getId()));
+            coursePOJOS.add(coursePOJO);
+        }
+        return Response.status(200).entity(coursePOJOS).build();
 
-	}
+    }
 
-	@Secured
-	@GET
-	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCourseById(@PathParam("id") Long id) {
-		try {
-			SecurityHelper.checkPermissions(id,
-					Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.STUDENT, RoleCourse.ASSISTANT_PROFESSOR),
-					userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		Course course = courseService.getCourseById(id);
-		Set<Long> activitiesSelected = activityService.getActivitiesSelectedByCourse(id);
-		Set<Long> activitiesDefinitive = activityService.getActivitiesDefinitiveByCourse(id);
-		CoursePOJO coursePOJO = new CoursePOJO(course);
-		CoursePerson cp = personService.getCoursePersonByIdAndCourse(userService.getCurrentUser().getId(), id);
-		if (cp != null) coursePOJO.setRole(cp.getRole().name());
-		coursePOJO.markActivitiesAsSelected(activitiesSelected);
-		coursePOJO.markActivitiesAsDefinitive(activitiesDefinitive);
-		return Response.status(200).entity(coursePOJO).build();
-	}
+    @Secured
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCourseById(@PathParam("id") Long id) {
+        try {
+            SecurityHelper.checkPermissions(id,
+                    Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.STUDENT, RoleCourse.ASSISTANT_PROFESSOR),
+                    userService.getCurrentUser());
+        } catch (RplRoleException e) {
+            return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+        }
+        Course course = courseService.getCourseById(id);
+        Set<Long> activitiesSelected = activityService.getActivitiesSelectedByCourse(id);
+        Set<Long> activitiesDefinitive = activityService.getActivitiesDefinitiveByCourse(id);
+        CoursePOJO coursePOJO = new CoursePOJO(course);
+        CoursePerson cp = personService.getCoursePersonByIdAndCourse(userService.getCurrentUser().getId(), id);
+        if (cp != null) coursePOJO.setRole(cp.getRole().name());
+        coursePOJO.markActivitiesAsSelected(activitiesSelected);
+        coursePOJO.markActivitiesAsDefinitive(activitiesDefinitive);
+        return Response.status(200).entity(coursePOJO).build();
+    }
 
-	@GET
-	@Path("/{id}/customization.css")
-	@Produces("text/css")
-	public Response getCourseCustomization(@PathParam("id") Long id) {
-		Course course = courseService.getCourseById(id);
-		return Response.ok(course.getCustomization()).build();
-	}
+    @GET
+    @Path("/{id}/customization.css")
+    @Produces("text/css")
+    public Response getCourseCustomization(@PathParam("id") Long id) {
+        Course course = courseService.getCourseById(id);
+        return Response.ok(course.getCustomization()).build();
+    }
 
-	@Secured(Role.ADMIN)
-	@DELETE
-	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteCourseById(@PathParam("id") Long id) {
-		courseService.deleteCourseById(id);
-		return Response.ok().build();
-	}
+    @Secured(Role.ADMIN)
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteCourseById(@PathParam("id") Long id) {
+        courseService.deleteCourseById(id);
+        return Response.ok().build();
+    }
 
-	@Secured
-	@PUT
-	@Path("/{id}/customization")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateCustomization(@PathParam("id") Long id, CourseCustomizationPOJO pojo) {
-		try {
-			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		courseService.updateDescRulesAndCustomization(id, pojo.getCustomization(), pojo.getDescription(),
-				pojo.getRules());
-		return Response.ok().build();
-	}
+    @Secured
+    @PUT
+    @Path("/{id}/customization")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateCustomization(@PathParam("id") Long id, CourseCustomizationPOJO pojo) {
+        try {
+            SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+        } catch (RplRoleException e) {
+            return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+        }
+        courseService.updateDescRulesAndCustomization(id, pojo.getCustomization(), pojo.getDescription(),
+                pojo.getRules());
+        return Response.ok().build();
+    }
 
-	@Secured(Role.ADMIN)
-	@PUT
-	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateCourseById(@PathParam("id") Long id, CourseInputPOJO course) {
-		courseService.updateCourseName(id, course.getName());
-		return Response.ok().build();
-	}
+    @Secured(Role.ADMIN)
+    @PUT
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateCourseById(@PathParam("id") Long id, CourseInputPOJO course) {
+        courseService.updateCourseName(id, course.getName());
+        return Response.ok().build();
+    }
 
-	@Secured
-	@GET
-	@Path("/{id}/topics")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCourseTopicsById(@PathParam("id") Long id) {
-		try {
-			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		Course course = courseService.getCourseById(id);
-		return Response.status(200).entity(new CoursePOJO(course.getTopics())).build();
-	}
+    @Secured
+    @GET
+    @Path("/{id}/topics")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCourseTopicsById(@PathParam("id") Long id) {
+        try {
+            SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+        } catch (RplRoleException e) {
+            return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+        }
+        Course course = courseService.getCourseById(id);
+        return Response.status(200).entity(new CoursePOJO(course.getTopics())).build();
+    }
 
-	@Secured
-	@POST
-	@Path("/{id}/activities")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response submitActivity(@PathParam("id") Long courseId, ActivityInputPOJO activityInputPOJO) {
-		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		Topic topic = topicService.getTopicById(activityInputPOJO.getTopic());
-		Activity activity = new Activity();
-		activity.setTopic(topic);
-		activity.setName(activityInputPOJO.getName());
-		activity.setDescription(activityInputPOJO.getDescription());
-		activity.setLanguage(Language.valueOf(activityInputPOJO.getLanguage()));
-		activity.setPoints(activityInputPOJO.getPoints());
-		activity.setTestType(TestType.valueOf(activityInputPOJO.getTestType()));
-		activity.setTemplate(activityInputPOJO.getTemplate());
-		activity.setInput(activityInputPOJO.getInput());
-		activity.setOutput(activityInputPOJO.getOutput());
-		activity.setTests(activityInputPOJO.getTests());
-		activityService.submit(courseId, activity);
-		return Response.status(200).build();
-	}
+    @Secured
+    @POST
+    @Path("/{id}/activities")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response submitActivity(@PathParam("id") Long courseId, ActivityInputPOJO activityInputPOJO) {
+        try {
+            SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+        } catch (RplRoleException e) {
+            return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+        }
+        Topic topic = topicService.getTopicById(activityInputPOJO.getTopic());
+        Activity activity = new Activity();
+        activity.setTopic(topic);
+        activity.setName(activityInputPOJO.getName());
+        activity.setDescription(activityInputPOJO.getDescription());
+        activity.setLanguage(Language.valueOf(activityInputPOJO.getLanguage()));
+        activity.setPoints(activityInputPOJO.getPoints());
+        activity.setTestType(TestType.valueOf(activityInputPOJO.getTestType()));
+        activity.setTemplate(activityInputPOJO.getTemplate());
+        activity.setInput(activityInputPOJO.getInput());
+        activity.setOutput(activityInputPOJO.getOutput());
+        activity.setTests(activityInputPOJO.getTests());
+        activityService.submit(courseId, activity);
+        return Response.status(200).build();
+    }
 
-	@Secured
-	@POST
-	@Path("activity/{id}/file")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response uploadFile(@PathParam("id") Long activityId, MultipartFormDataInput input) throws IOException {
-		try {
-			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR),
-					userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
-		List<InputPart> inputParts = uploadForm.get("file");
+    @Secured
+    @POST
+    @Path("activity/{id}/file")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadFile(@PathParam("id") Long activityId, MultipartFormDataInput input) throws IOException {
+        try {
+            SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR),
+                    userService.getCurrentUser());
+        } catch (RplRoleException e) {
+            return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+        }
+        Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
+        List<InputPart> inputParts = uploadForm.get("file");
 
-		for (InputPart inputPart : inputParts) {
+        for (InputPart inputPart : inputParts) {
 
-			String[] contentDisposition = inputPart.getHeaders().getFirst("Content-Disposition").split(";");
+            String[] contentDisposition = inputPart.getHeaders().getFirst("Content-Disposition").split(";");
 
-			String fileName = FileUtils.getFileName(contentDisposition);
-			InputStream inputStream = inputPart.getBody(InputStream.class, null);
-			byte[] bytes = IOUtils.toByteArray(inputStream);
-			try {
-				activityService.saveFile(activityId, new ActivityInputFile(fileName, bytes));
-			} catch (RplException e) {
-				return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
-			}
-		}
-		return Response.status(200).build();
-	}
+            String fileName = FileUtils.getFileName(contentDisposition);
+            InputStream inputStream = inputPart.getBody(InputStream.class, null);
+            byte[] bytes = IOUtils.toByteArray(inputStream);
+            try {
+                activityService.saveFile(activityId, new ActivityInputFile(fileName, bytes));
+            } catch (RplException e) {
+                return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
+            }
+        }
+        return Response.status(200).build();
+    }
 
-	@GET
-	@Path("/{id}/image")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces("image/*")
-	public Response getPersonImage(@PathParam("id")Long courseId) {
-		Course c = courseService.getCourseById(courseId);
-		return Response.status(200).entity((c.getCourseImage() != null)? c.getCourseImage().getContent() : null).build();
+    @GET
+    @Path("/{id}/image")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces("image/*")
+    public Response getPersonImage(@PathParam("id")Long courseId) {
+        Course c = courseService.getCourseById(courseId);
+        return Response.status(200).entity((c.getCourseImage() != null)? c.getCourseImage().getContent() : null).build();
 
-	}
-	
-	@Secured
-	@POST
-	@Path("{id}/image")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response uploadImage(@PathParam("id") Long courseId, MultipartFormDataInput input) throws IOException {
-		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
-		List<InputPart> inputParts = uploadForm.get("file");
+    }
 
-		for (InputPart inputPart : inputParts) {
+    @Secured
+    @POST
+    @Path("{id}/image")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadImage(@PathParam("id") Long courseId, MultipartFormDataInput input) throws IOException {
+        try {
+            SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+        } catch (RplRoleException e) {
+            return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+        }
+        Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
+        List<InputPart> inputParts = uploadForm.get("file");
 
-			String[] contentDisposition = inputPart.getHeaders().getFirst("Content-Disposition").split(";");
+        for (InputPart inputPart : inputParts) {
 
-			String fileName = FileUtils.getFileName(contentDisposition);
-			InputStream inputStream = inputPart.getBody(InputStream.class, null);
-			byte[] bytes = IOUtils.toByteArray(inputStream);
-			try {
-				courseService.saveImage(courseId, new CourseImage(fileName, bytes));
-			} catch (RplException e) {
-				return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
-			}
-		}
-		return Response.status(200).build();
-	}
+            String[] contentDisposition = inputPart.getHeaders().getFirst("Content-Disposition").split(";");
 
-	@Secured
-	@POST
-	@Path("/{id}/topics")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response submitTopic(@PathParam("id") Long courseId, TopicInputPOJO topicInputPOJO) {
-		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		Topic topic = new Topic();
-		topic.setName(topicInputPOJO.getName());
-		topicService.submit(courseId, topic);
-		return Response.status(200).build();
-	}
+            String fileName = FileUtils.getFileName(contentDisposition);
+            InputStream inputStream = inputPart.getBody(InputStream.class, null);
+            byte[] bytes = IOUtils.toByteArray(inputStream);
+            try {
+                courseService.saveImage(courseId, new CourseImage(fileName, bytes));
+            } catch (RplException e) {
+                return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
+            }
+        }
+        return Response.status(200).build();
+    }
 
-	@Secured
-	@POST
-	@Path("/{id}/join")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response joinCourse(@PathParam("id") Long courseId) {
-		try {
-			courseService.join(courseId);
-		} catch (Exception e) { // ToDo: specify
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of("Already joined"))
-					.build();
-		}
-		return Response.status(200).build();
-	}
+    @Secured
+    @POST
+    @Path("/{id}/topics")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response submitTopic(@PathParam("id") Long courseId, TopicInputPOJO topicInputPOJO) {
+        try {
+            SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+        } catch (RplRoleException e) {
+            return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+        }
+        Topic topic = new Topic();
+        topic.setName(topicInputPOJO.getName());
+        topicService.submit(courseId, topic);
+        return Response.status(200).build();
+    }
 
-	@Secured
-	@POST
-	@Path("/{courseId}/assistant")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response assignAssistant(@PathParam("courseId") Long courseId,
-			AssignAssistantInputPOJO assignAssistantInputPOJO) {
-		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		courseService.assignAssistant(courseId, assignAssistantInputPOJO.getStudent(),
-				assignAssistantInputPOJO.getAssistant());
-		return Response.status(200).build();
-	}
+    @Secured
+    @POST
+    @Path("/{id}/join")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response joinCourse(@PathParam("id") Long courseId) {
+        try {
+            courseService.join(courseId);
+        } catch (Exception e) { // ToDo: specify
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of("Already joined"))
+                    .build();
+        }
+        return Response.status(200).build();
+    }
 
-	@Secured
-	@GET
-	@Path("/{id}/ranking")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRanking(@PathParam("id") Long courseId) {
-		try {
-			SecurityHelper.checkPermissions(courseId,
-					Utils.listOf(RoleCourse.STUDENT, RoleCourse.ASSISTANT_PROFESSOR, RoleCourse.PROFESSOR),
-					userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		List<Ranking> ranking = courseService.getRanking(courseId);
-		return Response.status(200).entity(ranking).build();
-	}
-	
-	@Secured
-	@GET
-	@Path("/{id}/range")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRangesByCourseId(@PathParam("id") Long courseId) {
-		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		Course c = courseService.getCourseById(courseId);
-		
-		return Response.status(200).entity(c.getRanges().stream().map(RangePOJO::new).collect(Collectors.toList())).build();
-	}
-	
-	@Secured
-	@PUT
-	@Path("/{id}/range")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateRange(@PathParam("id") Long courseId, List<Range> ranges) {
-		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		try{
-			courseService.updateRanges(courseId, ranges);
-		}catch (RplException e){
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(e.getCode(), e.getMessage()))
-					.build();
-		}
-		return Response.ok().build();
-	}
-	
-	@Secured(Role.ADMIN)
-	@POST
-	@Path("{id}/hide")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response hideCourse(@PathParam("id") Long courseId) {
-		courseService.hide(courseId);
-		return Response.status(200).build();
-	}
-	@Secured(Role.ADMIN)
-	@POST
-	@Path("{id}/unhide")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response unhideCourse(@PathParam("id") Long courseId) {
-		courseService.unhide(courseId);
-		return Response.status(200).build();
-	}
+    @Secured
+    @POST
+    @Path("/{courseId}/assistant")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response assignAssistant(@PathParam("courseId") Long courseId,
+            AssignAssistantInputPOJO assignAssistantInputPOJO) {
+        try {
+            SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+        } catch (RplRoleException e) {
+            return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+        }
+        courseService.assignAssistant(courseId, assignAssistantInputPOJO.getStudent(),
+                assignAssistantInputPOJO.getAssistant());
+        return Response.status(200).build();
+    }
+
+    @Secured
+    @GET
+    @Path("/{id}/ranking")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRanking(@PathParam("id") Long courseId) {
+        try {
+            SecurityHelper.checkPermissions(courseId,
+                    Utils.listOf(RoleCourse.STUDENT, RoleCourse.ASSISTANT_PROFESSOR, RoleCourse.PROFESSOR),
+                    userService.getCurrentUser());
+        } catch (RplRoleException e) {
+            return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+        }
+        List<Ranking> ranking = courseService.getRanking(courseId);
+        return Response.status(200).entity(ranking).build();
+    }
+
+    @Secured
+    @GET
+    @Path("/{id}/range")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRangesByCourseId(@PathParam("id") Long courseId) {
+        try {
+            SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+        } catch (RplRoleException e) {
+            return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+        }
+        Course c = courseService.getCourseById(courseId);
+
+        return Response.status(200).entity(c.getRanges().stream().map(RangePOJO::new).collect(Collectors.toList())).build();
+    }
+
+    @Secured
+    @PUT
+    @Path("/{id}/range")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateRange(@PathParam("id") Long courseId, List<Range> ranges) {
+        try {
+            SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+        } catch (RplRoleException e) {
+            return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+        }
+        try{
+            courseService.updateRanges(courseId, ranges);
+        }catch (RplException e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(e.getCode(), e.getMessage()))
+                    .build();
+        }
+        return Response.ok().build();
+    }
+
+    @Secured(Role.ADMIN)
+    @POST
+    @Path("{id}/hide")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response hideCourse(@PathParam("id") Long courseId) {
+        courseService.hide(courseId);
+        return Response.status(200).build();
+    }
+    @Secured(Role.ADMIN)
+    @POST
+    @Path("{id}/unhide")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response unhideCourse(@PathParam("id") Long courseId) {
+        courseService.unhide(courseId);
+        return Response.status(200).build();
+    }
 }

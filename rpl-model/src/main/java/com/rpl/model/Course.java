@@ -27,105 +27,105 @@ import org.hibernate.annotations.OrderBy;
 @DynamicUpdate
 public class Course {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	private String name;
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
+    private String name;
 
-	@Enumerated(EnumType.STRING)
-	private DatabaseState state;
-	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "course", orphanRemoval = true)
-	@OrderBy(clause = "id ASC")
-	private Set<Topic> topics;
-	
-	private String rules;
+    @Enumerated(EnumType.STRING)
+    private DatabaseState state;
 
-	private String description;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "course", orphanRemoval = true)
+    @OrderBy(clause = "id ASC")
+    private Set<Topic> topics;
 
-	private String customization;
-	
-	@OneToOne(optional = true, mappedBy = "course")
-	private CourseImage courseImage;
-	
-	@OneToMany(mappedBy = "course", orphanRemoval = true, cascade = CascadeType.ALL)
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@OrderBy(clause = "minScore ASC")
-	private List<Range> ranges;
-	
-	public String getCustomization() {
-		return customization;
-	}
+    private String rules;
 
-	public void setCustomization(String customization) {
-		this.customization = customization;
-	}
+    private String description;
 
-	public Long getId() {
-		return id;
-	}
+    private String customization;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @OneToOne(optional = true, mappedBy = "course")
+    private CourseImage courseImage;
 
-	public String getName() {
-		return name;
-	}
+    @OneToMany(mappedBy = "course", orphanRemoval = true, cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OrderBy(clause = "minScore ASC")
+    private List<Range> ranges;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getCustomization() {
+        return customization;
+    }
 
-	public Set<Topic> getTopics() {
-		return topics;
-	}
+    public void setCustomization(String customization) {
+        this.customization = customization;
+    }
 
-	public void setTopics(Set<Topic> topics) {
-		this.topics = topics;
-	}
-	
-	public DatabaseState getState() {
-		return state;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setState(DatabaseState state) {
-		this.state = state;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getRules() {
-		return rules;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setRules(String rules) {
-		this.rules = rules;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public Set<Topic> getTopics() {
+        return topics;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	public CourseImage getCourseImage() {
-		return courseImage;
-	}
+    public void setTopics(Set<Topic> topics) {
+        this.topics = topics;
+    }
 
-	public void setCourseImage(CourseImage courseImage) {
-		this.courseImage = courseImage;
-	}
+    public DatabaseState getState() {
+        return state;
+    }
 
-	public List<Range> getRanges() {
-		return ranges;
-	}
+    public void setState(DatabaseState state) {
+        this.state = state;
+    }
 
-	public void setRanges(List<Range> ranges) {
-		this.ranges = ranges;
-	}
+    public String getRules() {
+        return rules;
+    }
 
-	public Topic findTopicByName(String name) {
-		return topics.stream().filter(t -> t.getName().equals(name) && ! t.getState().equals(DatabaseState.DELETED)).findFirst().orElse(null);
-	}
+    public void setRules(String rules) {
+        this.rules = rules;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public CourseImage getCourseImage() {
+        return courseImage;
+    }
+
+    public void setCourseImage(CourseImage courseImage) {
+        this.courseImage = courseImage;
+    }
+
+    public List<Range> getRanges() {
+        return ranges;
+    }
+
+    public void setRanges(List<Range> ranges) {
+        this.ranges = ranges;
+    }
+
+    public Topic findTopicByName(String name) {
+        return topics.stream().filter(t -> t.getName().equals(name) && ! t.getState().equals(DatabaseState.DELETED)).findFirst().orElse(null);
+    }
 }

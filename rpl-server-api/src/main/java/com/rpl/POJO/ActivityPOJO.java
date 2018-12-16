@@ -68,19 +68,19 @@ public class ActivityPOJO {
         this.definitive = definitive;
     }
 
-	public String getTopicName() {
-		return topicName;
-	}
+    public String getTopicName() {
+        return topicName;
+    }
 
-	public void setTopicName(String topicName) {
-		this.topicName = topicName;
-	}
+    public void setTopicName(String topicName) {
+        this.topicName = topicName;
+    }
 
-	public boolean isEnabled() {
-		return enabled;
-	}
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 }

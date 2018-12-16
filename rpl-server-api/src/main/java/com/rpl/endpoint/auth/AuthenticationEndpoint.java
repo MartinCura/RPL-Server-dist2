@@ -27,84 +27,84 @@ import com.rpl.service.UserService;
 @Path("/authentication")
 public class AuthenticationEndpoint {
 
-	@Inject
-	private SecurityService securityService;
-	@Inject
-	private UserService userService;
+    @Inject
+    private SecurityService securityService;
+    @Inject
+    private UserService userService;
 
-	@POST
-	@Path("/")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response authenticateUser(CredentialsPOJO c) {
-		try {
-			Person p = securityService.authenticate(c.getUsername(), c.getPassword());
+    @POST
+    @Path("/")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response authenticateUser(CredentialsPOJO c) {
+        try {
+            Person p = securityService.authenticate(c.getUsername(), c.getPassword());
 
-			String token = securityService.issueToken(p);
+            String token = securityService.issueToken(p);
 
-			return Response.ok(TokenPOJO.of(token, p.getCredentials().getRole(), c.getUsername())).build();
-		} catch (RplNotAuthorizedException e) {
-			return Response.status(Response.Status.UNAUTHORIZED).build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
-	}
+            return Response.ok(TokenPOJO.of(token, p.getCredentials().getRole(), c.getUsername())).build();
+        } catch (RplNotAuthorizedException e) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
-	@Secured
-	@PUT
-	@Path("/password")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response updatePassword(PersonPasswordPOJO pojo) {
+    @Secured
+    @PUT
+    @Path("/password")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updatePassword(PersonPasswordPOJO pojo) {
 
-		securityService.updatePassword(userService.getCurrentUser().getId(), pojo.getPassword());
+        securityService.updatePassword(userService.getCurrentUser().getId(), pojo.getPassword());
 
-		return Response.ok().build();
+        return Response.ok().build();
 
-	}
+    }
 
-	@Secured
-	@POST
-	@Path("/logout")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response logout() {
+    @Secured
+    @POST
+    @Path("/logout")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response logout() {
 
-		try {
-			securityService.logout(userService.getCurrentUser().getCredentials().getUsername());
-			return Response.ok().build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
-	}
+        try {
+            securityService.logout(userService.getCurrentUser().getCredentials().getUsername());
+            return Response.ok().build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
-	@POST
-	@Path("/register")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response register(RegisterPOJO regPojo) {
+    @POST
+    @Path("/register")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response register(RegisterPOJO regPojo) {
 
-		try {
-			Person p = new Person();
-			p.setMail(regPojo.getMail());
-			p.setName(regPojo.getName());
-			Credentials c = new Credentials();
-			c.setUsername(regPojo.getUsername());
-			c.setPassword(regPojo.getPassword());
-			c.setRole(Role.USER);
-			p.setCredentials(c);
+        try {
+            Person p = new Person();
+            p.setMail(regPojo.getMail());
+            p.setName(regPojo.getName());
+            Credentials c = new Credentials();
+            c.setUsername(regPojo.getUsername());
+            c.setPassword(regPojo.getPassword());
+            c.setRole(Role.USER);
+            p.setCredentials(c);
 
-			securityService.register(p);
+            securityService.register(p);
 
-			return Response.ok().build();
+            return Response.ok().build();
 
-		} catch (RplException e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(e.getCode(), e.getMsg())).build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(MessageCodes.SERVER_ERROR, e.getMessage()))
-					.build();
-		}
+        } catch (RplException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(e.getCode(), e.getMsg())).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(MessageCodes.SERVER_ERROR, e.getMessage()))
+                    .build();
+        }
 
-	}
+    }
 
 }

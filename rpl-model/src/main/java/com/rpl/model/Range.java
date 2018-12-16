@@ -13,50 +13,50 @@ import javax.persistence.Table;
 @Table(name = "course_range")
 public class Range {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "min_score")
-	private Integer minScore;
+    @Column(name = "min_score")
+    private Integer minScore;
 
-	@Column(name = "range_name")
-	private String rangeName;
-	
-	@ManyToOne
-	@JoinColumn(name = "course_id")
-	private Course course;
+    @Column(name = "range_name")
+    private String rangeName;
 
-	public Long getId() {
-		return id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Integer getMinScore() {
-		return minScore;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setMinScore(Integer minScore) {
-		this.minScore = minScore;
-	}
+    public Integer getMinScore() {
+        return minScore;
+    }
 
-	public String getRangeName() {
-		return rangeName;
-	}
+    public void setMinScore(Integer minScore) {
+        this.minScore = minScore;
+    }
 
-	public void setRangeName(String rangeName) {
-		this.rangeName = rangeName;
-	}
+    public String getRangeName() {
+        return rangeName;
+    }
 
-	public Course getCourse() {
-		return course;
-	}
+    public void setRangeName(String rangeName) {
+        this.rangeName = rangeName;
+    }
 
-	public void setCourse(Course course) {
-		this.course = course;
-	}
-	
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
 }

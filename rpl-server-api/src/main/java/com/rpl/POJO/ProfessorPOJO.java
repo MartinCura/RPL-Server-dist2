@@ -18,5 +18,4 @@ public class ProfessorPOJO {
     public String getName() {
         return name;
     }
-
 }

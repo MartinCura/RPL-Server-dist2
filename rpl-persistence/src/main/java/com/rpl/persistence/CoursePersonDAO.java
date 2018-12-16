@@ -36,7 +36,7 @@ public class CoursePersonDAO extends ApplicationDAO {
     }
 
     public void deleteByPersonId(Long courseId, Long personId){
-    	entityManager.createQuery("DELETE FROM CoursePerson cp WHERE cp.person.id = :personId and cp.course.id = :courseId")
+        entityManager.createQuery("DELETE FROM CoursePerson cp WHERE cp.person.id = :personId and cp.course.id = :courseId")
                 .setParameter("personId", personId)
                 .setParameter("courseId", courseId)
                 .executeUpdate();

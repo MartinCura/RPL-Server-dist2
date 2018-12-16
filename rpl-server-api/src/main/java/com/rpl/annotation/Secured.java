@@ -13,6 +13,5 @@ import com.rpl.model.Role;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface Secured {
-	Role[] value() default {};
-	
+    Role[] value() default {};
 }

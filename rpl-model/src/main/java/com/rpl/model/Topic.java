@@ -26,60 +26,60 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate
 public class Topic {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	private String name;
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "course_id")
-	private Course course;
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 
-	@JsonIgnore
-	@OrderBy("name ASC")
-	@OneToMany(fetch = FetchType.EAGER, mappedBy="topic")
-	private List<Activity> activities;
-	
-	@Enumerated(EnumType.STRING)
-	private DatabaseState state;
+    @JsonIgnore
+    @OrderBy("name ASC")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy="topic")
+    private List<Activity> activities;
 
-	public Long getId() {
-		return id;
-	}
+    @Enumerated(EnumType.STRING)
+    private DatabaseState state;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Course getCourse() {
-		return course;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setCourse(Course course) {
-		this.course = course;
-	}
+    public Course getCourse() {
+        return course;
+    }
 
-	public List<Activity> getActivities() {
-		return activities;
-	}
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 
-	public void setActivities(List<Activity> activities) {
-		this.activities = activities;
-	}
+    public List<Activity> getActivities() {
+        return activities;
+    }
 
-	public DatabaseState getState() {
-		return state;
-	}
+    public void setActivities(List<Activity> activities) {
+        this.activities = activities;
+    }
 
-	public void setState(DatabaseState state) {
-		this.state = state;
-	}
+    public DatabaseState getState() {
+        return state;
+    }
+
+    public void setState(DatabaseState state) {
+        this.state = state;
+    }
 }

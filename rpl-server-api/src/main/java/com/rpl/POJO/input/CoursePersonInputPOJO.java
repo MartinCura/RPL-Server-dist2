@@ -1,7 +1,6 @@
 package com.rpl.POJO.input;
 
 public class CoursePersonInputPOJO {
-
     private String username;
     private String role;
 

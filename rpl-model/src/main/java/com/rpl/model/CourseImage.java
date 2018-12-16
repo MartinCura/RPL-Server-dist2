@@ -11,53 +11,53 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "course_image")
 public class CourseImage {
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	@OneToOne
-	@JoinColumn(name = "course_id")
-	private Course course;
-	private String fileName;
-	private byte[] content;
-	
-	public CourseImage() {
-	}
-	
-	public CourseImage(String fileName, byte[] content) {
-		this.setFileName(fileName);
-		this.setContent(content);
-	}
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
+    @OneToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
+    private String fileName;
+    private byte[] content;
 
-	public Long getId() {
-		return id;
-	}
+    public CourseImage() {
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public CourseImage(String fileName, byte[] content) {
+        this.setFileName(fileName);
+        this.setContent(content);
+    }
 
-	public Course getCourse() {
-		return course;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setCourse(Course course) {
-		this.course = course;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getFileName() {
-		return fileName;
-	}
+    public Course getCourse() {
+        return course;
+    }
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 
-	public byte[] getContent() {
-		return content;
-	}
+    public String getFileName() {
+        return fileName;
+    }
 
-	public void setContent(byte[] content) {
-		this.content = content;
-	}
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public byte[] getContent() {
+        return content;
+    }
+
+    public void setContent(byte[] content) {
+        this.content = content;
+    }
 
 }

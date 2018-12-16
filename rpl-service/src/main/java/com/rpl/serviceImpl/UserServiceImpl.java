@@ -10,14 +10,14 @@ import com.rpl.service.UserService;
 @RequestScoped
 public class UserServiceImpl implements UserService {
 
-	private Person currentUser;
+    private Person currentUser;
 
-	public Person getCurrentUser() {
-		return currentUser;
-	}
+    public Person getCurrentUser() {
+        return currentUser;
+    }
 
-	public void setCurrentUser(Person p) {
-		this.currentUser = p;
-	}
+    public void setCurrentUser(Person p) {
+        this.currentUser = p;
+    }
 
 }

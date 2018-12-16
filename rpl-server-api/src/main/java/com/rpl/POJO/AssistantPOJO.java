@@ -18,5 +18,4 @@ public class AssistantPOJO {
     public String getName() {
         return name;
     }
-
 }

@@ -32,117 +32,117 @@ import com.rpl.service.util.Utils;
 @Path("/manage/courses")
 public class ManageEndpoint {
 
-	@Inject
-	private CourseService courseService;
-	@Inject
-	private ActivityService activityService;
-	@Inject
-	private TopicService topicService;
-	@Inject
-	private UserService userService;
-	@Inject
-	private PersonService personService;
-	
-	@GET
-	@Path("/{id}/activities")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getActivities(@PathParam("id") Long courseId) {
-		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		List<Activity> activities = activityService.getActivitiesByCourseEnabledAndDisabled(courseId);
-		List<ActivityPOJO> activityPOJOS = new ArrayList<>();
-		for (Activity activity : activities) {
-			activityPOJOS.add(new ActivityPOJO(activity));
-		}
-		return Response.status(200).entity(activityPOJOS).build();
-	}
+    @Inject
+    private CourseService courseService;
+    @Inject
+    private ActivityService activityService;
+    @Inject
+    private TopicService topicService;
+    @Inject
+    private UserService userService;
+    @Inject
+    private PersonService personService;
 
-	@GET
-	@Path("/{id}/topics")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getTopics(@PathParam("id") Long courseId) {
-		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		List<Topic> topics = topicService.getTopicsByCourseEnabledAndDisabled(courseId);
-		List<TopicWithDisabledActivitiesPOJO> topicPOJOS = new ArrayList<>();
-		for (Topic topic : topics) {
-			topicPOJOS.add(new TopicWithDisabledActivitiesPOJO(topic));
-		}
-		return Response.status(200).entity(topicPOJOS).build();
-	}
+    @GET
+    @Path("/{id}/activities")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getActivities(@PathParam("id") Long courseId) {
+        try {
+            SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+        } catch (RplRoleException e) {
+            return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+        }
+        List<Activity> activities = activityService.getActivitiesByCourseEnabledAndDisabled(courseId);
+        List<ActivityPOJO> activityPOJOS = new ArrayList<>();
+        for (Activity activity : activities) {
+            activityPOJOS.add(new ActivityPOJO(activity));
+        }
+        return Response.status(200).entity(activityPOJOS).build();
+    }
 
-	@GET
-	@Path("/{id}/students")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getStudents(@PathParam("id") Long id) {
-		try {
-			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
+    @GET
+    @Path("/{id}/topics")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTopics(@PathParam("id") Long courseId) {
+        try {
+            SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+        } catch (RplRoleException e) {
+            return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+        }
+        List<Topic> topics = topicService.getTopicsByCourseEnabledAndDisabled(courseId);
+        List<TopicWithDisabledActivitiesPOJO> topicPOJOS = new ArrayList<>();
+        for (Topic topic : topics) {
+            topicPOJOS.add(new TopicWithDisabledActivitiesPOJO(topic));
+        }
+        return Response.status(200).entity(topicPOJOS).build();
+    }
 
-		CoursePerson person = personService.getCoursePersonByIdAndCourse(userService.getCurrentUser().getId(), id);
+    @GET
+    @Path("/{id}/students")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getStudents(@PathParam("id") Long id) {
+        try {
+            SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
+        } catch (RplRoleException e) {
+            return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+        }
 
-		List<CoursePerson> students;
-		if (person.getRole().equals(RoleCourse.ASSISTANT_PROFESSOR)) {
-			students = courseService.getStudentsByAssistant(id, person.getPerson().getId());
-		} else {
-			students = courseService.getStudents(id);
-		}
-		List<StudentPOJO> studentPOJOS = new ArrayList<>();
-		for (CoursePerson student : students) {
-			studentPOJOS.add(new StudentPOJO(student));
-		}
-		return Response.status(200).entity(studentPOJOS).build();
-	}
+        CoursePerson person = personService.getCoursePersonByIdAndCourse(userService.getCurrentUser().getId(), id);
 
-	@GET
-	@Path("/{id}/assistants")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAssistants(@PathParam("id") Long id) {
-		try {
-			SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		List<CoursePerson> assistants = courseService.getAssistants(id);
-		List<AssistantPOJO> assistantPOJOS = new ArrayList<>();
-		for (CoursePerson assistant : assistants) {
-			assistantPOJOS.add(new AssistantPOJO(assistant));
-		}
-		return Response.status(200).entity(assistantPOJOS).build();
-	}
+        List<CoursePerson> students;
+        if (person.getRole().equals(RoleCourse.ASSISTANT_PROFESSOR)) {
+            students = courseService.getStudentsByAssistant(id, person.getPerson().getId());
+        } else {
+            students = courseService.getStudents(id);
+        }
+        List<StudentPOJO> studentPOJOS = new ArrayList<>();
+        for (CoursePerson student : students) {
+            studentPOJOS.add(new StudentPOJO(student));
+        }
+        return Response.status(200).entity(studentPOJOS).build();
+    }
 
-	@POST
-	@Path("/{courseId}/person/{personId}/accept")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response acceptStudent(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
-		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		courseService.accept(courseId, personId);
-		return Response.status(200).build();
-	}
+    @GET
+    @Path("/{id}/assistants")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAssistants(@PathParam("id") Long id) {
+        try {
+            SecurityHelper.checkPermissions(id, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+        } catch (RplRoleException e) {
+            return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+        }
+        List<CoursePerson> assistants = courseService.getAssistants(id);
+        List<AssistantPOJO> assistantPOJOS = new ArrayList<>();
+        for (CoursePerson assistant : assistants) {
+            assistantPOJOS.add(new AssistantPOJO(assistant));
+        }
+        return Response.status(200).entity(assistantPOJOS).build();
+    }
 
-	@POST
-	@Path("/{courseId}/person/{personId}/leave")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response leaveCourse(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
-		try {
-			SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
-		} catch (RplRoleException e) {
-			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
-		}
-		courseService.leaveCourse(courseId, personId);
-		return Response.status(200).build();
-	}
-	
+    @POST
+    @Path("/{courseId}/person/{personId}/accept")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response acceptStudent(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
+        try {
+            SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+        } catch (RplRoleException e) {
+            return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+        }
+        courseService.accept(courseId, personId);
+        return Response.status(200).build();
+    }
+
+    @POST
+    @Path("/{courseId}/person/{personId}/leave")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response leaveCourse(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId) {
+        try {
+            SecurityHelper.checkPermissions(courseId, Utils.listOf(RoleCourse.PROFESSOR), userService.getCurrentUser());
+        } catch (RplRoleException e) {
+            return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
+        }
+        courseService.leaveCourse(courseId, personId);
+        return Response.status(200).build();
+    }
+
 }

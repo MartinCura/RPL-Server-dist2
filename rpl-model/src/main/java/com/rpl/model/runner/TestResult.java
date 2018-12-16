@@ -7,55 +7,55 @@ import javax.persistence.*;
 @Entity
 @Table(name = "test_result")
 public class TestResult {
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	private String name;
-	private boolean success;
-	private String description;
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	@ManyToOne
-	@JoinColumn(name = "tests_id")
-	private Tests test;
 
-	public Long getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private boolean success;
+    private String description;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToOne
+    @JoinColumn(name = "tests_id")
+    private Tests test;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public String getName() {
-		return name;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public boolean isSuccess() {
-		return success;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setSuccess(boolean success) {
-		this.success = success;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public boolean isSuccess() {
+        return success;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
 
-	public Tests getTest() {
-		return test;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setTest(Tests test) {
-		this.test = test;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Tests getTest() {
+        return test;
+    }
+
+    public void setTest(Tests test) {
+        this.test = test;
+    }
 }

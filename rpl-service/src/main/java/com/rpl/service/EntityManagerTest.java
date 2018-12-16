@@ -9,17 +9,17 @@ import com.rpl.persistence.EntityManagerDAOTest;
 @Stateless
 public class EntityManagerTest {
 
-	@Inject
-	private EntityManagerDAOTest emTest;
-	
+    @Inject
+    private EntityManagerDAOTest emTest;
+
     public DBTest find(){
-    	return emTest.find(0);
+        return emTest.find(0);
     }
     
     public DBTest save(){
-    	DBTest test = new DBTest();
-    	test.setMsg("test");
-    	return emTest.save(test);
+        DBTest test = new DBTest();
+        test.setMsg("test");
+        return emTest.save(test);
     }
     
 }

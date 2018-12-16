@@ -4,60 +4,61 @@ import com.rpl.model.Person;
 
 public class PersonInfoPOJO {
 
-	private Long id;
-	private String name;
-	private String mail;
-	private String role;
-	private Long studentId;
-	
-	public PersonInfoPOJO() {
-	}
-	
-	public PersonInfoPOJO(Person p) {
-		this.id = p.getId();
-		this.name = p.getName();
-		this.mail = p.getMail();
-		this.role = p.getCredentials().getRole().toString();
-		this.studentId = p.getStudentId();
-	}
+    private Long id;
+    private String name;
+    private String mail;
+    private String role;
+    private Long studentId;
 
-	public Long getId() {
-		return id;
-	}
+    public PersonInfoPOJO() {
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public PersonInfoPOJO(Person p) {
+        this.id = p.getId();
+        this.name = p.getName();
+        this.mail = p.getMail();
+        this.role = p.getCredentials().getRole().toString();
+        this.studentId = p.getStudentId();
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getMail() {
-		return mail;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getRole() {
-		return role;
-	}
+    public String getMail() {
+        return mail;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
 
-	public Long getStudentId() {
-		return studentId;
-	}
+    public String getRole() {
+        return role;
+    }
 
-	public void setStudentId(Long studentId) {
-		this.studentId = studentId;
-	}
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Long getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
+    }
+
 }

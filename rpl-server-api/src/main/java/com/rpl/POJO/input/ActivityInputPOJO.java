@@ -16,7 +16,7 @@ public class ActivityInputPOJO {
     private String tests;
     private List<File> files;
 
-	public String getName() {
+    public String getName() {
         return name;
     }
 
@@ -97,11 +97,11 @@ public class ActivityInputPOJO {
     }
 
     public List<File> getFiles() {
-		return files;
-	}
+        return files;
+    }
 
-	public void setFiles(List<File> files) {
-		this.files = files;
-	}
+    public void setFiles(List<File> files) {
+        this.files = files;
+    }
 
 }

@@ -7,9 +7,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "tests")
 public class Tests {
-	
-	@Id
-	private Long id;
+
+    @Id
+    private Long id;
 
     private boolean success;
 

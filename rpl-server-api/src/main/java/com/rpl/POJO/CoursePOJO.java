@@ -17,8 +17,8 @@ public class CoursePOJO {
     private String description;
     private String inscripted;
     private String role;
-	private String customization;
-	private boolean enabled;
+    private String customization;
+    private boolean enabled;
 
     public CoursePOJO(Course course) {
         this.id = course.getId();
@@ -38,14 +38,14 @@ public class CoursePOJO {
     }
     
     public static CoursePOJO mapWithoutTopics(Course course){
-    	CoursePOJO pojo = new CoursePOJO(course);
-    	pojo.cleanTopics();
-    	return pojo;
+        CoursePOJO pojo = new CoursePOJO(course);
+        pojo.cleanTopics();
+        return pojo;
     }
     
     public CoursePOJO(Set<Topic> topics) {
-    	this.topics = new ArrayList<>();
-    	for (Topic topic : topics) {
+        this.topics = new ArrayList<>();
+        for (Topic topic : topics) {
             this.topics.add(new TopicPOJO(topic));
         }
     }
@@ -63,7 +63,7 @@ public class CoursePOJO {
     }
     
     private void cleanTopics() {
-    	this.topics = null;
+        this.topics = null;
     }
 
     public String getInscripted() {
@@ -115,9 +115,9 @@ public class CoursePOJO {
         this.description = description;
     }
 
-	public String getCustomization() {
-		return customization;
-	}
+    public String getCustomization() {
+        return customization;
+    }
 
 
     public String getRole() {
@@ -129,30 +129,30 @@ public class CoursePOJO {
     }
 
     public void setCustomization(String customization) {
-		this.customization = customization;
-	}
+        this.customization = customization;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setTopics(List<TopicPOJO> topics) {
-		this.topics = topics;
-	}
+    public void setTopics(List<TopicPOJO> topics) {
+        this.topics = topics;
+    }
 
-	public void setInscripted(String inscripted) {
-		this.inscripted = inscripted;
-	}
+    public void setInscripted(String inscripted) {
+        this.inscripted = inscripted;
+    }
 
-	public boolean isEnabled() {
-		return enabled;
-	}
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 }

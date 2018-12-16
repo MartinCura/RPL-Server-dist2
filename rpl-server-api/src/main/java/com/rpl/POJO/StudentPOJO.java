@@ -1,6 +1,5 @@
 package com.rpl.POJO;
 
-
 import com.rpl.model.CoursePerson;
 
 public class StudentPOJO {

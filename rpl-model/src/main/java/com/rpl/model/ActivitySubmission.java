@@ -10,116 +10,116 @@ import com.rpl.model.runner.ResultStatus;
 @Entity
 @Table(name="activity_submission")
 public class ActivitySubmission {
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	@Column(name="submission_date")
-	private Date submissionDate;	// ToDo BUG: seems like submissionDate is not stored appropiately
-	@ManyToOne
-	@JoinColumn(name = "person_id")
-	private Person person;
-	@ManyToOne
-	@JoinColumn(name = "activity_id")
-	private Activity activity;
-	private String code;
-	@Enumerated(EnumType.STRING)
-	private Status status;
-	@OneToOne(cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn
-	private Result result;
-	private boolean selected;
-	private boolean definitive;
-	
-	public Date getSubmissionDate() {
-		return submissionDate;
-	}
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
+    @Column(name="submission_date")
+    private Date submissionDate;	// ToDo BUG: seems like submissionDate is not stored appropiately
+    @ManyToOne
+    @JoinColumn(name = "person_id")
+    private Person person;
+    @ManyToOne
+    @JoinColumn(name = "activity_id")
+    private Activity activity;
+    private String code;
+    @Enumerated(EnumType.STRING)
+    private Status status;
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Result result;
+    private boolean selected;
+    private boolean definitive;
 
-	public void setSubmissionDate(Date submissionDate) {
-		this.submissionDate = submissionDate;
-	}
+    public Date getSubmissionDate() {
+        return submissionDate;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public void setSubmissionDate(Date submissionDate) {
+        this.submissionDate = submissionDate;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Activity getActivity() {
-		return activity;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setActivity(Activity activity) {
-		this.activity = activity;
-	}
+    public Activity getActivity() {
+        return activity;
+    }
 
-	public Status getStatus() {
-		return status;
-	}
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
 
-	public void setStatus(Status status) {
-		this.status = status;
-	}
+    public Status getStatus() {
+        return status;
+    }
 
-	public Result getResult() {
-		return result;
-	}
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
-	public void setResult(Result result) {
-		this.result = result;
-	}
+    public Result getResult() {
+        return result;
+    }
 
-	public Person getPerson() {
-		return person;
-	}
+    public void setResult(Result result) {
+        this.result = result;
+    }
 
-	public void setPerson(Person person) {
-		this.person = person;
-	}
+    public Person getPerson() {
+        return person;
+    }
 
-	public boolean isSelected() {
-		return selected;
-	}
+    public void setPerson(Person person) {
+        this.person = person;
+    }
 
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
+    public boolean isSelected() {
+        return selected;
+    }
 
-	public boolean isDefinitive() {
-		return definitive;
-	}
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 
-	public void setDefinitive(boolean definitive) {
-		this.definitive = definitive;
-	}
+    public boolean isDefinitive() {
+        return definitive;
+    }
 
-	public void analyzeResult() {
-		try {
-			if (this.result.getStatus().getResult().equals(ResultStatus.STATUS_OK)) {
-				this.setStatus( isExpectedOutput(this.result) ? Status.SUCCESS : Status.FAILURE );
-			} else {
-				this.setStatus( this.result.getStatus().getStage().equals("build") ?
-						Status.BUILDING_ERROR : Status.RUNTIME_ERROR );
-			}
-		} catch (Exception e) { // ToDo: specify
-			e.printStackTrace();
-		}
-	}
+    public void setDefinitive(boolean definitive) {
+        this.definitive = definitive;
+    }
 
-	private boolean isExpectedOutput(Result result) {
-		if (this.getActivity().getTestType().equals(TestType.INPUT)) {
-			return result.getStdout().trim().equals(this.getActivity().getOutput());
-		} else {
-			return result.getTests().isSuccess();
-		}
-	}
+    public void analyzeResult() {
+        try {
+            if (this.result.getStatus().getResult().equals(ResultStatus.STATUS_OK)) {
+                this.setStatus( isExpectedOutput(this.result) ? Status.SUCCESS : Status.FAILURE );
+            } else {
+                this.setStatus( this.result.getStatus().getStage().equals("build") ?
+                        Status.BUILDING_ERROR : Status.RUNTIME_ERROR );
+            }
+        } catch (Exception e) { // ToDo: specify
+            e.printStackTrace();
+        }
+    }
+
+    private boolean isExpectedOutput(Result result) {
+        if (this.getActivity().getTestType().equals(TestType.INPUT)) {
+            return result.getStdout().trim().equals(this.getActivity().getOutput());
+        } else {
+            return result.getTests().isSuccess();
+        }
+    }
 }

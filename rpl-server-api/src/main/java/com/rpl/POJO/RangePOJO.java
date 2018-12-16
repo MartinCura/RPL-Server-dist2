@@ -3,29 +3,30 @@ package com.rpl.POJO;
 import com.rpl.model.Range;
 
 public class RangePOJO {
-	
-	private Integer minScore;
 
-	private String rangeName;
+    private Integer minScore;
 
-	public RangePOJO(Range r) {
-		this.setMinScore(r.getMinScore());
-		this.setRangeName(r.getRangeName());
-	}
+    private String rangeName;
 
-	public Integer getMinScore() {
-		return minScore;
-	}
+    public RangePOJO(Range r) {
+        this.setMinScore(r.getMinScore());
+        this.setRangeName(r.getRangeName());
+    }
 
-	public void setMinScore(Integer minScore) {
-		this.minScore = minScore;
-	}
+    public Integer getMinScore() {
+        return minScore;
+    }
 
-	public String getRangeName() {
-		return rangeName;
-	}
+    public void setMinScore(Integer minScore) {
+        this.minScore = minScore;
+    }
 
-	public void setRangeName(String rangeName) {
-		this.rangeName = rangeName;
-	}
+    public String getRangeName() {
+        return rangeName;
+    }
+
+    public void setRangeName(String rangeName) {
+        this.rangeName = rangeName;
+    }
+
 }

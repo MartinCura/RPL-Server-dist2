@@ -37,27 +37,27 @@ public class TopicServiceImpl implements TopicService{
         return topicDAO.save(topic);
     }
 
-	public void deleteTopicById(Long id) {
-		topicDAO.delete(id);
-	}
-	
-	public void update(Topic updateTopic){
-		topicDAO.update(updateTopic.getId(), updateTopic.getName());
-	}
+    public void deleteTopicById(Long id) {
+        topicDAO.delete(id);
+    }
 
-	@Override
-	public List<Topic> getEnabledAndDisabledTopicsByCourse(Long courseId) {
-		return topicDAO.findByCourseIdEnabledAndDisabled(courseId);
-	}
+    public void update(Topic updateTopic){
+        topicDAO.update(updateTopic.getId(), updateTopic.getName());
+    }
 
-	@Override
-	public void hide(Long topicId) {
-		topicDAO.updateDatabaseState(topicId, DatabaseState.DISABLED);
-	}
+    @Override
+    public List<Topic> getEnabledAndDisabledTopicsByCourse(Long courseId) {
+        return topicDAO.findByCourseIdEnabledAndDisabled(courseId);
+    }
 
-	@Override
-	public void unhide(Long topicId) {
-		topicDAO.updateDatabaseState(topicId, DatabaseState.ENABLED);
-		
-	}
+    @Override
+    public void hide(Long topicId) {
+        topicDAO.updateDatabaseState(topicId, DatabaseState.DISABLED);
+    }
+
+    @Override
+    public void unhide(Long topicId) {
+        topicDAO.updateDatabaseState(topicId, DatabaseState.ENABLED);
+
+    }
 }

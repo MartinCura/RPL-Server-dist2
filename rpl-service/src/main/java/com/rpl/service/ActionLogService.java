@@ -4,30 +4,30 @@ import com.rpl.model.Person;
 
 public interface ActionLogService {
 
-	void logLogin(Person p);
+    void logLogin(Person p);
 
-	void logLogout();
-	
-	void logPasswordUpdate();
-	
-	void logActivitySubmission(Long activitySubmissionId);
+    void logLogout();
 
-	void logMarkActivitySubmissionAsSelected(Long submissionId);
+    void logPasswordUpdate();
 
-	void logMarkActivitySubmissionAsDefinitive(Long submissionId);
+    void logActivitySubmission(Long activitySubmissionId);
 
-	void logNewUserRegistered(Person p);
+    void logMarkActivitySubmissionAsSelected(Long submissionId);
 
-	void logDeletedActivity(Long id);
+    void logMarkActivitySubmissionAsDefinitive(Long submissionId);
 
-	void logNewCourse(Long id);
+    void logNewUserRegistered(Person p);
 
-	void logDeletedCourse(Long id);
+    void logDeletedActivity(Long id);
 
-	void logJoinedCourse(Long courseId, Long personId);
+    void logNewCourse(Long id);
 
-	void logLeftCourse(Long courseId, Long personId);
+    void logDeletedCourse(Long id);
 
-	void logNewActivity(Long id);
+    void logJoinedCourse(Long courseId, Long personId);
+
+    void logLeftCourse(Long courseId, Long personId);
+
+    void logNewActivity(Long id);
 
 }

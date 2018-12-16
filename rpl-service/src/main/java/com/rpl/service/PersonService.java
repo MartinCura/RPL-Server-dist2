@@ -10,12 +10,13 @@ import com.rpl.model.PersonImage;
 public interface PersonService {
 
     List<Person> getPersons();
-	Person getPersonById(Long id);
+    Person getPersonById(Long id);
     Person getPersonByUsername(String username);
-	void addCoursePerson(CoursePerson coursePerson) throws RplException;
-	void updatePersonInfo(Long id, String name, String mail, Long studentId) throws RplException;
-	void updatePersonInfo(Long id, String name, String mail, Long studentId, String role) throws RplException;
-	CoursePerson getCoursePersonByIdAndCourse(Long personId, Long courseId);
-	void saveImage(Long id, PersonImage courseImage) throws RplException;
-	void deletePersonById(Long id);
+    void addCoursePerson(CoursePerson coursePerson) throws RplException;
+    void updatePersonInfo(Long id, String name, String mail, Long studentId) throws RplException;
+    void updatePersonInfo(Long id, String name, String mail, Long studentId, String role) throws RplException;
+    CoursePerson getCoursePersonByIdAndCourse(Long personId, Long courseId);
+    void saveImage(Long id, PersonImage courseImage) throws RplException;
+    void deletePersonById(Long id);
+
 }

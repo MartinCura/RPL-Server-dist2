@@ -23,7 +23,7 @@ public class CoursePerson {
     @JoinColumn(name = "assistant_id")
     private Person assistant;
     @Enumerated(EnumType.STRING)
-	private DatabaseState state;
+    private DatabaseState state;
 
     public Long getId() {
         return id;
@@ -73,11 +73,11 @@ public class CoursePerson {
         this.assistant = assistant;
     }
 
-	public DatabaseState getState() {
-		return state;
-	}
+    public DatabaseState getState() {
+        return state;
+    }
 
-	public void setState(DatabaseState state) {
-		this.state = state;
-	}
+    public void setState(DatabaseState state) {
+        this.state = state;
+    }
 }

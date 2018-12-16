@@ -24,92 +24,92 @@ import com.rpl.service.util.FileUtils;
 @Stateless
 public class ActivityServiceImpl implements ActivityService {
 
-	@Inject
-	private ActivityDAO activityDAO;
-	@Inject
-	private UserService userService;
-	@Inject
-	private ActivitySubmissionDAO activitySubmissionDAO;
-	@Inject
-	private ActionLogService actionLogService;
-	
-	
-	public Activity getActivityById(Long id) {
-		return activityDAO.find(id);
-	}
+    @Inject
+    private ActivityDAO activityDAO;
+    @Inject
+    private UserService userService;
+    @Inject
+    private ActivitySubmissionDAO activitySubmissionDAO;
+    @Inject
+    private ActionLogService actionLogService;
 
-	public List<Activity> getActivitiesByCourseEnabledAndDisabled(Long courseId) {
-		return activityDAO.findByCourseEnabledAndDisabled(courseId);
-	}
 
-	public List<Activity> getActivitiesByTopic(Long topicId) {
-		return activityDAO.findByTopic(topicId);
-	}
+    public Activity getActivityById(Long id) {
+        return activityDAO.find(id);
+    }
 
-	public void delete(Long id) {
-		activityDAO.delete(id);
-		actionLogService.logDeletedActivity(id);
-	}
-	
-	public void update(Long id, String name, String description, Language language, int points, Long topic, TestType testType, String template, String input, String output, String tests) {
-		activityDAO.update(id, name, description, language, points, topic, testType, template, input, output, tests);
-	}
-	
-	public void submit(Long courseId, Activity activity) {
-		Activity newActivity = activityDAO.save(activity);
-		actionLogService.logNewActivity(newActivity.getId());
-	}
+    public List<Activity> getActivitiesByCourseEnabledAndDisabled(Long courseId) {
+        return activityDAO.findByCourseEnabledAndDisabled(courseId);
+    }
 
-	public Set<Long> getActivitiesSelectedByCourse(Long courseId) {
-		List<ActivitySubmission> submissions = activitySubmissionDAO.findSelectedByPersonAndCourse(userService.getCurrentUser().getId(), courseId);
-		Set<Long> activitiesId = new HashSet<>();
-		for (ActivitySubmission activitySubmission : submissions) {
-			activitiesId.add(activitySubmission.getActivity().getId());
-		}
-		return activitiesId;
-	}
+    public List<Activity> getActivitiesByTopic(Long topicId) {
+        return activityDAO.findByTopic(topicId);
+    }
 
-	public Set<Long> getActivitiesDefinitiveByCourse(Long courseId) {
-		List<ActivitySubmission> submissions = activitySubmissionDAO.findSelectedByPersonAndCourse(userService.getCurrentUser().getId(), courseId);
-		Set<Long> activitiesId = new HashSet<>();
-		for (ActivitySubmission activitySubmission : submissions) {
-			if (activitySubmission.isDefinitive())
-				activitiesId.add(activitySubmission.getActivity().getId());
-		}
-		return activitiesId;
-	}
+    public void delete(Long id) {
+        activityDAO.delete(id);
+        actionLogService.logDeletedActivity(id);
+    }
 
-	public void saveFile(Long activityId, ActivityInputFile file) throws RplException{
-		FileUtils.validateFile(file.getContent());
-		Activity act = activityDAO.find(activityId);
-		ActivityInputFile recoveredFile = activityDAO.findFileByActivityAndName(activityId, file.getFileName());
-		if (recoveredFile != null){
-			recoveredFile.setContent(file.getContent());
-			activityDAO.save(recoveredFile);
-			return;
-		}
-		file.setActivity(act);
-		activityDAO.save(file);
-	}
-	
-	public void deleteFile(Long fileId){
-		ActivityInputFile file = activityDAO.findFile(fileId);
-		activityDAO.deleteFile(file);
-	}
-	
-	public List<ActivityInputFile> findAllFiles(Long activityId){
-		return activityDAO.findFiles(activityId);
-	}
+    public void update(Long id, String name, String description, Language language, int points, Long topic, TestType testType, String template, String input, String output, String tests) {
+        activityDAO.update(id, name, description, language, points, topic, testType, template, input, output, tests);
+    }
 
-	@Override
-	public void hide(Long activityId) {
-		activityDAO.updateDatabaseState(activityId, DatabaseState.DISABLED);
-		
-	}
+    public void submit(Long courseId, Activity activity) {
+        Activity newActivity = activityDAO.save(activity);
+        actionLogService.logNewActivity(newActivity.getId());
+    }
 
-	@Override
-	public void unhide(Long activityId) {
-		activityDAO.updateDatabaseState(activityId, DatabaseState.ENABLED);
-		
-	}
+    public Set<Long> getActivitiesSelectedByCourse(Long courseId) {
+        List<ActivitySubmission> submissions = activitySubmissionDAO.findSelectedByPersonAndCourse(userService.getCurrentUser().getId(), courseId);
+        Set<Long> activitiesId = new HashSet<>();
+        for (ActivitySubmission activitySubmission : submissions) {
+            activitiesId.add(activitySubmission.getActivity().getId());
+        }
+        return activitiesId;
+    }
+
+    public Set<Long> getActivitiesDefinitiveByCourse(Long courseId) {
+        List<ActivitySubmission> submissions = activitySubmissionDAO.findSelectedByPersonAndCourse(userService.getCurrentUser().getId(), courseId);
+        Set<Long> activitiesId = new HashSet<>();
+        for (ActivitySubmission activitySubmission : submissions) {
+            if (activitySubmission.isDefinitive())
+                activitiesId.add(activitySubmission.getActivity().getId());
+        }
+        return activitiesId;
+    }
+
+    public void saveFile(Long activityId, ActivityInputFile file) throws RplException{
+        FileUtils.validateFile(file.getContent());
+        Activity act = activityDAO.find(activityId);
+        ActivityInputFile recoveredFile = activityDAO.findFileByActivityAndName(activityId, file.getFileName());
+        if (recoveredFile != null){
+            recoveredFile.setContent(file.getContent());
+            activityDAO.save(recoveredFile);
+            return;
+        }
+        file.setActivity(act);
+        activityDAO.save(file);
+    }
+
+    public void deleteFile(Long fileId){
+        ActivityInputFile file = activityDAO.findFile(fileId);
+        activityDAO.deleteFile(file);
+    }
+
+    public List<ActivityInputFile> findAllFiles(Long activityId){
+        return activityDAO.findFiles(activityId);
+    }
+
+    @Override
+    public void hide(Long activityId) {
+        activityDAO.updateDatabaseState(activityId, DatabaseState.DISABLED);
+
+    }
+
+    @Override
+    public void unhide(Long activityId) {
+        activityDAO.updateDatabaseState(activityId, DatabaseState.ENABLED);
+
+    }
 }

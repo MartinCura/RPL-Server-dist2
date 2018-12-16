@@ -6,7 +6,6 @@ import com.rpl.model.runner.Tests;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class TestsPOJO {
     private boolean success;
     private List<TestResultPOJO> tests;

@@ -14,7 +14,7 @@ public class Utils {
     }
     
     public static String getCompleteName(Person p) {
-    	return String.format("%s (%s)", p.getName(), p.getCredentials().getUsername());
+        return String.format("%s (%s)", p.getName(), p.getCredentials().getUsername());
     }
 
     public static Date stringToDate(String dateStr) {
@@ -36,4 +36,5 @@ public class Utils {
         cal.add(Calendar.MONTH, months);
         return cal.getTime();
     }
+
 }
