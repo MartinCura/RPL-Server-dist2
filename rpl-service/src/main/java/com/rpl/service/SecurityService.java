@@ -6,16 +6,16 @@ import com.rpl.model.Person;
 
 public interface SecurityService {
 	
-	public String issueToken(Person p) throws Exception;
+	String issueToken(Person p);
 	
-	public Person authenticate(String username, String password) throws RplNotAuthorizedException;
+	Person authenticate(String username, String password) throws RplNotAuthorizedException;
 	
-	public Person validateToken(String token) throws RplNotAuthorizedException;
+	Person validateToken(String token) throws RplNotAuthorizedException;
 
-	public void logout(String username);
+	void logout(String username);
 
-	public String register(Person p) throws RplException;
+	String register(Person p) throws RplException;
 
-	public void updatePassword(Long id, String password);
+	void updatePassword(Long id, String password);
 
 }

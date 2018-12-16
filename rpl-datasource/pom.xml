@@ -9,8 +9,7 @@
 		<!--<version>${rpl.version}</version>-->
 		<version>0.0.1</version>
 	</parent>
-	<groupId>rpl</groupId>
-	<artifactId>rpl-datasource</artifactId>
+    <artifactId>rpl-datasource</artifactId>
 	<!--<version>${rpl.daemon.version}</version>-->
 	<name>rpl-datasource</name>
 	<packaging>jar</packaging>

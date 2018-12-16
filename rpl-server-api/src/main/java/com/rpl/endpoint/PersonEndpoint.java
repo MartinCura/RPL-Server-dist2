@@ -48,7 +48,7 @@ public class PersonEndpoint {
 	public Response getPersons() {
 
 		List<Person> persons = personService.getPersons();
-		List<PersonPOJO> personPOJOS = new ArrayList<PersonPOJO>();
+		List<PersonPOJO> personPOJOS = new ArrayList<>();
 		for (Person p : persons) {
 			personPOJOS.add(new PersonPOJO(p));
 		}

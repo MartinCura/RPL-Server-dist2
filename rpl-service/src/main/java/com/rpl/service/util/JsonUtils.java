@@ -12,9 +12,9 @@ public class JsonUtils {
 		return mapper.writeValueAsString(o);
 	}
 
-	//QUI
 	public static <T> T jsonToObject(String s, Class<T> oClass) throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.readValue(s, oClass);
 	}
+
 }

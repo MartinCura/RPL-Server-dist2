@@ -9,13 +9,13 @@ import com.rpl.model.PersonImage;
 
 public interface PersonService {
 
-    public List<Person> getPersons();
-	public Person getPersonById(Long id);
-    public Person getPersonByUsername(String username);
-	public void addCoursePerson(CoursePerson coursePerson) throws RplException;
-	public void updatePersonInfo(Long id, String name, String mail, Long studentId) throws RplException;
-	public void updatePersonInfo(Long id, String name, String mail, Long studentId, String role) throws RplException;
-	public CoursePerson getCoursePersonByIdAndCourse(Long personId, Long courseId);
-	public void saveImage(Long id, PersonImage courseImage) throws RplException;
-	public void deletePersonById(Long id);
+    List<Person> getPersons();
+	Person getPersonById(Long id);
+    Person getPersonByUsername(String username);
+	void addCoursePerson(CoursePerson coursePerson) throws RplException;
+	void updatePersonInfo(Long id, String name, String mail, Long studentId) throws RplException;
+	void updatePersonInfo(Long id, String name, String mail, Long studentId, String role) throws RplException;
+	CoursePerson getCoursePersonByIdAndCourse(Long personId, Long courseId);
+	void saveImage(Long id, PersonImage courseImage) throws RplException;
+	void deletePersonById(Long id);
 }

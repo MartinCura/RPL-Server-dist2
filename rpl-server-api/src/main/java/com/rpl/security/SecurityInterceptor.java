@@ -1,6 +1,5 @@
 package com.rpl.security;
 
-import java.io.IOException;
 import java.lang.reflect.AnnotatedElement;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,14 +41,14 @@ public class SecurityInterceptor implements ContainerRequestFilter {
 	private UserService userService;
 
 	@Override
-	public void filter(ContainerRequestContext requestContext) throws IOException {
+	public void filter(ContainerRequestContext requestContext) {
 		try {
 			Person p = checkAuth(requestContext);
 			checkRoles(requestContext, p);
 			userService.setCurrentUser(p);
 		} catch (ForbiddenException e) {
 			requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
-		} catch (Exception e) {
+		} catch (Exception e) {	// ToDo: specify
 			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
 		}
 	}
@@ -92,11 +91,11 @@ public class SecurityInterceptor implements ContainerRequestFilter {
 
 	private List<Role> extractRoles(AnnotatedElement annotatedElement) {
 		if (annotatedElement == null) {
-			return new ArrayList<Role>();
+			return new ArrayList<>();
 		} else {
 			Secured secured = annotatedElement.getAnnotation(Secured.class);
 			if (secured == null) {
-				return new ArrayList<Role>();
+				return new ArrayList<>();
 			} else {
 				Role[] allowedRoles = secured.value();
 				return Arrays.asList(allowedRoles);

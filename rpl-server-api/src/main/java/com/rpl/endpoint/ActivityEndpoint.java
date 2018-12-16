@@ -1,6 +1,5 @@
 package com.rpl.endpoint;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -111,7 +110,7 @@ public class ActivityEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubmissionsByActivity(@PathParam("id") Long activityId) {
 		List<ActivitySubmission> submissions = activitySubmissionService.getSubmissionsByActivity(activityId);
-		List<ActivitySubmissionSimplePOJO> submissionPOJOS = new ArrayList<ActivitySubmissionSimplePOJO>();
+		List<ActivitySubmissionSimplePOJO> submissionPOJOS = new ArrayList<>();
 		for (ActivitySubmission submission : submissions) {
 			submissionPOJOS.add(new ActivitySubmissionSimplePOJO(submission));
 		}
@@ -148,7 +147,7 @@ public class ActivityEndpoint {
 	@Path("{id}/file")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteFile(@PathParam("id") Long fileId) throws IOException {
+	public Response deleteFile(@PathParam("id") Long fileId) {
 		try {
 			SecurityHelper.checkPermissionsByFileId(fileId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
@@ -162,7 +161,7 @@ public class ActivityEndpoint {
 	@Path("{id}/files")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getFiles(@PathParam("id") Long activityId) throws IOException {
+	public Response getFiles(@PathParam("id") Long activityId) {
 		try {
 			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
@@ -170,14 +169,14 @@ public class ActivityEndpoint {
 		}
 		List<ActivityInputFile> list = activityService.findAllFiles(activityId);
 		return Response.status(200)
-				.entity(list.stream().map(f -> new ActivityInputFilePOJO(f)).collect(Collectors.toList())).build();
+				.entity(list.stream().map(ActivityInputFilePOJO::new).collect(Collectors.toList())).build();
 	}
 	
 	@POST
 	@Path("{id}/hide")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response hideActivity(@PathParam("id") Long activityId) throws IOException {
+	public Response hideActivity(@PathParam("id") Long activityId) {
 		try {
 			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
@@ -191,7 +190,7 @@ public class ActivityEndpoint {
 	@Path("{id}/unhide")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response unhideActivity(@PathParam("id") Long activityId) throws IOException {
+	public Response unhideActivity(@PathParam("id") Long activityId) {
 		try {
 			SecurityHelper.checkPermissionsByActivityId(activityId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
@@ -211,7 +210,7 @@ public class ActivityEndpoint {
 		} catch (RplException e) {
 			return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
 		}
-		List<ActivitySubmissionSolutionPOJO> submissionPOJOS = new ArrayList<ActivitySubmissionSolutionPOJO>();
+		List<ActivitySubmissionSolutionPOJO> submissionPOJOS = new ArrayList<>();
 		for (ActivitySubmission submission : submissions) {
 			submissionPOJOS.add(new ActivitySubmissionSolutionPOJO(submission));
 		}

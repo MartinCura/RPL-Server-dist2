@@ -16,6 +16,7 @@ import com.rpl.POJO.RegisterPOJO;
 import com.rpl.POJO.TokenPOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplException;
+import com.rpl.exception.RplNotAuthorizedException;
 import com.rpl.model.Credentials;
 import com.rpl.model.MessageCodes;
 import com.rpl.model.Person;
@@ -36,16 +37,16 @@ public class AuthenticationEndpoint {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response authenticateUser(CredentialsPOJO c) {
-
 		try {
 			Person p = securityService.authenticate(c.getUsername(), c.getPassword());
 
 			String token = securityService.issueToken(p);
 
 			return Response.ok(TokenPOJO.of(token, p.getCredentials().getRole(), c.getUsername())).build();
-
-		} catch (Exception e) {
+		} catch (RplNotAuthorizedException e) {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 
@@ -84,7 +85,6 @@ public class AuthenticationEndpoint {
 	public Response register(RegisterPOJO regPojo) {
 
 		try {
-
 			Person p = new Person();
 			p.setMail(regPojo.getMail());
 			p.setName(regPojo.getName());
@@ -104,6 +104,7 @@ public class AuthenticationEndpoint {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of(MessageCodes.SERVER_ERROR, e.getMessage()))
 					.build();
 		}
+
 	}
 
 }

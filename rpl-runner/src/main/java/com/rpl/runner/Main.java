@@ -9,11 +9,12 @@ import com.rpl.runner.utils.DirectoryCleaner;
 import com.rpl.runner.utils.JsonUtils;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 public class Main {
 
-    private static HashMap<String, String> map = new HashMap<String, String>();
+    private static HashMap<String, String> map = new HashMap<>();
 
     private static void loadRunners() {
         map.put("c", "com.rpl.runner.runner.CRunner");
@@ -21,7 +22,7 @@ public class Main {
         map.put("java", "com.rpl.runner.runner.JavaRunner");
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
         DirectoryCleaner.clean();
         loadRunners();
 
@@ -34,11 +35,13 @@ public class Main {
                 return;
             }
 
-            Runner runner = null;
+            Runner runner;
             try {
-                runner = (Runner) Class.forName(map.get(argumentParser.getLanguage())).newInstance();
-            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+                runner = (Runner) Class.forName(map.get(argumentParser.getLanguage())).getDeclaredConstructor().newInstance();
+            } catch (InvocationTargetException | NoSuchMethodException | InstantiationException
+                    | IllegalAccessException | ClassNotFoundException e) {
                 e.printStackTrace();
+                return;
             }
 
             Runner.TestMode mode = argumentParser.getMode().equals("test") ? Runner.TestMode.TEST : Runner.TestMode.INPUT;

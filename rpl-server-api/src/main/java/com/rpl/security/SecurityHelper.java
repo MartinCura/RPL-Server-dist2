@@ -6,11 +6,7 @@ import java.util.stream.Collectors;
 
 import com.rpl.exception.RplItemDoesNotBelongToPersonException;
 import com.rpl.exception.RplRoleException;
-import com.rpl.model.ActivitySubmission;
-import com.rpl.model.Course;
-import com.rpl.model.Person;
-import com.rpl.model.Role;
-import com.rpl.model.RoleCourse;
+import com.rpl.model.*;
 import com.rpl.service.CourseHelper;
 import com.rpl.service.util.Utils;
 
@@ -18,7 +14,7 @@ public class SecurityHelper {
 
 	public static RoleCourse findRoleOnCourse(Long courseId, Person p) {
 		return p.getCoursePersons().stream().filter(cp -> cp.getCourse().getId().equals(courseId))
-				.map(cp -> cp.getRole()).findFirst().orElse(null);
+				.map(CoursePerson::getRole).findFirst().orElse(null);
 	}
 
 	public static void checkSubmissionBelongsToPerson(ActivitySubmission activitySubmission, Person p)
@@ -35,13 +31,11 @@ public class SecurityHelper {
 	public static void checkPermissions(Long courseId, List<RoleCourse> allowedRoles, Person p)
 			throws RplRoleException {
 		List<RoleCourse> personRoles = p.getCoursePersons().stream()
-				.filter(cp -> cp.getCourse().getId().equals(courseId)).map(cp -> cp.getRole())
+				.filter(cp -> cp.getCourse().getId().equals(courseId)).map(CoursePerson::getRole)
 				.collect(Collectors.toList());
-		if (personRoles != null) {
-			for (RoleCourse allowedRole : allowedRoles) {
-				if (personRoles.contains(allowedRole))
-					return;
-			}
+		for (RoleCourse allowedRole : allowedRoles) {
+			if (personRoles.contains(allowedRole))
+				return;
 		}
 		throw new RplRoleException();
 	}

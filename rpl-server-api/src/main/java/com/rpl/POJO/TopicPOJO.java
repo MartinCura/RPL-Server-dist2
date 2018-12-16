@@ -18,7 +18,7 @@ public class TopicPOJO {
         this.id = topic.getId();
         this.name = topic.getName();
         this.setEnabled(DatabaseState.ENABLED.equals(topic.getState()));
-        activities = new ArrayList<ActivityPOJO>();
+        activities = new ArrayList<>();
         for (Activity activity : topic.getActivities()) {
             if (activity.getState().equals(DatabaseState.ENABLED)) {
                 activities.add(new ActivityPOJO(activity));

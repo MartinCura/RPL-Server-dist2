@@ -19,7 +19,6 @@ import com.rpl.model.Course;
 import com.rpl.model.CoursePerson;
 import com.rpl.model.MessageCodes;
 import com.rpl.model.Person;
-import com.rpl.model.PersonImage;
 import com.rpl.model.Role;
 import com.rpl.model.RoleCourse;
 import com.rpl.service.CourseService;
@@ -44,7 +43,7 @@ public class AdminEndpoint {
         List<Course> courses;
         courses = courseService.getCoursesEnabledAndDisabled();
         Map<Long, CoursePerson> coursesInscripted = courseService.getCoursesInscripted();
-        List<CoursePOJO> coursePOJOS = new ArrayList<CoursePOJO>();
+        List<CoursePOJO> coursePOJOS = new ArrayList<>();
         for (Course course : courses) {
             CoursePOJO coursePOJO = CoursePOJO.mapWithoutTopics(course);
             coursePOJO.setInscripted(coursesInscripted.get(course.getId()));
@@ -94,7 +93,7 @@ public class AdminEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAssistantsAdmin(@PathParam("id") Long id) {
 		List<CoursePerson> assistants = courseService.getAssistants(id);
-		List<AssistantPOJO> assistantPOJOS = new ArrayList<AssistantPOJO>();
+		List<AssistantPOJO> assistantPOJOS = new ArrayList<>();
 		for (CoursePerson assistant : assistants) {
 			assistantPOJOS.add(new AssistantPOJO(assistant));
 		}
@@ -107,7 +106,7 @@ public class AdminEndpoint {
 	public Response getProfessors(@PathParam("id") Long id) {
 		List<CoursePerson> professors = courseService.getProfessors(id);
 
-		List<ProfessorPOJO> professorPOJOS = professors.stream().map(coursePerson -> new ProfessorPOJO(coursePerson))
+		List<ProfessorPOJO> professorPOJOS = professors.stream().map(ProfessorPOJO::new)
 				.collect(Collectors.toList());
 
 		return Response.status(200).entity(professorPOJOS).build();

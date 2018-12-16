@@ -52,13 +52,13 @@ public class ReportEndpoint {
 		return Response.status(200).entity(new ActivitySubmissionSolutionPOJO(submission)).build();
 	}
 
-	@GET
-	@Path("/1/{courseId}/{personId}")
-	@Produces(MediaType.APPLICATION_JSON)
 	/**
 	 * Por alumno, por actividad cantidad de submissions hasta que se marcó como definitiva y si fue resuelta.
 	 * Se debe seleccionar un alumno, y opcionalmente, la categoría.
 	 */
+	@GET
+	@Path("/1/{courseId}/{personId}")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getReport1(@PathParam("courseId") Long courseId, @PathParam("personId") Long personId, @QueryParam("topicId") Long topicId) {
 		try {
 			SecurityHelper.checkPermissions(courseId,
@@ -71,13 +71,13 @@ public class ReportEndpoint {
 		return Response.status(200).entity(report).build();
 	}
 
-	@GET
-	@Path("/2/{topicId}")
-	@Produces(MediaType.APPLICATION_JSON)
 	/**
 	 * Promedio por actividad, es decir, cuántas submissions realizó cada alumno hasta llegar a la solución definitiva promediadas.
 	 * Si no hubo solución definitiva, no se tomar en cuenta. Se debe elegir la categoría de las actividades a mostrar
 	 */
+	@GET
+	@Path("/2/{topicId}")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getReport2(@PathParam("topicId") Long topicId) {
 		try {
 			SecurityHelper.checkPermissionsByTopicId(topicId,
@@ -90,12 +90,12 @@ public class ReportEndpoint {
 		return Response.status(200).entity(report).build();
 	}
 
-	@GET
-	@Path("/3/{topicId}")
-	@Produces(MediaType.APPLICATION_JSON)
 	/**
 	 * Muestra las actividades de la categoría seleccionada y si fue o no resuelta por cada alumno (cada fila es un alumno)
 	 */
+	@GET
+	@Path("/3/{topicId}")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getReport3(@PathParam("topicId") Long topicId) {
 		try {
 			SecurityHelper.checkPermissionsByTopicId(topicId,
@@ -140,12 +140,12 @@ public class ReportEndpoint {
 		return Response.status(200).entity(report).build();
 	}
 
-	@GET
-	@Path("/5/{topicId}")
-	@Produces(MediaType.APPLICATION_JSON)
 	/**
 	 * Listado de alumnos con porcentaje mínimo definible de completado en cierta categoría. Muestra alumno y porcentaje.
 	 */
+	@GET
+	@Path("/5/{topicId}")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getReport5(@PathParam("topicId") Long topicId) {
 		try {
 			SecurityHelper.checkPermissionsByTopicId(topicId,
@@ -167,12 +167,12 @@ public class ReportEndpoint {
 		return Response.status(200).entity(report).build();
 	}
 
-	@GET
-	@Path("/6/{topicId}/{personId}")
-	@Produces(MediaType.APPLICATION_JSON)
 	/**
 	 * Por categoría y alumno, eje X: Actividades ordenadas por la dificultad (puntaje definido); eje Y: Cantidad de intentos
 	 */
+	@GET
+	@Path("/6/{topicId}/{personId}")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getReport6(@PathParam("topicId") Long topicId, @PathParam("personId") Long personId) {
 		try {
 			SecurityHelper.checkPermissionsByTopicId(topicId,

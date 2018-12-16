@@ -13,7 +13,7 @@ public class FileUtils {
 	private static final Integer KB = 1024;
 
 	public static String fileToString(File file) {
-		Scanner scanner = null;
+		Scanner scanner;
 		try {
 			scanner = new Scanner(file);
 			String result = scanner.useDelimiter("\\A").next();
@@ -42,8 +42,7 @@ public class FileUtils {
 
 				String[] name = filename.split("=");
 
-				String finalFileName = name[1].trim().replaceAll("\"", "");
-				return finalFileName;
+				return name[1].trim().replaceAll("\"", "");
 			}
 		}
 		return null;

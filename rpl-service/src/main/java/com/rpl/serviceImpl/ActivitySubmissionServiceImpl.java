@@ -2,7 +2,6 @@ package com.rpl.serviceImpl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.rpl.exception.RplException;
-import com.rpl.exception.RplNotAuthorizedException;
 import com.rpl.exception.RplQueueException;
 import com.rpl.model.*;
 import com.rpl.persistence.ActivityDAO;
@@ -18,7 +17,6 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 @Stateless
 public class ActivitySubmissionServiceImpl implements ActivitySubmissionService {
@@ -37,7 +35,7 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 	private boolean hasDefinitiveSubmission(Long personId, Long activityId) {
 		try {
 			activitySubmissionDAO.findDefinitiveByActivityAndPerson(activityId, personId);
-		} catch (Exception e) {
+		} catch (Exception e) {	// ToDo: specify
 			return false;
 		}
 		return true;
@@ -86,7 +84,7 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 		return activitySubmissionDAO.findByPersonAndActivity(id, activityId);
 	}
 
-	@Override
+	@Override	// ToDo: revisar este método; especificar exception
 	public List<ActivitySubmission> getDefinitiveSubmissionsByActivity(Long activityId) throws RplException {
 		try {
 			ActivitySubmission submission = activitySubmissionDAO.findDefinitiveByActivityAndPerson(activityId, userService.getCurrentUser().getId());
@@ -103,7 +101,7 @@ public class ActivitySubmissionServiceImpl implements ActivitySubmissionService 
 			queueService.send(qm);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
-		} catch (IOException | TimeoutException e) {
+		} catch (IOException e) {
 			throw new RplQueueException(e);
 		}
 	}

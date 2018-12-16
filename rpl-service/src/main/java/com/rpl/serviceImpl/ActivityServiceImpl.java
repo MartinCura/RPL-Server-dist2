@@ -62,7 +62,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	public Set<Long> getActivitiesSelectedByCourse(Long courseId) {
 		List<ActivitySubmission> submissions = activitySubmissionDAO.findSelectedByPersonAndCourse(userService.getCurrentUser().getId(), courseId);
-		Set<Long> activitiesId = new HashSet<Long>();
+		Set<Long> activitiesId = new HashSet<>();
 		for (ActivitySubmission activitySubmission : submissions) {
 			activitiesId.add(activitySubmission.getActivity().getId());
 		}
@@ -71,7 +71,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	public Set<Long> getActivitiesDefinitiveByCourse(Long courseId) {
 		List<ActivitySubmission> submissions = activitySubmissionDAO.findSelectedByPersonAndCourse(userService.getCurrentUser().getId(), courseId);
-		Set<Long> activitiesId = new HashSet<Long>();
+		Set<Long> activitiesId = new HashSet<>();
 		for (ActivitySubmission activitySubmission : submissions) {
 			if (activitySubmission.isDefinitive())
 				activitiesId.add(activitySubmission.getActivity().getId());

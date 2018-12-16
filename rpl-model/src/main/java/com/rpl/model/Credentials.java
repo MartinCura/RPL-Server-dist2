@@ -59,7 +59,7 @@ public class Credentials {
 	}
 	
 	public Map<String, Object> toMap(){
-		Map <String, Object> map = new HashMap<String, Object>();
+		Map <String, Object> map = new HashMap<>();
 		map.put("username", this.username);
 		map.put("password", this.password);
 		map.put("role", this.role);

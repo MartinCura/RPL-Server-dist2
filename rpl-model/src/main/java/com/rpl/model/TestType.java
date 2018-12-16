@@ -1,6 +1,5 @@
 package com.rpl.model;
 
 public enum TestType {
-	
-	TEST, INPUT, FILE_INPUT;
+	TEST, INPUT, FILE_INPUT
 }

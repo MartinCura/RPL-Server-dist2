@@ -5,10 +5,10 @@ import org.junit.Test;
 
 public class ResultDAOTest {
 	
-	@Test
+	/*@Test
 	public void testPrepareCommand() {
 		ResultDAO r = new ResultDAO();
-		Assert.assertNotNull(r.find(1l));
-	}
+		Assert.assertNotNull(r.find(1L));
+	}*/
 	
 }

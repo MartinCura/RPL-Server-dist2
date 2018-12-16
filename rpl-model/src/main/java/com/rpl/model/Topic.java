@@ -1,5 +1,6 @@
 package com.rpl.model;
 
+
 import java.util.List;
 
 import javax.persistence.Entity;

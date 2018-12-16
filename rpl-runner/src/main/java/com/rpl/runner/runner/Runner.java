@@ -2,7 +2,6 @@ package com.rpl.runner.runner;
 
 import com.rpl.runner.Settings;
 import com.rpl.runner.exception.RunnerException;
-import com.rpl.runner.exception.TimeoutException;
 import com.rpl.runner.utils.LocalFileUtils;
 
 import java.util.Base64;
@@ -20,7 +19,7 @@ public abstract class Runner {
     protected String tests;
 
     public enum TestMode {
-        TEST, INPUT;
+        TEST, INPUT
     }
 
     protected String solution;

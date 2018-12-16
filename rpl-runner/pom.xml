@@ -9,7 +9,6 @@
         <!--<version>${rpl.version}</version>-->
         <version>0.0.1</version>
 	</parent>
-    <groupId>rpl</groupId>
     <artifactId>rpl-runner</artifactId>
     <!--<version>${rpl.version}</version>-->
 

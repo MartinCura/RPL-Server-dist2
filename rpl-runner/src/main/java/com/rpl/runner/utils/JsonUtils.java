@@ -19,8 +19,7 @@ public class JsonUtils {
 	public static Tests stringToObject(String json) {
 		try {
 			mapper.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
-			Tests tests = mapper.readValue(json, Tests.class);
-			return tests;
+			return mapper.readValue(json, Tests.class);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

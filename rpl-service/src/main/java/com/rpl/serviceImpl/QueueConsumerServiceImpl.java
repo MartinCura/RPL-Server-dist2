@@ -48,8 +48,7 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 
 	private Connection createConnection() throws IOException, TimeoutException {
 		ConnectionFactory factory = createFactory();
-		Connection new_connection = factory.newConnection();
-		return new_connection;
+		return factory.newConnection();
 	}
 
 	private Channel createChannel(Connection connection) throws IOException {
@@ -92,7 +91,7 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 	}
 
 	/// NO SE USA
-	public void send(QueueMessage m) throws IOException, TimeoutException {
+	public void send(QueueMessage m) throws IOException {
 		byte[] jsonMsg = new ObjectMapper().writeValueAsBytes(m);
 		channel.basicPublish("", this.queue_name, MessageProperties.PERSISTENT_TEXT_PLAIN, jsonMsg);
 		System.out.println("[Send] message: " + m.getMsg());
@@ -100,7 +99,7 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 	///
 
 	public QueueMessage receive()
-			throws IOException, ShutdownSignalException, ConsumerCancelledException, InterruptedException, TimeoutException {
+			throws IOException, ShutdownSignalException, ConsumerCancelledException, InterruptedException {
 		QueueingConsumer.Delivery delivery = getDeliveryFromChannel(channel);
 
 		QueueMessage queueMessage = new ObjectMapper().readValue(delivery.getBody(), QueueMessage.class);
@@ -110,9 +109,8 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 	}
 
 	private QueueingConsumer.Delivery getDeliveryFromChannel(Channel channel)
-			throws IOException, InterruptedException {
-		QueueingConsumer.Delivery delivery = consumer.nextDelivery(); // Solo consume el primer delivery!
-		return delivery;
+			throws InterruptedException {
+		return consumer.nextDelivery();
 	}
 
 	public void confirmReceive() throws IOException {
@@ -126,4 +124,5 @@ public class QueueConsumerServiceImpl implements QueueConsumerService {
 		channel.close();
 		connection.close();
 	}
+
 }

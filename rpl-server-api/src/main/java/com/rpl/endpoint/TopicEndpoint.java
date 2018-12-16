@@ -1,6 +1,5 @@
 package com.rpl.endpoint;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +88,7 @@ public class TopicEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getActivities(@PathParam("id") Long topicId) {
         List<Activity> activities = activityService.getActivitiesByTopic(topicId);
-        List<ActivityPOJO> activityPOJOS = new ArrayList<ActivityPOJO>();
+        List<ActivityPOJO> activityPOJOS = new ArrayList<>();
         for (Activity activity : activities) {
             activityPOJOS.add(new ActivityPOJO(activity));
         }
@@ -100,7 +99,7 @@ public class TopicEndpoint {
 	@Path("{id}/hide")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response hideTopic(@PathParam("id") Long topicId) throws IOException {
+	public Response hideTopic(@PathParam("id") Long topicId) {
 		try {
 			SecurityHelper.checkPermissionsByActivityId(topicId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {
@@ -114,7 +113,7 @@ public class TopicEndpoint {
 	@Path("{id}/unhide")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response unhideTopic(@PathParam("id") Long topicId) throws IOException {
+	public Response unhideTopic(@PathParam("id") Long topicId) {
 		try {
 			SecurityHelper.checkPermissionsByActivityId(topicId, Utils.listOf(RoleCourse.PROFESSOR, RoleCourse.ASSISTANT_PROFESSOR), userService.getCurrentUser());
 		} catch (RplRoleException e) {

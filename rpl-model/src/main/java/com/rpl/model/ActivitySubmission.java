@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rpl.model.runner.Result;
 import com.rpl.model.runner.ResultStatus;
 
@@ -111,7 +110,7 @@ public class ActivitySubmission {
 				this.setStatus( this.result.getStatus().getStage().equals("build") ?
 						Status.BUILDING_ERROR : Status.RUNTIME_ERROR );
 			}
-		} catch (Exception e) {	// ToDo: specify
+		} catch (Exception e) { // ToDo: specify
 			e.printStackTrace();
 		}
 	}

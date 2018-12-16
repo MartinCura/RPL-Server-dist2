@@ -83,7 +83,7 @@ public class CourseEndpoint {
 			courses = courseService.getCoursesByRole(role);
 		}
 		Map<Long, CoursePerson> coursesInscripted = courseService.getCoursesInscripted();
-		List<CoursePOJO> coursePOJOS = new ArrayList<CoursePOJO>();
+		List<CoursePOJO> coursePOJOS = new ArrayList<>();
 		for (Course course : courses) {
 			CoursePOJO coursePOJO = CoursePOJO.mapWithoutTopics(course);
 			coursePOJO.setInscripted(coursesInscripted.get(course.getId()));
@@ -293,7 +293,7 @@ public class CourseEndpoint {
 	public Response joinCourse(@PathParam("id") Long courseId) {
 		try {
 			courseService.join(courseId);
-		} catch (Exception e) {
+		} catch (Exception e) { // ToDo: specify
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(MessagePOJO.of("Already joined"))
 					.build();
 		}
@@ -344,7 +344,7 @@ public class CourseEndpoint {
 		}
 		Course c = courseService.getCourseById(courseId);
 		
-		return Response.status(200).entity(c.getRanges().stream().map(r -> new RangePOJO(r)).collect(Collectors.toList())).build();
+		return Response.status(200).entity(c.getRanges().stream().map(RangePOJO::new).collect(Collectors.toList())).build();
 	}
 	
 	@Secured
@@ -372,7 +372,7 @@ public class CourseEndpoint {
 	@Path("{id}/hide")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response hideCourse(@PathParam("id") Long courseId) throws IOException {
+	public Response hideCourse(@PathParam("id") Long courseId) {
 		courseService.hide(courseId);
 		return Response.status(200).build();
 	}
@@ -381,7 +381,7 @@ public class CourseEndpoint {
 	@Path("{id}/unhide")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response unhideCourse(@PathParam("id") Long courseId) throws IOException {
+	public Response unhideCourse(@PathParam("id") Long courseId) {
 		courseService.unhide(courseId);
 		return Response.status(200).build();
 	}

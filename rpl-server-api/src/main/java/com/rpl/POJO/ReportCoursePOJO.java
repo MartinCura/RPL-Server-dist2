@@ -11,7 +11,7 @@ public class ReportCoursePOJO {
     private List<Report3> data;
 
     public ReportCoursePOJO(List<Activity> activities, List<Report3> data) {
-        this.activities = activities.stream().map(a -> new ActivityNamePOJO(a)).collect(Collectors.toList());
+        this.activities = activities.stream().map(ActivityNamePOJO::new).collect(Collectors.toList());
         this.data = data;
     }
 

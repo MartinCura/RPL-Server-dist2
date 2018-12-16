@@ -13,7 +13,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.rpl.POJO.ActivitySubmissionPOJO;
-import com.rpl.POJO.ActivitySubmissionSimplePOJO;
 import com.rpl.POJO.MessagePOJO;
 import com.rpl.annotation.Secured;
 import com.rpl.exception.RplException;
@@ -65,7 +64,7 @@ public class ActivitySubmissionEndpoint {
 			return Response.ok(MessagePOJO.of(MessageCodes.ERROR_ROLE_NOT_ALLOWED, "")).build();
 		}
 		List<ActivitySubmission> submissions = activitySubmissionService.getSubmissionsByActivity(personId, activityId);
-		List<ActivitySubmissionPOJO> submissionPOJOS = new ArrayList<ActivitySubmissionPOJO>();
+		List<ActivitySubmissionPOJO> submissionPOJOS = new ArrayList<>();
 		for (ActivitySubmission submission : submissions) {
 			submissionPOJOS.add(new ActivitySubmissionPOJO(submission));
 		}

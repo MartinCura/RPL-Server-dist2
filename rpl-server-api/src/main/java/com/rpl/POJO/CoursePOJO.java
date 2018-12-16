@@ -1,6 +1,5 @@
 package com.rpl.POJO;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +25,7 @@ public class CoursePOJO {
         this.name = course.getName();
         this.rules = course.getRules();
         this.description = course.getDescription();
-        this.topics = new ArrayList<TopicPOJO>();
+        this.topics = new ArrayList<>();
         this.customization = course.getCustomization();
         this.inscripted = "UNREGISTERED";
         this.role = null;
@@ -45,7 +44,7 @@ public class CoursePOJO {
     }
     
     public CoursePOJO(Set<Topic> topics) {
-    	this.topics = new ArrayList<TopicPOJO>();
+    	this.topics = new ArrayList<>();
     	for (Topic topic : topics) {
             this.topics.add(new TopicPOJO(topic));
         }

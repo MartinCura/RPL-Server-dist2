@@ -13,8 +13,8 @@ import com.rpl.service.util.FileUtils;
 import com.rpl.service.util.JsonUtils;
 
 public class Tester {
-	private final String TMP_DIRECTORY = "/tmp/";
-	private final String TMP_EXTENSION = ".tmp";
+	private static final String TMP_DIRECTORY = "/tmp/";
+	private static final String TMP_EXTENSION = ".tmp";
 	
 	Result runSubmission(ActivitySubmission submission) throws IOException, InterruptedException {
 		String[] command = prepareCommand(submission);		
@@ -54,8 +54,10 @@ public class Tester {
 				"-d", data
 			};
 
-		for (ActivityInputFile file : activity.getFiles()) {
-			args = ArrayUtils.addElement(args, "-f", file.getFileName(), new String (Base64.getEncoder().encode(file.getContent())));
+		if (activity.getFiles() != null) {
+			for (ActivityInputFile file : activity.getFiles()) {
+				args = ArrayUtils.addElement(args, "-f", file.getFileName(), new String (Base64.getEncoder().encode(file.getContent())));
+			}
 		}
 		return args;
 	}

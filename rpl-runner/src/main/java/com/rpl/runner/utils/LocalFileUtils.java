@@ -1,8 +1,6 @@
 package com.rpl.runner.utils;
 
-import com.rpl.runner.Settings;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.util.Scanner;
@@ -10,11 +8,12 @@ import java.util.Scanner;
 public class LocalFileUtils {
     public static void write(String path, String content) {
         // Save solution
-        PrintWriter out = null;
+        PrintWriter out;
         try {
             out = new PrintWriter(path);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return;
         }
         out.print(content);
         out.close();
@@ -22,13 +21,13 @@ public class LocalFileUtils {
 
     public static void write(String path, byte[] content) {
         File file = new File(path);
-        BufferedOutputStream writer = null;
+        BufferedOutputStream writer;
         try {
             writer = new BufferedOutputStream(new FileOutputStream(file));
             writer.write(content);
             writer.flush();
             writer.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -37,11 +36,12 @@ public class LocalFileUtils {
         if (fileIsEmpty(file))
             return "";
 
-        Scanner scanner = null;
+        Scanner scanner;
         try {
             scanner = new Scanner(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return null;
         }
         String text = scanner.useDelimiter("\\A").next();
         scanner.close();

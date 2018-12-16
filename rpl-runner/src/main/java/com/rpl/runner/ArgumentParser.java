@@ -3,7 +3,6 @@ package com.rpl.runner;
 import org.apache.commons.cli.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ArgumentParser {
@@ -18,7 +17,7 @@ public class ArgumentParser {
     private String modeData;
     private List<String[]> extraFiles = new ArrayList<>();
 
-    public ArgumentParser(String[] args) {
+    ArgumentParser(String[] args) {
         this.args = args;
 
         loadOptions();

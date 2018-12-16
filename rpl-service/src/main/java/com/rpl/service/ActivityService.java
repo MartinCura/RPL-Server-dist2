@@ -11,17 +11,17 @@ import com.rpl.model.TestType;
 
 public interface ActivityService {
 	
-	public Activity getActivityById(Long id);
-	public List<Activity> getActivitiesByCourseEnabledAndDisabled(Long courseId);
-	public List<Activity> getActivitiesByTopic(Long topicId);
-	public void delete(Long id);
-	public void submit(Long courseId, Activity activity);
-    public void update(Long id, String name, String description, Language language, int points, Long topic, TestType testType, String template, String input, String output, String tests);
-	public Set<Long> getActivitiesSelectedByCourse(Long courseId);
-	public Set<Long> getActivitiesDefinitiveByCourse(Long courseId);
-	public void saveFile(Long activityId, ActivityInputFile file) throws RplException;
-	public void deleteFile(Long fileId);
-	public List<ActivityInputFile> findAllFiles(Long activityId);
-	public void hide(Long activityId);
-	public void unhide(Long activityId);
+	Activity getActivityById(Long id);
+	List<Activity> getActivitiesByCourseEnabledAndDisabled(Long courseId);
+	List<Activity> getActivitiesByTopic(Long topicId);
+	void delete(Long id);
+	void submit(Long courseId, Activity activity);
+    void update(Long id, String name, String description, Language language, int points, Long topic, TestType testType, String template, String input, String output, String tests);
+	Set<Long> getActivitiesSelectedByCourse(Long courseId);
+	Set<Long> getActivitiesDefinitiveByCourse(Long courseId);
+	void saveFile(Long activityId, ActivityInputFile file) throws RplException;
+	void deleteFile(Long fileId);
+	List<ActivityInputFile> findAllFiles(Long activityId);
+	void hide(Long activityId);
+	void unhide(Long activityId);
 }

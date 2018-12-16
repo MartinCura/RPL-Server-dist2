@@ -51,7 +51,7 @@ public class CourseServiceImpl implements CourseService {
 	public Map<Long, CoursePerson> getCoursesInscripted() {
 		List<CoursePerson> coursesPerson = coursePersonDAO.findByPerson(userService.getCurrentUser().getId());
 
-		Map<Long, CoursePerson> coursesInscripted = new HashMap<Long, CoursePerson>();
+		Map<Long, CoursePerson> coursesInscripted = new HashMap<>();
 		for (CoursePerson cp : coursesPerson) {
 			coursesInscripted.put(cp.getCourse().getId(), cp);
 		}
@@ -131,7 +131,7 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	public Map<Person, Integer> getPointsByPerson(Long courseId) {
-		Map<Person, Integer> pointsByPerson = new HashMap<Person, Integer>();
+		Map<Person, Integer> pointsByPerson = new HashMap<>();
 		List<ActivitySubmission> submissions = activitySubmissionDAO.findSelectedByCourse(courseId);
 		for (ActivitySubmission submission : submissions) {
 			if (!pointsByPerson.containsKey(submission.getPerson())) {
@@ -160,8 +160,8 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	public void updateRanges(Long courseId, List<Range> ranges) throws RplException {
-		List<Integer> everyMinScoreOnRanges = ranges.stream().map(r -> r.getMinScore()).collect(Collectors.toList());
-		Boolean repeatedMinScore = everyMinScoreOnRanges.stream()
+		List<Integer> everyMinScoreOnRanges = ranges.stream().map(Range::getMinScore).collect(Collectors.toList());
+		boolean repeatedMinScore = everyMinScoreOnRanges.stream()
 				.anyMatch(min -> Collections.frequency(everyMinScoreOnRanges, min) > 1);
 		if (repeatedMinScore) throw RplException.of(MessageCodes.ERROR_INVALID_RANGE_NUMBER, "");
 		Course c = courseDAO.find(courseId);

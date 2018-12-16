@@ -8,23 +8,23 @@ import com.rpl.model.ActivitySubmission;
 
 public interface ActivitySubmissionService {
 	
-	public ActivitySubmission submit(Long activityId, ActivitySubmission submission) throws RplException;
+	ActivitySubmission submit(Long activityId, ActivitySubmission submission) throws RplException;
 
-	public ActivitySubmission getSubmissionById(Long id);
+	ActivitySubmission getSubmissionById(Long id);
 
-	public void markAsSelected(Long submissionId) throws RplException;
+	void markAsSelected(Long submissionId) throws RplException;
 
-    public List<ActivitySubmission> getSubmissionsByActivity(Long activityId);
+    List<ActivitySubmission> getSubmissionsByActivity(Long activityId);
     
-	public List<ActivitySubmission> getSubmissionsByActivity(Long id, Long activityId);
+	List<ActivitySubmission> getSubmissionsByActivity(Long id, Long activityId);
 
-	public List<ActivitySubmission> getDefinitiveSubmissionsByActivity(Long activityId) throws RplException;
+	List<ActivitySubmission> getDefinitiveSubmissionsByActivity(Long activityId) throws RplException;
 
 	//public void queueSubmission(Long id) throws RplQueueException;
-	public void queueSubmission(ActivitySubmission submission) throws RplQueueException;
+    void queueSubmission(ActivitySubmission submission) throws RplQueueException;
 
 	//public void queueSubmissionWithResult(ActivitySubmission submission) throws RplQueueException;
 
-    public void markAsDefinitive(Long submissionId) throws RplException;
+    void markAsDefinitive(Long submissionId) throws RplException;
 
 }

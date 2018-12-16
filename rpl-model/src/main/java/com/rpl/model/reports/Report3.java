@@ -27,6 +27,5 @@ public class Report3 {
         List<String> submissions = Arrays.asList(result.replaceAll("\\{|\\}", "").split(","));
         Collections.replaceAll(submissions,"NULL", null);
         return submissions;
-
     }
 }

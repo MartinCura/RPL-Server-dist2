@@ -9,8 +9,7 @@
 		<!--<version>${rpl.version}</version>-->
 		<version>0.0.1</version>
 	</parent>
-	<groupId>rpl</groupId>
-	<artifactId>rpl-model</artifactId>
+    <artifactId>rpl-model</artifactId>
 	<!--<version>${rpl.daemon.version}</version>-->
 	<name>rpl-model</name>
 	<url>http://maven.apache.org</url>

@@ -2,16 +2,12 @@ package com.rpl.service;
 
 import java.util.Optional;
 
-import com.rpl.model.Activity;
-import com.rpl.model.ActivityInputFile;
-import com.rpl.model.Course;
-import com.rpl.model.Person;
-import com.rpl.model.Topic;
+import com.rpl.model.*;
 
 public class CourseHelper {
 	
 	public static Optional<Course> getCourseByActivityId(Long activityId, Person p) {
-		return p.getCoursePersons().stream().map(cp -> cp.getCourse())
+		return p.getCoursePersons().stream().map(CoursePerson::getCourse)
 				.filter(course -> getTopicByActivityId(activityId, course).isPresent()).findFirst();
 	}
 
@@ -25,12 +21,12 @@ public class CourseHelper {
 	}
 	
 	public static Optional<Course> getCourseByFileId(Long fileId, Person p) {
-		return p.getCoursePersons().stream().map(cp -> cp.getCourse())
+		return p.getCoursePersons().stream().map(CoursePerson::getCourse)
 				.filter(course -> getTopicByFileId(fileId, course).isPresent()).findFirst();
 	}
 	
 	public static Optional<Course> getCourseByTopicId(Long topicId, Person p) {
-		return p.getCoursePersons().stream().map(cp -> cp.getCourse())
+		return p.getCoursePersons().stream().map(CoursePerson::getCourse)
 				.filter(course -> getTopicById(topicId, course).isPresent()).findFirst();
 	}
 	
@@ -51,7 +47,8 @@ public class CourseHelper {
 	}
 
 	public static Optional<Course> getCourseByImageFileId(Long fileId, Person p) {
-		return p.getCoursePersons().stream().map(cp -> cp.getCourse())
+		return p.getCoursePersons().stream().map(CoursePerson::getCourse)
 				.filter(course -> course.getCourseImage().getId().equals(fileId)).findFirst();
 	}
+
 }

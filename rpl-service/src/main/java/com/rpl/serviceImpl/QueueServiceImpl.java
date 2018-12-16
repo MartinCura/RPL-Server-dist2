@@ -41,8 +41,7 @@ public class QueueServiceImpl implements QueueService {
 
 	private Connection createConnection() throws IOException, TimeoutException {
 		ConnectionFactory factory = createFactory();
-		Connection new_connection = factory.newConnection();
-		return new_connection;
+		return factory.newConnection();
 	}
 
 	private Channel createChannel(Connection connection) throws IOException {
@@ -87,14 +86,14 @@ public class QueueServiceImpl implements QueueService {
 		return factory;
 	}
 
-	public void send(QueueMessage m) throws IOException, TimeoutException {
+	public void send(QueueMessage m) throws IOException {
 		byte[] jsonMsg = new ObjectMapper().writeValueAsBytes(m);
 		channel.basicPublish("", this.queue_name, MessageProperties.PERSISTENT_TEXT_PLAIN, jsonMsg);
 		System.out.println("[Send] message: " + m.getMsg());
 	}
 
 	public QueueMessage receive()
-			throws IOException, ShutdownSignalException, ConsumerCancelledException, InterruptedException, TimeoutException {
+			throws IOException, ShutdownSignalException, ConsumerCancelledException, InterruptedException {
 		QueueingConsumer.Delivery delivery = getDeliveryFromChannel(channel);
 
 		QueueMessage queueMessage = new ObjectMapper().readValue(delivery.getBody(), QueueMessage.class);
@@ -106,8 +105,7 @@ public class QueueServiceImpl implements QueueService {
 			throws IOException, InterruptedException {
 		QueueingConsumer consumer = new QueueingConsumer(channel);	// TODO: Podría no crearse cada vez
 		channel.basicConsume(this.queue_name, true, consumer);	// TODO: change autoAck and ack manually
-		QueueingConsumer.Delivery delivery = consumer.nextDelivery(); // Solo consume el primer delivery!
-		return delivery;
+		return consumer.nextDelivery();
 	}
 
 	//private void close() throws IOException, TimeoutException {

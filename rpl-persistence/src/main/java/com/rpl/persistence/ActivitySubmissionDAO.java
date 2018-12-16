@@ -84,4 +84,5 @@ public class ActivitySubmissionDAO extends ApplicationDAO{
 				.setParameter("personId", personId)
 				.getSingleResult();
 	}
+
 }

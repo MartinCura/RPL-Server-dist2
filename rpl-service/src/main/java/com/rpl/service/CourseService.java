@@ -11,38 +11,37 @@ import com.rpl.model.Person;
 import com.rpl.model.Range;
 import com.rpl.model.reports.Ranking;
 
-
 public interface CourseService {
 
-    public Course getCourseById(Long id);
-    public List<Course> getCourses();
-    public List<Course> getCoursesByRole(String role);
-    public Course submit(Course course);
-    public void join(Long courseId);
-    public void leaveCourse(Long courseId, Long personId);
+    Course getCourseById(Long id);
+    List<Course> getCourses();
+    List<Course> getCoursesByRole(String role);
+    Course submit(Course course);
+    void join(Long courseId);
+    void leaveCourse(Long courseId, Long personId);
 
-    public void accept(Long courseId, Long personId);
-    public void pending(Long courseId, Long personId);
+    void accept(Long courseId, Long personId);
+    void pending(Long courseId, Long personId);
     
-    public List<CoursePerson> getStudents(Long courseId);
-    public List<CoursePerson> getStudentsByAssistant(Long courseId, Long assistantId);
-    public List<CoursePerson> getAssistants(Long id);
-	public void deleteCourseById(Long id);
-	public void updateCustomization(Long id, String customization);
-    public void assignAssistant(Long courseId, Long student, Long assistant);
-    public List<Course> getUnregisteredCourses();
-    public Map<Long, CoursePerson> getCoursesInscripted();
-	public void updateCourseName(Long id, String name);
-	public List<CoursePerson> getProfessors(Long id);
-	public void updateDescRulesAndCustomization(Long id, String customization, String description, String rules);
-    public Map<Person,Integer> getPointsByPerson(Long courseId);
-	public void saveImage(Long courseId, CourseImage courseImage) throws RplException;
-	public void updateRanges(Long courseId, List<Range> ranges) throws RplException;
-	public void hide(Long courseId);
-	public void unhide(Long courseId);
-	public List<Course> getCoursesEnabledAndDisabled();
-    public void copyTopics(Long sourceCourseId, Long destCourseId);
-    public void copyActivities(Long sourceCourseId, Long destCourseId);
-	public List<Ranking> getRanking(Long courseId);
+    List<CoursePerson> getStudents(Long courseId);
+    List<CoursePerson> getStudentsByAssistant(Long courseId, Long assistantId);
+    List<CoursePerson> getAssistants(Long id);
+	void deleteCourseById(Long id);
+	void updateCustomization(Long id, String customization);
+    void assignAssistant(Long courseId, Long student, Long assistant);
+    List<Course> getUnregisteredCourses();
+    Map<Long, CoursePerson> getCoursesInscripted();
+	void updateCourseName(Long id, String name);
+	List<CoursePerson> getProfessors(Long id);
+	void updateDescRulesAndCustomization(Long id, String customization, String description, String rules);
+    Map<Person,Integer> getPointsByPerson(Long courseId);
+	void saveImage(Long courseId, CourseImage courseImage) throws RplException;
+	void updateRanges(Long courseId, List<Range> ranges) throws RplException;
+	void hide(Long courseId);
+	void unhide(Long courseId);
+	List<Course> getCoursesEnabledAndDisabled();
+    void copyTopics(Long sourceCourseId, Long destCourseId);
+    void copyActivities(Long sourceCourseId, Long destCourseId);
+	List<Ranking> getRanking(Long courseId);
 
 }

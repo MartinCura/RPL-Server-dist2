@@ -4,8 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.rpl.model.ActivitySubmission;
 import com.rpl.model.QueueMessage;
 import com.rpl.model.runner.Result;
-import com.rpl.persistence.ActivitySubmissionDAO;
-import com.rpl.persistence.ApplicationDAO;
 import com.rpl.service.QueueConsumerService;
 import com.rpl.service.QueueService;
 import com.rpl.service.util.JsonUtils;
@@ -65,7 +63,7 @@ public class Daemon {
 					e.printStackTrace();
 				}
 
-			} catch (IOException | InterruptedException | TimeoutException e) {
+			} catch (IOException | InterruptedException e) {
 				e.printStackTrace(); // ToDo: better error message?
             } catch (Exception e) {
 			    System.err.println("ERROR INESPERADO");

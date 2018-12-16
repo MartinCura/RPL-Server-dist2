@@ -11,9 +11,9 @@ public class TestsPOJO {
     private boolean success;
     private List<TestResultPOJO> tests;
 
-    public TestsPOJO(Tests test) {
+    TestsPOJO(Tests test) {
         this.success = test.isSuccess();
-        this.tests = new ArrayList<TestResultPOJO>();
+        this.tests = new ArrayList<>();
         for (TestResult testResult : test.getTests()) {
             this.tests.add(new TestResultPOJO(testResult));
         }

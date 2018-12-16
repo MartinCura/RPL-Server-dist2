@@ -9,7 +9,6 @@
 		<!--<version>${rpl.version}</version>-->
 		<version>0.0.1</version>
 	</parent>
-	<groupId>rpl</groupId>
 	<artifactId>rpl-persistence</artifactId>
 	<!--<version>${rpl.daemon.version}</version>-->
 	<name>rpl-persistence</name>
@@ -18,11 +17,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
+<!--
 		<dependency>
 		    <groupId>junit</groupId>
 		    <artifactId>junit</artifactId>
 		    <version>4.12</version>
 		</dependency>
+-->
 		<dependency>
 			<groupId>rpl</groupId>
 			<artifactId>rpl-datasource</artifactId>

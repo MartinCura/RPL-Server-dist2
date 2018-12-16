@@ -38,7 +38,7 @@ public class SecurityServiceImpl implements SecurityService {
 	@Inject
 	private ActionLogService actionLogService;
 
-	public String issueToken(Person p) throws Exception {
+	public String issueToken(Person p) {
 		String generatedToken = generateToken(p);
 		personDAO.updatePersonToken(p.getCredentials().getUsername(), generatedToken);
 		actionLogService.logLogin(p);

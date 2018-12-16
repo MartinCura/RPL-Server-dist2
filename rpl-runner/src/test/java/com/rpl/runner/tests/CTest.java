@@ -3,7 +3,6 @@ package com.rpl.runner.tests;
 import com.rpl.runner.Settings;
 import com.rpl.runner.exception.RunnerException;
 import com.rpl.runner.runner.CRunner;
-import com.rpl.runner.runner.PythonRunner;
 import com.rpl.runner.runner.Runner;
 import com.rpl.runner.utils.DirectoryCleaner;
 import junit.framework.TestCase;
