@@ -1,5 +1,5 @@
 #!/bin/bash
-# Setup del RPL-Server
+# Setup del RPL-Server,
 
 echo 'export LC_ALL="en_US.UTF-8"' >> ~/.profile
 cd /vagrant
@@ -50,21 +50,15 @@ cd /vagrant
 
 # Generación del esquema de base de datos
 PGPASSWORD='rpl' psql -d rpldb -U rpl < rpl-datasource/src/main/resources/scripts.sql
-# Compilar el proyecto
-mvn -q clean install
-# Generación de imagen docker
-sudo docker build -t rpl rpl-runner
-# Creación de usuario para desplegar
+
+# Creación de usuario WildFly para desplegar
 #/vagrant/wildfly/wildfly-10.1.0.Final/bin/add-user.sh < rpl-datasource/src/main/resources/user-wf-input.txt
-/vagrant/wildfly/wildfly-10.1.0.Final/bin/add-user.sh "rpl" "rplMM!"  ### NO ES LO MISMO QUE CORRERLO MANUALMENTE
+./vagrant/wildfly/wildfly-10.1.0.Final/bin/add-user.sh "rpl" "rplMM!"  # No es lo mismo que correr sin los argumentos, ver installation.md
 sed -i 's~<default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:jboss/datasources/ExampleDS" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>~~' /vagrant/wildfly/wildfly-10.1.0.Final/standalone/configuration/standalone.xml
 
-# Compilar aplicación web
-mvn -q clean install -PwebApp
+# Enable RabbitMQ management - runs on port 15672
+sudo rabbitmq-plugins enable rabbitmq_management
 
-# Compilación daemon
-###mvn -q package -PstandaloneApp
-###sudo java -jar /vagrant/rpl-daemon/target/rpl-daemon-0.0.1.jar
 
-# DEPLOY
-cp /vagrant/rpl-server-api/target/rpl-server-api.war /vagrant/wildfly/wildfly-10.1.0.Final/standalone/deployments/
+# Compilar el proyecto
+mvn -q clean install

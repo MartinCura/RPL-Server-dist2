@@ -1,10 +1,11 @@
 #!/bin/bash
 # Setup del RPL-Server. RUN WITH SUDO
-
 BASEDIR="$HOME"
+# Assumes source code is in $BASEDIR/repo
+# Will install WildFly in $BASEDIR/wildfly
 
 echo 'export LC_ALL="en_US.UTF-8"' >> "$HOME"/.profile
-cd $BASEDIR/repo
+cd "$BASEDIR"/repo
 
 # Java
 sudo apt-get update -q
@@ -26,10 +27,9 @@ sudo rabbitmqctl set_permissions -p / rpl ".*" ".*" ".*"
 
 # PostgreSQL
 sudo apt-get install -y -qq postgresql postgresql-contrib
-sudo -u postgres psql -f $BASEDIR/repo/rpl-datasource/src/main/resources/createDb.sql
+sudo -u postgres psql -f "$BASEDIR"/repo/rpl-datasource/src/main/resources/createDb.sql
 # Configurar PostgreSQL
 for F in /etc/postgresql/*/main/pg_hba.conf; do
-    echo "tst: $F" ##
     sudo sed -i "$((`sudo sed -n '/Unix domain socket connections only/=' $F`+1))s/peer/md5/" "$F"
 done
 sudo service postgresql restart
@@ -44,34 +44,24 @@ sudo apt-get install -y -qq docker-engine
 sudo apt-get install -y -qq maven
 
 # Wildfly
-cd $BASEDIR
+cd "$BASEDIR"
 mkdir wildfly/
 cd wildfly/
 wget -nv http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.tar.gz
 tar -xzf wildfly-10.1.0.Final.tar.gz
-cd $BASEDIR/repo
+cd "$BASEDIR"/repo
 
 # Generación del esquema de base de datos
-PGPASSWORD='rpl' psql -d rpldb -U rpl < $BASEDIR/repo/rpl-datasource/src/main/resources/scripts.sql
+PGPASSWORD='rpl' psql -d rpldb -U rpl < "$BASEDIR"/repo/rpl-datasource/src/main/resources/scripts.sql
+
+# Creación de usuario para desplegar
+#"$BASEDIR"/wildfly/wildfly-10.1.0.Final/bin/add-user.sh < $BASEDIR/repo/rpl-datasource/src/main/resources/user-wf-input.txt
+"$BASEDIR"/wildfly/wildfly-10.1.0.Final/bin/add-user.sh "rpl" "rplMM!"  # No es lo mismo que correr sin los argumentos, ver installation.md
+sed -i 's~<default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:jboss/datasources/ExampleDS" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>~~' "$BASEDIR"/wildfly/wildfly-10.1.0.Final/standalone/configuration/standalone.xml
+
+# Enable RabbitMQ management - runs on port 15672
+sudo rabbitmq-plugins enable rabbitmq_management
+
+
 # Compilar el proyecto
 mvn -q clean install
-# Generación de imagen docker
-#sudo docker build -t rpl rpl-runner
-# Creación de usuario para desplegar
-#$BASEDIR/wildfly/wildfly-10.1.0.Final/bin/add-user.sh < $BASEDIR/repo/rpl-datasource/src/main/resources/user-wf-input.txt
-$BASEDIR/wildfly/wildfly-10.1.0.Final/bin/add-user.sh "rpl" "rplMM!"
-### Línea anterior NO ES LO MISMO QUE CORRERLO MANUALMENTE. Ver línea en installation.md
-sed -i 's~<default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:jboss/datasources/ExampleDS" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>~~' $BASEDIR/wildfly/wildfly-10.1.0.Final/standalone/configuration/standalone.xml
-
-# Compilar aplicación web
-# mvn -q clean install -PwebApp
-
-# Compilación daemon
-# mvn -q package -PstandaloneApp
-# Correr con: $ sudo java -jar $BASEDIR/repo/rpl-daemon/target/rpl-daemon-0.0.1.jar
-
-# DEPLOY
-# cp $BASEDIR/repo/rpl-server-api/target/rpl-server-api.war $BASEDIR/wildfly/wildfly-10.1.0.Final/standalone/deployments/
-
-# RabbitMQ management - runs on port 15672
-sudo rabbitmq-plugins enable rabbitmq_management
