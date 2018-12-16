@@ -56,7 +56,7 @@ PGPASSWORD='rpl' psql -d rpldb -U rpl < $BASEDIR/repo/rpl-datasource/src/main/re
 # Compilar el proyecto
 mvn -q clean install
 # Generación de imagen docker
-sudo docker build -t rpl rpl-runner
+#sudo docker build -t rpl rpl-runner
 # Creación de usuario para desplegar
 #$BASEDIR/wildfly/wildfly-10.1.0.Final/bin/add-user.sh < $BASEDIR/repo/rpl-datasource/src/main/resources/user-wf-input.txt
 $BASEDIR/wildfly/wildfly-10.1.0.Final/bin/add-user.sh "rpl" "rplMM!"
@@ -64,14 +64,14 @@ $BASEDIR/wildfly/wildfly-10.1.0.Final/bin/add-user.sh "rpl" "rplMM!"
 sed -i 's~<default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:jboss/datasources/ExampleDS" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>~~' $BASEDIR/wildfly/wildfly-10.1.0.Final/standalone/configuration/standalone.xml
 
 # Compilar aplicación web
-mvn -q clean install -PwebApp
+# mvn -q clean install -PwebApp
 
 # Compilación daemon
-mvn -q package -PstandaloneApp
+# mvn -q package -PstandaloneApp
 # Correr con: $ sudo java -jar $BASEDIR/repo/rpl-daemon/target/rpl-daemon-0.0.1.jar
 
 # DEPLOY
-cp $BASEDIR/repo/rpl-server-api/target/rpl-server-api.war $BASEDIR/wildfly/wildfly-10.1.0.Final/standalone/deployments/
+# cp $BASEDIR/repo/rpl-server-api/target/rpl-server-api.war $BASEDIR/wildfly/wildfly-10.1.0.Final/standalone/deployments/
 
 # RabbitMQ management - runs on port 15672
 sudo rabbitmq-plugins enable rabbitmq_management

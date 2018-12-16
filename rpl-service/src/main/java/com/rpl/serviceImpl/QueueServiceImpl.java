@@ -66,6 +66,7 @@ public class QueueServiceImpl implements QueueService {
                 try {
                     prop.load(is);
                     host = prop.getProperty("master.host");
+                    System.out.println("Read configuration from " + FileSystems.getDefault().getPath(CONFIG_FILENAME));
                 } catch (IOException ex) {
                     System.out.println("Error al leer archivo de configuración");
                 }
@@ -73,7 +74,6 @@ public class QueueServiceImpl implements QueueService {
                 System.out.println("Archivo de configuración no encontrado");
             }
         }
-        System.out.println("Read configuration from " + FileSystems.getDefault().getPath(CONFIG_FILENAME));
         System.out.println("Queue will connect to host at " + host);
         return host;
     }
