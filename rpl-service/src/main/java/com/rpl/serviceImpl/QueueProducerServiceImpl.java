@@ -10,6 +10,10 @@ import com.rpl.service.QueueProducerService;
 
 public class QueueProducerServiceImpl extends QueueServiceImpl implements QueueProducerService {
 
+    public QueueProducerServiceImpl() throws IOException, TimeoutException {
+        super();
+    }
+
     public QueueProducerServiceImpl(String queue_name) throws IOException, TimeoutException {
         super(queue_name);
     }

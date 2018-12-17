@@ -18,10 +18,16 @@ public class QueueServiceImpl implements QueueService {
     private static final String QUEUE_HOST = "localhost";
     private static final String QUEUE_USER = "rpl";
     private static final String QUEUE_PASSWD = "rpl";
+    private static final String SUBM_QUEUE_NAME = "rpl-subm";
 
+    String queue_name = SUBM_QUEUE_NAME;
     private Connection connection;
     Channel channel;
-    String queue_name;
+
+    QueueServiceImpl() throws IOException, TimeoutException {
+        connection = createConnection();
+        channel = createChannel(connection);
+    }
 
     QueueServiceImpl(String queue_name) throws IOException, TimeoutException {
         this.queue_name = queue_name;
