@@ -27,7 +27,7 @@ sudo -u postgres psql -f /vagrant/rpl-datasource/src/main/resources/createDb.sql
 # Configurar PostgreSQL
 for F in /etc/postgresql/*/main/pg_hba.conf; do
     echo "tst: $F" ##
-    sudo sed -i "$((`sudo sed -n '/Unix domain socket connections only/=' $F`+1))s/peer/md5/" "$F"
+    sudo sed -i "$((`sudo sed -n '/Unix domain socket connections only/=' ${F}`+1))s/peer/md5/" "$F"
 done
 sudo service postgresql restart
 

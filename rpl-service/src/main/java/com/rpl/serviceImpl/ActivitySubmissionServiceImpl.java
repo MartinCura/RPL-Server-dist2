@@ -6,10 +6,7 @@ import com.rpl.exception.RplQueueException;
 import com.rpl.model.*;
 import com.rpl.persistence.ActivityDAO;
 import com.rpl.persistence.ActivitySubmissionDAO;
-import com.rpl.service.ActionLogService;
-import com.rpl.service.ActivitySubmissionService;
-import com.rpl.service.QueueService;
-import com.rpl.service.UserService;
+import com.rpl.service.*;
 import com.rpl.service.util.JsonUtils;
 
 import javax.ejb.Stateless;
@@ -22,7 +19,7 @@ import java.util.List;
 public class ActivitySubmissionServiceImpl implements ActivitySubmissionService {
 
     @Inject
-    private QueueService queueService;
+    private QueueProducerService queueService;
     @Inject
     private UserService userService;
     @Inject

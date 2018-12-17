@@ -6,10 +6,10 @@ import com.rpl.model.ActivitySubmission;
 import com.rpl.model.QueueMessage;
 import com.rpl.model.runner.Result;
 import com.rpl.service.QueueConsumerService;
-import com.rpl.service.QueueService;
+import com.rpl.service.QueueProducerService;
 import com.rpl.service.util.JsonUtils;
 import com.rpl.serviceImpl.QueueConsumerServiceImpl;
-import com.rpl.serviceImpl.QueueServiceImpl;
+import com.rpl.serviceImpl.QueueProducerServiceImpl;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -27,11 +27,11 @@ public class Daemon {
 	    while (running) {
             try {
                 QueueConsumerService qs_subm;
-                QueueService qs_res;
+                QueueProducerService qs_res;
                 try {
-                    qs_subm = new QueueConsumerServiceImpl();
-                    qs_res = new QueueServiceImpl("rpl-res");
-                } catch (TimeoutException | IOException e) {    // ToDo: Emprolijar
+                    qs_subm = new QueueConsumerServiceImpl("rpl-subm");
+                    qs_res  = new QueueProducerServiceImpl("rpl-res");
+                } catch (TimeoutException | IOException e) {
                     e.printStackTrace();
                     return;
                 }
