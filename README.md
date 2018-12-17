@@ -3,7 +3,7 @@ RPL-Server
 
 ## Installation
 
-Follow the instructions in *installation.md*. A Vagrantfile is provided if you want to set up everything in a VM (simply run `vagrant up`, it will automatically run the setup script).
+Follow the instructions in *install/installation.md*. A Vagrantfile is provided if you want to set up everything in a VM (simply run `vagrant up`, it will automatically run the setup script).
 
 
 ## Compilation
@@ -21,10 +21,10 @@ Daemon worker:
 
 ## Run / Deploy
 
-Previously clone in `~/repo/` and install as above.
+Previously clone in `~/repo/` (or adapt scripts) and install as above.
 
 #### Master (API server)
-Customize `deploy-master.sh` and run it with sudo to prepare API deployment. Alternatively, compile as above and
+Customize `deploy-master.sh` and run it with sudo to prepare API deployment [alternatively, compile as above and deploy in WildFly's console].
 Then run (in different terminals of the same system):
 ```bash
 $ sudo ./start-wildfly.sh

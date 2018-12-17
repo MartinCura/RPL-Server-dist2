@@ -1,5 +1,5 @@
 #!/bin/bash
-# Setup del RPL-Server,
+# Setup del RPL-Server
 
 echo 'export LC_ALL="en_US.UTF-8"' >> ~/.profile
 cd /vagrant

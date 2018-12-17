@@ -3,7 +3,7 @@
 Automatic
 ---------
 
-Para instalar todo lo siguiente se puede utilizar el script `setup-server.sh` (hay una versión levemente distinta si se realiza dentro de una máquina Vagrant). Leerlo previamente para asegurarse que todo se instale donde se desea.
+Para instalar todo lo siguiente se puede utilizar el script `setup-server.sh` desde el root del proyecto (hay una versión levemente distinta si se realiza dentro de una máquina Vagrant). Leerlo previamente para asegurarse que todo se instale donde se desea.
 
 Alternativamente, se puede hacer manualmente con el resto de estas instrucciones.
 
