@@ -52,8 +52,8 @@ cd /vagrant
 PGPASSWORD='rpl' psql -d rpldb -U rpl < rpl-datasource/src/main/resources/scripts.sql
 
 # Creación de usuario WildFly para desplegar
-#/vagrant/wildfly/wildfly-10.1.0.Final/bin/add-user.sh < rpl-datasource/src/main/resources/user-wf-input.txt
 ./vagrant/wildfly/wildfly-10.1.0.Final/bin/add-user.sh "rpl" "rplMM!"  # No es lo mismo que correr sin los argumentos, ver installation.md
+# Se recomienda cambiar la contraseña default
 sed -i 's~<default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:jboss/datasources/ExampleDS" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>~~' /vagrant/wildfly/wildfly-10.1.0.Final/standalone/configuration/standalone.xml
 
 # Enable RabbitMQ management - runs on port 15672
