@@ -49,7 +49,7 @@ public class SecurityInterceptor implements ContainerRequestFilter {
             userService.setCurrentUser(p);
         } catch (ForbiddenException e) {
             requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
-        } catch (Exception e) {	// ToDo: specify
+        } catch (Exception e) { // ToDo: specify
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }
     }
