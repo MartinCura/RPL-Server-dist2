@@ -8,9 +8,9 @@ public interface SecurityService {
 
     String issueToken(Person p);
 
-    Person authenticate(String username, String password) throws RplNotAuthorizedException;
+    Person authenticate(String username, String password) throws RplNotAuthorizedException, RplException;
 
-    Person validateToken(String token) throws RplNotAuthorizedException;
+    Person validateToken(String token) throws RplNotAuthorizedException, RplException;
 
     void logout(String username);
 

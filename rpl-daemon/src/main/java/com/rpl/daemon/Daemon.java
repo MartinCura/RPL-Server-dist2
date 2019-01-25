@@ -21,10 +21,10 @@ import java.util.concurrent.TimeoutException;
 **/
 public class Daemon {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-	    boolean running = true;
-	    while (running) {
+        boolean running = true;
+        while (running) {
             try {
                 QueueConsumerService qs_subm;
                 QueueProducerService qs_res;
@@ -78,5 +78,5 @@ public class Daemon {
             }
         }
 
-	}
+    }
 }

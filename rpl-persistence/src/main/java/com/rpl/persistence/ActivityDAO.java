@@ -39,7 +39,8 @@ public class ActivityDAO extends ApplicationDAO {
         String q = "SELECT a FROM Activity a WHERE a.topic.id = :id AND a.state = :state ORDER BY a.name";
         return entityManager
                 .createQuery(q, Activity.class)
-                .setParameter("id", topicId).setParameter("state", DatabaseState.ENABLED).getResultList();
+                .setParameter("id", topicId).setParameter("state", DatabaseState.ENABLED)
+                .getResultList();
     }
 
     public void update(Long id, String name, String description, Language language, int points, Long topic,

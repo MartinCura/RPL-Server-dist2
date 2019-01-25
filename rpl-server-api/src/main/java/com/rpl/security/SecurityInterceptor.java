@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 import com.rpl.annotation.Secured;
+import com.rpl.exception.RplException;
 import com.rpl.exception.RplNotAuthorizedException;
 import com.rpl.exception.RplRoleException;
 import com.rpl.model.Person;
@@ -48,7 +49,7 @@ public class SecurityInterceptor implements ContainerRequestFilter {
             userService.setCurrentUser(p);
         } catch (ForbiddenException e) {
             requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
-        } catch (Exception e) {	// ToDo: specify
+        } catch (Exception e) { // ToDo: specify
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }
     }
@@ -71,6 +72,8 @@ public class SecurityInterceptor implements ContainerRequestFilter {
             return securityService.validateToken(token);
         } catch (RplNotAuthorizedException e) {
             throw new NotAuthorizedException("Failed to authorize");
+        } catch (RplException e) {
+            throw new NotAuthorizedException("User does not exist");
         }
 
     }

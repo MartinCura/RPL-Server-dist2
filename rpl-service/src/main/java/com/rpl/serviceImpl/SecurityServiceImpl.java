@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import org.hibernate.exception.ConstraintViolationException;
@@ -62,11 +63,15 @@ public class SecurityServiceImpl implements SecurityService {
         actionLogService.logLogout();
     }
 
-    public Person authenticate(String username, String password) throws RplNotAuthorizedException {
-        Person retrievedPerson = personDAO.find(username);
-        if (retrievedPerson.getState().equals(DatabaseState.DELETED))
-            throw new RplNotAuthorizedException();
-        return validatePassword(password, retrievedPerson);
+    public Person authenticate(String username, String password) throws RplNotAuthorizedException, RplException {
+        try {
+            Person retrievedPerson = personDAO.find(username);
+            if (retrievedPerson.getState().equals(DatabaseState.DELETED))
+                throw new RplNotAuthorizedException();
+            return validatePassword(password, retrievedPerson);
+        } catch (NoResultException e) {
+            throw RplException.of(MessageCodes.ERROR_INEXISTENT_USER, "");
+        }
     }
 
     private Person validatePassword(String password, Person retrievedPerson) throws RplNotAuthorizedException {
@@ -82,11 +87,15 @@ public class SecurityServiceImpl implements SecurityService {
         throw new RplNotAuthorizedException();
     }
 
-    public Person validateToken(String token) throws RplNotAuthorizedException {
+    public Person validateToken(String token) throws RplNotAuthorizedException, RplException {
         Claims body = Jwts.parser().setSigningKey(PRIVATE_KEY.getBytes()).parseClaimsJws(token).getBody();
         String username = (String) body.get("username");
-        Person retrievedPerson = personDAO.find(username);
-        return validateToken(token, retrievedPerson);
+        try {
+            Person retrievedPerson = personDAO.find(username);
+            return validateToken(token, retrievedPerson);
+        } catch (NoResultException e) {
+            throw RplException.of(MessageCodes.ERROR_INEXISTENT_USER, "");
+        }
     }
 
     @Override
