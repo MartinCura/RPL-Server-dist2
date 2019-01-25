@@ -16,7 +16,7 @@ Manual
 ### Java
 ```bash
 $ sudo apt-get install -y software-properties-common
-$ sudo add-apt-repository -y ppa:webupd8team/javaW
+$ sudo add-apt-repository -y ppa:webupd8team/java
 $ sudo echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 $ sudo echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
 $ sudo apt-get update -y
