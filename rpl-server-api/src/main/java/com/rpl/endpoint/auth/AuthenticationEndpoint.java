@@ -45,6 +45,8 @@ public class AuthenticationEndpoint {
             return Response.ok(TokenPOJO.of(token, p.getCredentials().getRole(), c.getUsername())).build();
         } catch (RplNotAuthorizedException e) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
+        } catch (RplException e) {
+            return Response.serverError().entity(MessagePOJO.of(e.getCode(), e.getMessage())).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
